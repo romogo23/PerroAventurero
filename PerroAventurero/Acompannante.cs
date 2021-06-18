@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace PerroAventurero.Models
+namespace PerroAventurero
 {
     public partial class Acompannante
     {
@@ -11,7 +11,5 @@ namespace PerroAventurero.Models
         public string Genero { get; set; }
         public short Edad { get; set; }
         public bool? Asistencia { get; set; }
-
-        public virtual Reserva CodigoReservaNavigation { get; set; }
     }
 }

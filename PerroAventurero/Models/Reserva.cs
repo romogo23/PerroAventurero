@@ -8,7 +8,7 @@ namespace PerroAventurero.Models
     public partial class Reserva
     {
         public int CodigoReserva { get; set; }
-        public decimal? CodigoEvento { get; set; }
+        public int CodigoEvento { get; set; }
         public string CedulaCliente { get; set; }
         public string Cedula { get; set; }
         public short EntradasGenerales { get; set; }

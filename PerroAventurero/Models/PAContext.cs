@@ -51,8 +51,6 @@ namespace PerroAventurero.Models
 
                 entity.Property(e => e.CodigoReserva).HasColumnName("CODIGO_RESERVA");
 
-                entity.Property(e => e.Codigotempo).HasColumnName("CODIGOTEMPO");
-
                 entity.Property(e => e.Edad).HasColumnName("EDAD");
 
                 entity.Property(e => e.Genero)
@@ -65,6 +63,7 @@ namespace PerroAventurero.Models
                 entity.HasOne(d => d.CodigoReservaNavigation)
                     .WithMany()
                     .HasForeignKey(d => d.CodigoReserva)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ACOMPANN_RESERVA_T_RESERVA");
             });
 
@@ -158,9 +157,7 @@ namespace PerroAventurero.Models
 
                 entity.HasIndex(e => e.Cedula, "USUARIO_ADMI_INGRESA_EMPRESA_FK");
 
-                entity.Property(e => e.CodigoEmpresa)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CODIGO_EMPRESA");
+                entity.Property(e => e.CodigoEmpresa).HasColumnName("CODIGO_EMPRESA");
 
                 entity.Property(e => e.Categoria)
                     .IsRequired()
@@ -206,13 +203,12 @@ namespace PerroAventurero.Models
 
                 entity.HasIndex(e => e.Cedula, "USUARIO_ADMI_CREA_EVENTO_FK");
 
-                entity.Property(e => e.CodigoEvento)
-                    .HasColumnType("numeric(18, 0)")
-                    .HasColumnName("CODIGO_EVENTO");
+                entity.Property(e => e.CodigoEvento).HasColumnName("CODIGO_EVENTO");
 
                 entity.Property(e => e.CantidadAforo).HasColumnName("CANTIDAD_AFORO");
 
                 entity.Property(e => e.Cedula)
+                    .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("CEDULA");
@@ -223,6 +219,7 @@ namespace PerroAventurero.Models
                     .HasColumnName("COMENTARIOS");
 
                 entity.Property(e => e.Dirreccion)
+                    .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("DIRRECCION");
@@ -242,11 +239,13 @@ namespace PerroAventurero.Models
                     .HasColumnName("HORA_INICIO");
 
                 entity.Property(e => e.Lugar)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("LUGAR");
 
                 entity.Property(e => e.NombreEvento)
+                    .IsRequired()
                     .HasMaxLength(80)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE_EVENTO");
@@ -262,6 +261,7 @@ namespace PerroAventurero.Models
                 entity.HasOne(d => d.CedulaNavigation)
                     .WithMany(p => p.Eventos)
                     .HasForeignKey(d => d.Cedula)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EVENTO_USUARIO_A_USUARIO_");
             });
 
@@ -278,25 +278,23 @@ namespace PerroAventurero.Models
 
                 entity.HasIndex(e => e.Cedula, "USUARIO_ADMI_VERIFICA_RESERVA_FK");
 
-                entity.Property(e => e.CodigoReserva)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CODIGO_RESERVA");
+                entity.Property(e => e.CodigoReserva).HasColumnName("CODIGO_RESERVA");
 
                 entity.Property(e => e.Asistencia).HasColumnName("ASISTENCIA");
 
                 entity.Property(e => e.Cedula)
+                    .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("CEDULA");
 
                 entity.Property(e => e.CedulaCliente)
+                    .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("CEDULA_CLIENTE");
 
-                entity.Property(e => e.CodigoEvento)
-                    .HasColumnType("numeric(18, 0)")
-                    .HasColumnName("CODIGO_EVENTO");
+                entity.Property(e => e.CodigoEvento).HasColumnName("CODIGO_EVENTO");
 
                 entity.Property(e => e.ComprobantePago)
                     .HasColumnType("image")
@@ -325,16 +323,19 @@ namespace PerroAventurero.Models
                 entity.HasOne(d => d.CedulaNavigation)
                     .WithMany(p => p.Reservas)
                     .HasForeignKey(d => d.Cedula)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RESERVA_USUARIO_A_USUARIO_");
 
                 entity.HasOne(d => d.CedulaClienteNavigation)
                     .WithMany(p => p.Reservas)
                     .HasForeignKey(d => d.CedulaCliente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RESERVA_RESERVA_P_CLIENTE");
 
                 entity.HasOne(d => d.CodigoEventoNavigation)
                     .WithMany(p => p.Reservas)
                     .HasForeignKey(d => d.CodigoEvento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RESERVA_EVENTO_TI_EVENTO");
             });
 
