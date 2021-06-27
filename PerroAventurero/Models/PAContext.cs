@@ -218,7 +218,7 @@ namespace PerroAventurero.Models
                     .IsUnicode(false)
                     .HasColumnName("COMENTARIOS");
 
-                entity.Property(e => e.Dirreccion)
+                entity.Property(e => e.Direccion)
                     .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false)
