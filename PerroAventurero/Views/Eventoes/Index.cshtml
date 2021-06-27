@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PerroAventurero.Models.Evento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Mantenimiento de eventos</h1>
+
+<p>
+    <a asp-action="Create">Crear evento</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nombre evento
+            </th>
+            <th>
+                Lugar
+            </th>
+            <th>
+                Dirección
+            </th>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Precio General
+            </th>
+            <th>
+                Precio niño
+            </th>
+            <th>
+                Cantidad de aforo
+            </th>
+            <th>
+                Hora inicio
+            </th>
+            <th>
+                Hora final
+            </th>
+            <th>
+                Envío de anuncios
+            </th>
+            <th>
+                Comentarios
+            </th>
+            @*<th>
+                Creador
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEvento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lugar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioGeneral)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioNinno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadAforo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraFinal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnvioAnuncios)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comentarios)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
+            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CodigoEvento">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.CodigoEvento">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.CodigoEvento">Eiminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

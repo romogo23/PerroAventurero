@@ -1,0 +1,93 @@
+﻿@model PerroAventurero.Models.Evento
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h3>Eliminación de eventos</h3>
+
+<div>
+
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Nombre
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NombreEvento)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lugar)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lugar)
+        </dd>
+        <dt class = "col-sm-2">
+            Dirección
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt class = "col-sm-2">
+            Precio general
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrecioGeneral)
+        </dd>
+        <dt class = "col-sm-2">
+            Precio niños
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrecioNinno)
+        </dd>
+        <dt class = "col-sm-2">
+            Cantidad aforo
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CantidadAforo)
+        </dd>
+        <dt class = "col-sm-2">
+            Hora inicio
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraInicio)
+        </dd>
+        <dt class = "col-sm-2">
+            Hora final
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraFinal)
+        </dd>
+        <dt class = "col-sm-2">
+            Envío de anuncios
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnvioAnuncios)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comentarios)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comentarios)
+        </dd>
+        @*<dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CedulaNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CedulaNavigation.Cedula)
+        </dd class>*@
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CodigoEvento" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver a lista de eventos</a>
+    </form>
+</div>
