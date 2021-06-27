@@ -10,7 +10,6 @@ using PerroAventurero.Models;
 
 namespace PerroAventurero.Controllers
 {
-    //[Authorize]
     public class EmpresasAfiliadasController : Controller
     {
         private readonly PAContext _context;
@@ -20,6 +19,7 @@ namespace PerroAventurero.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: EmpresasAfiliadas
         public async Task<IActionResult> Index()
         {

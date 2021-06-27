@@ -33,11 +33,6 @@ namespace PerroAventurero.Models
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 //                optionsBuilder.UseSqlServer("Data Source=PC_411764;Initial Catalog=PerroAventurero;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 //            }
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=PerroAventurero;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -422,6 +417,12 @@ namespace PerroAventurero.Models
                     .HasMaxLength(11)
                     .IsUnicode(false)
                     .HasColumnName("CONTRASENNA");
+
+                entity.Property(e => e.Correo)
+                    .IsRequired()
+                    .HasMaxLength(320)
+                    .IsUnicode(false)
+                    .HasColumnName("CORREO");
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(250)

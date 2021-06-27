@@ -12,7 +12,7 @@ namespace PerroAventurero.Models
         public string Cedula { get; set; }
         public DateTime? Fecha { get; set; }
         public byte[] ComprobantePago { get; set; }
-       
+
         public virtual UsuarioComun CedulaClienteNavigation { get; set; }
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
     }

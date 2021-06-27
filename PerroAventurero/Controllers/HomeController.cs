@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PerroAventurero.Models;
 using System;
@@ -23,6 +24,7 @@ namespace PerroAventurero.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Normal")]
         public IActionResult Privacy()
         {
             return View();

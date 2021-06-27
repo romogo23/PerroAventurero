@@ -1,0 +1,63 @@
+﻿@model PerroAventurero.Models.Cliente_UsuarioComun
+
+@{
+    ViewData["Title"] = "SignIn";
+}
+
+<h1>Ingrese sus credenciales</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SignIn">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UsuarioComun.CedulaCliente" class="control-label"></label>
+                <input asp-for="UsuarioComun.CedulaCliente" class="form-control" />
+                <span asp-validation-for="UsuarioComun.CedulaCliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.NombreCompleto" class="control-label"></label>
+                <input asp-for="Cliente.NombreCompleto" class="form-control" />
+                <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.FechaNacimiento" class="control-label"></label>
+                <input asp-for="Cliente.FechaNacimiento" class="form-control" />
+                <span asp-validation-for="Cliente.FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Genero" class="control-label"></label>
+                <input asp-for="Cliente.Genero" class="form-control" />
+                <span asp-validation-for="Cliente.Genero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Telefono" class="control-label"></label>
+                <input asp-for="Cliente.Telefono" class="form-control" />
+                <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuarioComun.Foto" class="control-label"></label>
+                <input asp-for="UsuarioComun.Foto" class="form-control" />
+                <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuarioComun.Descripcion" class="control-label"></label>
+                <textarea asp-for="UsuarioComun.Descripcion" class="form-control"></textarea>
+                <span asp-validation-for="UsuarioComun.Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Correo" class="control-label"></label>
+                <input asp-for="Cliente.Correo" class="form-control" />
+                <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuarioComun.Contrasenna" class="control-label"></label>
+                <input asp-for="UsuarioComun.Contrasenna" class="form-control" />
+                <span asp-validation-for="UsuarioComun.Contrasenna" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrarse" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
