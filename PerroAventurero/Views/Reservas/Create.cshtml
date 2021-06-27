@@ -1,0 +1,143 @@
+﻿@model PerroAventurero.Models.Reserva
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Formulario de reserva</h1>
+<hr />
+<script type="text/javaScript" src="~/js/Acompannantes.js"></script>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="form">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" asp-items="ViewBag.NombreCompleto">
+                <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.Cedula">
+                <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.Correo" class="form-control" asp-items="ViewBag.Correo">
+                <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" asp-items="ViewBag.Telefono">
+                <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.FechaNacimiento" class="form-control" asp-items="ViewBag.FechaNacimiento">
+                <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
+            </div>
+            <div class="form-group">
+                <label asp-for="Grupo" class="control-label"></label>
+                <input asp-for="Grupo" class="form-control" />
+                <span asp-validation-for="Grupo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraEntrada" class="control-label"></label>
+                <input asp-for="HoraEntrada" class="form-control" />
+                <span asp-validation-for="HoraEntrada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntradasGenerales" class="control-label"></label>
+                <input onchange="Price()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
+                <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntradasNinnos" class="control-label"></label>
+                <input onchange="Price()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
+                <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrecioTotal" class="control-label"></label>
+                <label  id="price" class="control-label"></label>
+                <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+            </div>
+
+            @*<div id="AdultTickets" class="form-group">
+
+        </div>
+
+
+        <div id="ChildTickets" class="form-group">
+
+        </div>*@
+
+            <div id="acompanantesContainer">
+                @Html.EditorFor(model => model.Acompannantes)
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+
+                    <input class="btn btn-dark" type="button" id="btnAdd" value="Agregar acompañante" />
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $("#entradasGenerales").on('change', function () {
+            $.ajax({
+                async: true,
+                data: $('#form').serialize(),
+                type: "POST",
+                url: '/Reservas/AddAcompannante',
+                success: function (partialView) {
+                    console.log("partialView: " +partialView);
+                    $('#acompanantesContainer').html(partialView)
+                }
+
+            });
+
+        });
+
+        $("#entradasNinnos").on('change', function () {
+            $.ajax({
+                async: true,
+                data: $('#form').serialize(),
+                type: "POST",
+                url: '/Reservas/AddAcompannante',
+                success: function (partialView) {
+                    console.log("partialView: " + partialView);
+                    $('#acompanantesContainer').html(partialView)
+                }
+
+            });
+
+        });
+    </script>
+
+}

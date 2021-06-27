@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PerroAventurero.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EntradasGenerales)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntradasNinnos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaReserva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grupo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraEntrada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EsAceptada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComprobantePago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Asistencia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CedulaClienteNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CedulaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoEventoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntradasGenerales)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntradasNinnos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaReserva)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grupo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraEntrada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EsAceptada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComprobantePago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Asistencia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CedulaClienteNavigation.CedulaCliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoEventoNavigation.Cedula)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CodigoReserva">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CodigoReserva">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CodigoReserva">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

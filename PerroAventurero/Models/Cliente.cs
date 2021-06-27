@@ -14,9 +14,9 @@ namespace PerroAventurero.Models
 
         public string CedulaCliente { get; set; }
         public string NombreCompleto { get; set; }
-        public DateTime? FechaNacimiento { get; set; }
-        public string Genero { get; set; }
-        public int? Telefono { get; set; }
+        public DateTime FechaNacimiento { get; set; }
+        public char Genero { get; set; }
+        public int Telefono { get; set; }
         public string Correo { get; set; }
         public bool? RecepcionAnuncios { get; set; }
 
