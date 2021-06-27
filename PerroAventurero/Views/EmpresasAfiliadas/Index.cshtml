@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ingresar Empresa</a>
 </p>
 <table class="table">
     <thead>
@@ -51,13 +51,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-            </td>
+            </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CodigoEmpresa">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> |
+                <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.CodigoEmpresa">Eliminar</a>
             </td>
         </tr>
 }

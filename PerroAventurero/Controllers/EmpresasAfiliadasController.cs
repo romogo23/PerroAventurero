@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using PerroAventurero.Models;
 
 namespace PerroAventurero.Controllers
 {
+    //[Authorize]
     public class EmpresasAfiliadasController : Controller
     {
         private readonly PAContext _context;
@@ -66,6 +68,7 @@ namespace PerroAventurero.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", empresasAfiliada.Cedula);
+            //ViewData["Categoria"] = new SelectList(_context.EmpresasAfiliadas, "Categoria", "Categoria", empresasAfiliada.Categoria);
             return View(empresasAfiliada);
         }
 
