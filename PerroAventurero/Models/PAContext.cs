@@ -208,7 +208,6 @@ namespace PerroAventurero.Models
                 entity.Property(e => e.CantidadAforo).HasColumnName("CANTIDAD_AFORO");
 
                 entity.Property(e => e.Cedula)
-                    .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("CEDULA");
@@ -261,7 +260,6 @@ namespace PerroAventurero.Models
                 entity.HasOne(d => d.CedulaNavigation)
                     .WithMany(p => p.Eventos)
                     .HasForeignKey(d => d.Cedula)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EVENTO_USUARIO_A_USUARIO_");
             });
 
