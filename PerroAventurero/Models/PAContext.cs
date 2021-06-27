@@ -222,7 +222,7 @@ namespace PerroAventurero.Models
                     .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false)
-                    .HasColumnName("DIRRECCION");
+                    .HasColumnName("DIRECCION");
 
                 entity.Property(e => e.EnvioAnuncios).HasColumnName("ENVIO_ANUNCIOS");
 
