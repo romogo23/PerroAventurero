@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -29,6 +30,7 @@ namespace PerroAventurero.Models
         public virtual Cliente CedulaClienteNavigation { get; set; }
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
         public virtual Evento CodigoEventoNavigation { get; set; }
+        [NotMapped]
         public virtual List<Acompannante> Acompannantes { get; set; }
     }
 }

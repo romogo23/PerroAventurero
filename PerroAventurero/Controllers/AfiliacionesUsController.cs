@@ -23,8 +23,19 @@ namespace PerroAventurero.Controllers
         // GET: afiprueba
         public async Task<IActionResult> Index()
         {
-            var pAContext = _context.Afiliacions.Include(a => a.CedulaClienteNavigation).Include(a => a.CedulaNavigation);
+            var pAContext = _context.Afiliacions.Include(a => a.CedulaNavigation);
+            ViewBag.Image = ViewImage(pAContext.ToList()[0].ComprobantePago);
             return View(await pAContext.ToListAsync());
+        }
+
+        private string ViewImage(byte[] arrayImage)
+
+        {
+
+            string base64String = Convert.ToBase64String(arrayImage, 0, arrayImage.Length);
+
+            return "data:image/png;base64," + base64String;
+
         }
 
         // GET: afiprueba/Details/5
@@ -50,7 +61,7 @@ namespace PerroAventurero.Controllers
         // GET: afiprueba/Create
         public IActionResult Create()
         {
-            ViewData["CedulaCliente"] = new SelectList(_context.UsuarioComuns, "CedulaCliente", "CedulaCliente");
+            //ViewData["CedulaCliente"] = new SelectList(_context.UsuarioComuns, "CedulaCliente", "CedulaCliente");
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
             return View();
         }
@@ -88,6 +99,7 @@ namespace PerroAventurero.Controllers
 
                     }
                 }
+                afiliacion.CedulaCliente = User.Identity.Name;
                 _context.Add(afiliacion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

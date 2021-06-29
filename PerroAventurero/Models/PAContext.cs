@@ -416,12 +416,6 @@ namespace PerroAventurero.Models
                     .IsUnicode(false)
                     .HasColumnName("CONTRASENNA");
 
-                entity.Property(e => e.Correo)
-                    .IsRequired()
-                    .HasMaxLength(320)
-                    .IsUnicode(false)
-                    .HasColumnName("CORREO");
-
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(250)
                     .IsUnicode(false)

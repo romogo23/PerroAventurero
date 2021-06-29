@@ -18,9 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ComprobantePago)
             </th>
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.CedulaClienteNavigation)
-            </th>*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CedulaNavigation)
             </th>
@@ -34,11 +34,12 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ComprobantePago)
+                @*ESTÁ EN UN A PARA VERLO EN GRANDE DESPUES*@
+                <a href ="" target="_blank"><img src="@ViewBag.Image" width="250px" height="200px" alt="Alternate Text" /></a>
             </td>
-            @*<td>
+            <td>
                 @Html.DisplayFor(modelItem => item.CedulaClienteNavigation.CedulaCliente)
-            </td>*@
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
             </td>

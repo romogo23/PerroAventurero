@@ -8,6 +8,8 @@ using System.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using System.Net;
+using System.Net.Mail;
 
 namespace PerroAventurero.Controllers
 {
@@ -35,6 +37,41 @@ namespace PerroAventurero.Controllers
             return View();
         }
 
+        public ActionResult ModifyPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SendCode(string Correo)
+        {
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.To.Add(Correo.ToString());
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Prueba de correo";
+                msg.Body = "Prueba de correo";
+                //Attachment data = new Attachment(textBox3.Text);
+                //msg.Attachments.Add(data);
+                client.Send(msg);
+                return RedirectToAction("ModifyPassword", "Auth");
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind("UsuarioComun.CedulaCliente, UsuarioComun.Descripcion, UsuarioComun.Contrasenna, UsuarioComun.Foto")] UsuarioComun usuario, [Bind("Cliente.NombreCompleto, Cliente.FechaNacimiento, Cliente.Genero, Cliente.Telefono, Cliente.Correo")] Cliente usuarioCliente)
         {
@@ -48,7 +85,7 @@ namespace PerroAventurero.Controllers
                 await _context.SaveChangesAsync();
                 _context.Add(usuarioCliente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Auth", "Login");
+                return RedirectToAction();
             }
             return View(usuario);
         }
@@ -81,7 +118,7 @@ namespace PerroAventurero.Controllers
         public async Task<IActionResult> Login(string Correo, string Contrasenna)
         {
             var usuarioAdmin = GetMyADMINUser(Correo, Contrasenna);
-            var usuarioComun = GetMyCOMUNUser(Correo, Contrasenna);
+            //var usuarioComun = GetMyCOMUNUser(Correo, Contrasenna);
             // Todo: Check for no user with these credentials
 
             if (usuarioAdmin != null)
@@ -95,9 +132,9 @@ namespace PerroAventurero.Controllers
 
                 return RedirectToAction("Index", "EmpresasAfiliadas");
             }
-            var normal = CreateComun(usuarioComun);
+            //var normal = CreateComun(usuarioComun);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
+            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
 
             return RedirectToAction("Create", "EmpresasAfiliadas");
         }
@@ -128,7 +165,7 @@ namespace PerroAventurero.Controllers
             {
                 /*new Claim("Correo", userAdmin.Correo),
                 new Claim("Contrasenna", userAdmin.Contrasenna)*/
-                new Claim(ClaimTypes.Name, userAdmin.Correo),
+                new Claim(ClaimTypes.Name, userAdmin.Cedula),
                 new Claim("FullName", userAdmin.NombreCompleto),
                 new Claim(ClaimTypes.Role, "Administrator"),
             };
