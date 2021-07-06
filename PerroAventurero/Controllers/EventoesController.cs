@@ -58,11 +58,26 @@ namespace PerroAventurero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(evento);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
+                evento.HoraFinal = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraFinal.Hour, evento.HoraFinal.Minute, evento.HoraFinal.Second);
+
+                
+                if (DateTime.Compare(evento.HoraInicio,evento.HoraFinal) > 0 || DateTime.Compare(evento.HoraInicio, evento.HoraFinal) == 0)
+                {
+                    //Validar que la fecha hora final sea posterior que hora inicio, ver que hago cuando es mayor
+                    ModelState.AddModelError("HoraFinal", "Hora final debe ser posterior a hora inicial");
+                    return View(evento);
+                }
+                else
+                {
+                    _context.Add(evento);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
+                }
             }
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", evento.Cedula);
             return View(evento);

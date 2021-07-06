@@ -32,22 +32,28 @@ namespace PerroAventurero.Models
 
 
         [Required(ErrorMessage = "La fecha del evento es requerida")]
+        [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
 
 
         [Required(ErrorMessage = "El precio de las entradas generales del evento es requerido")]
+        [Range(1, int.MaxValue, ErrorMessage ="El precio de las entradas generales debe ser positivo")]
         public decimal PrecioGeneral { get; set; }
 
         [Required(ErrorMessage = "El precio de las entradas de niños del evento es requerido")]
+        [Range(1, int.MaxValue, ErrorMessage = "El precio de las entradas de niños debe ser positivo")]
         public decimal PrecioNinno { get; set; }
 
         [Required(ErrorMessage = "La cantidad del aforo del evento es requerida")]
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad de aforo debe ser un valor positivo")]
         public int CantidadAforo { get; set; }
 
         [Required(ErrorMessage = "La hora de inicio de entrada al evento es requerida")]
+        [DataType(DataType.Time)]
         public DateTime HoraInicio { get; set; }
 
         [Required(ErrorMessage = "La hora de final de entrada al evento es requerida")]
+        [DataType(DataType.Time)]
         public DateTime HoraFinal { get; set; }
 
         public bool EnvioAnuncios { get; set; }
