@@ -73,19 +73,17 @@ namespace PerroAventurero.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([Bind("UsuarioComun.CedulaCliente, UsuarioComun.Descripcion, UsuarioComun.Contrasenna, UsuarioComun.Foto")] UsuarioComun usuario, [Bind("Cliente.NombreCompleto, Cliente.FechaNacimiento, Cliente.Genero, Cliente.Telefono, Cliente.Correo")] Cliente usuarioCliente)
+        public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente)
         {
             //VALIDAR QUE LA CEDULA NO EXISTA!!
             // NOOOOOOO ME SIRVE!!!!!!!!!!!!!!!!!!!! VIENEN NULL
             if (ModelState.IsValid)
             {
                 //empresasAfiliada.Cedula = session;
-                usuario.CedulaCliente = usuarioCliente.CedulaCliente;
                 _context.Add(usuario);
-                await _context.SaveChangesAsync();
                 _context.Add(usuarioCliente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction();
+                return RedirectToAction("Index", "EmpresasAfiliadas");
             }
             return View(usuario);
         }
@@ -118,7 +116,7 @@ namespace PerroAventurero.Controllers
         public async Task<IActionResult> Login(string Correo, string Contrasenna)
         {
             var usuarioAdmin = GetMyADMINUser(Correo, Contrasenna);
-            //var usuarioComun = GetMyCOMUNUser(Correo, Contrasenna);
+            var usuarioComun = GetMyCOMUNUser(Correo, Contrasenna);
             // Todo: Check for no user with these credentials
 
             if (usuarioAdmin != null)
@@ -132,9 +130,9 @@ namespace PerroAventurero.Controllers
 
                 return RedirectToAction("Index", "EmpresasAfiliadas");
             }
-            //var normal = CreateComun(usuarioComun);
+            var normal = CreateComun(usuarioComun);
 
-            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
 
             return RedirectToAction("Create", "EmpresasAfiliadas");
         }
@@ -152,11 +150,17 @@ namespace PerroAventurero.Controllers
             return usuarioAdmin;
         }
         
-        private UsuarioComun GetMyCOMUNUser (String email, String password)
+        private Cliente_UsuarioComun GetMyCOMUNUser (String email, String password)
         {
+            Cliente_UsuarioComun ret = null;
             UsuarioComun usuarioComun = null;
-            usuarioComun = _context.UsuarioComuns.Where(u => u.Correo == email && u.Contrasenna == password).FirstOrDefault();
-            return usuarioComun;
+            Cliente cliente = null;
+            usuarioComun = _context.UsuarioComuns.Where(u => u.Contrasenna == password).FirstOrDefault();
+            cliente = _context.Clientes.Where(u => u.Correo == email).FirstOrDefault();
+
+            ret = new Cliente_UsuarioComun(usuarioComun, cliente);
+
+            return ret;
         }
 
         private ClaimsPrincipal CreatePrincipal(UsuarioAdministrador userAdmin)
@@ -174,14 +178,14 @@ namespace PerroAventurero.Controllers
             return principal;
         }
 
-        private ClaimsPrincipal CreateComun(UsuarioComun userComun)
+        private ClaimsPrincipal CreateComun(Cliente_UsuarioComun userComun)
         {
             var claims = new List<Claim>
             {
                 /*new Claim("Correo", userAdmin.Correo),
                 new Claim("Contrasenna", userAdmin.Contrasenna)*/
-                new Claim(ClaimTypes.Name, userComun.Correo),
-                new Claim("FullName", userComun.CedulaCliente),
+                new Claim(ClaimTypes.Name, userComun.UsuarioComun.CedulaCliente),
+                new Claim("FullName", userComun.Cliente.NombreCompleto),
                 new Claim(ClaimTypes.Role, "Normal"),
             };
             var principal = new ClaimsPrincipal();

@@ -49,6 +49,7 @@ namespace PerroAventurero.Models
         // GET: Reservas/Create
         public IActionResult Create()
         {
+            ViewData["Nav"] = "false";
             ViewData["CedulaCliente"] = new SelectList(_context.Clientes, "CedulaCliente", "CedulaCliente");
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
             ViewData["CodigoEvento"] = new SelectList(_context.Eventos, "CodigoEvento", "Cedula");

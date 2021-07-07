@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PerroAventurero.Models;
 using System;
@@ -14,14 +15,19 @@ namespace PerroAventurero.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly PAContext _context;
+
+        public HomeController(ILogger<HomeController> logger, PAContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ViewData["Nav"] = "true";
+            var pAContext = _context.Eventos.Include(e => e.CedulaNavigation);
+            return View(await pAContext.ToListAsync());
         }
 
         [Authorize(Roles = "Normal")]

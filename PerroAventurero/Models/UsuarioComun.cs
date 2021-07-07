@@ -18,7 +18,6 @@ namespace PerroAventurero.Models
         public byte[] Foto { get; set; }
         public short? CodigoTemporal { get; set; }
         public string Contrasenna { get; set; }
-        public string Correo { get; set; }
 
         public virtual ICollection<Afiliacion> Afiliacions { get; set; }
     }
