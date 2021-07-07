@@ -13,9 +13,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-                    <label asp-for="Cedula" class="control-label"></label>
-                    <select asp-for="Cedula" class ="form-control" asp-items="ViewBag.Cedula"></select>
-                </div>*@
+            <label asp-for="Cedula" class="control-label"></label>
+            <select asp-for="Cedula" class ="form-control" asp-items="ViewBag.Cedula"></select>
+        </div>*@
             <div class="form-group">
                 <label asp-for="NombreEvento" class="control-label">Nombre</label>
                 <input asp-for="NombreEvento" class="form-control" />
@@ -50,6 +50,11 @@
                 <label asp-for="CantidadAforo" class="control-label">Cantidad aforo</label>
                 <input asp-for="CantidadAforo" class="form-control" />
                 <span asp-validation-for="CantidadAforo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CantidadGrupos" class="control-label">Cantidad de grupos</label>
+                <input asp-for="CantidadGrupos" class="form-control" />
+                <span asp-validation-for="CantidadGrupos" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HoraInicio" class="control-label">Hora inicio</label>

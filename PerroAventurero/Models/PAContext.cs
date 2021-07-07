@@ -207,6 +207,8 @@ namespace PerroAventurero.Models
 
                 entity.Property(e => e.CantidadAforo).HasColumnName("CANTIDAD_AFORO");
 
+                entity.Property(e => e.CantidadGrupos).HasColumnName("CANTIDAD_GRUPOS");
+
                 entity.Property(e => e.Cedula)
                     .HasMaxLength(35)
                     .IsUnicode(false)

@@ -48,6 +48,10 @@ namespace PerroAventurero.Models
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad de aforo debe ser un valor positivo")]
         public int CantidadAforo { get; set; }
 
+        [Required(ErrorMessage = "La cantidad de grupos del evento es requerida")]
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad de grupos debe ser un valor positivo")]
+        public int CantidadGrupos { get; set; }
+
         [Required(ErrorMessage = "La hora de inicio de entrada al evento es requerida")]
         [DataType(DataType.Time)]
         public DateTime HoraInicio { get; set; }

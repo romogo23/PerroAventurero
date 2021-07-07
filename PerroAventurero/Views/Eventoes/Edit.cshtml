@@ -13,10 +13,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CodigoEvento" />
             @*<div class="form-group">
-                <label asp-for="Cedula" class="control-label"></label>
-                <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
-                <span asp-validation-for="Cedula" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="Cedula" class="control-label"></label>
+                    <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
+                    <span asp-validation-for="Cedula" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="NombreEvento" class="control-label">Nombre</label>
                 <input asp-for="NombreEvento" class="form-control" />
@@ -53,6 +53,11 @@
                 <span asp-validation-for="CantidadAforo" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CantidadGrupos" class="control-label">Cantidad de grupos</label>
+                <input asp-for="CantidadGrupos" class="form-control" />
+                <span asp-validation-for="CantidadGrupos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="HoraInicio" class="control-label">Hora inicio</label>
                 <input asp-for="HoraInicio" class="form-control" />
                 <span asp-validation-for="HoraInicio" class="text-danger"></span>
@@ -85,4 +90,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @Html.ValidationMessageFor(m => m.HoraFinal)
 }

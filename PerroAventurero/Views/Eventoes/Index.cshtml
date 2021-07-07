@@ -34,6 +34,9 @@
                 Cantidad de aforo
             </th>
             <th>
+                Cantidad de grupos
+            </th>
+            <th>
                 Hora inicio
             </th>
             <th>
@@ -46,8 +49,8 @@
                 Comentarios
             </th>
             @*<th>
-                Creador
-            </th>*@
+            Creador
+        </th>*@
             <th></th>
         </tr>
     </thead>
@@ -76,6 +79,9 @@
                 @Html.DisplayFor(modelItem => item.CantidadAforo)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CantidadGrupos)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.HoraInicio)
             </td>
             <td>
@@ -88,8 +94,8 @@
                 @Html.DisplayFor(modelItem => item.Comentarios)
             </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-            </td>*@
+            @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
+        </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CodigoEvento">Editar</a> |
                 <a asp-action="Details" asp-route-id="@item.CodigoEvento">Detalles</a> |

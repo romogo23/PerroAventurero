@@ -56,7 +56,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
+        public async Task<IActionResult> Create([Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
         {
 
             if (ModelState.IsValid)
@@ -105,7 +105,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
+        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo, CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
         {
             if (id != evento.CodigoEvento)
             {
@@ -114,23 +114,33 @@ namespace PerroAventurero.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                if (DateTime.Compare(evento.HoraInicio, evento.HoraFinal) > 0 || DateTime.Compare(evento.HoraInicio, evento.HoraFinal) == 0)
                 {
-                    _context.Update(evento);
-                    await _context.SaveChangesAsync();
+                    //Validar que la fecha hora final sea posterior que hora inicio, ver que hago cuando es mayor
+                    ModelState.AddModelError("HoraFinal", "Hora final debe ser posterior a hora inicial");
+                    return View(evento);
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!EventoExists(evento.CodigoEvento))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(evento);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!EventoExists(evento.CodigoEvento))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+               
             }
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", evento.Cedula);
             return View(evento);
