@@ -4,62 +4,107 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Ingresar Empresa</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreEmpresa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Logo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CedulaNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreEmpresa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-            </td>*@
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> |
-                <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
-                <a asp-action="Delete" asp-route-id="@item.CodigoEmpresa">Eliminar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <h4>Lista de empresas</h4>
+    </div>
+    <div class="form-group col-md-6">
+        <p>
+            <a asp-action="Create">+Nueva Empresa</a>
+        </p>
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-md-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Logo)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach (var img in @ViewBag.List)
+                        {
+                            <img src="@Url.Content(img)" alt="tbd" width="100" height="100" />
+                            <hr />
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group col-sm-auto">
+        <table class="table">
+            <thead>
+                <tr>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Logo)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.NombreEmpresa)
+                       
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Correo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Categoria)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Telefono)
+                        </th>*@
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.CedulaNavigation)
+                        </th>*@
+                    @*<th></th>*@
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <!--<td>-->
+                        @*<a href="" target="_blank"><img src="@ViewBag.Image" width="100" height="100" alt="Logo" /></a>*@
+                        <!--</td>-->
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreEmpresa)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Correo)
+                            </td>*@
+
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Categoria)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Telefono)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
+                            </td>*@
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
+                            <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> |
+                            <a asp-action="Delete" asp-route-id="@item.CodigoEmpresa">Eliminar</a>
+                        </td>
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        
+    
+

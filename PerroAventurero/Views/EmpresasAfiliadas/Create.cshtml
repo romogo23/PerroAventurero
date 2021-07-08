@@ -4,55 +4,88 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Ingresar</h1>
 
-<h4>Empresa</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="m-0 row justify-content-md-center">
+    <h4>Formulario de ingreso de empresa:</h4>
+</div>
+    <hr />
+    <div class="m-0 row justify-content-md-center">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
                 <label asp-for="Cedula" class="control-label"></label>
                 <select asp-for="Cedula" class ="form-control" asp-items="ViewBag.Cedula"></select>
             </div>*@
+
+
+            <div class="form-control-file">
+                <label>Logo de empresa:</label>
+                <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                <img id="output" width="200" height="200" />
+                <script>
+                    var loadFile = function (event) {
+                        var output = document.getElementById('output');
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                        output.onload = function () {
+                            URL.revokeObjectURL(output.src) // free memory
+                        }
+                    };
+                </script>
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <hr />
             <div class="form-group">
-                <label asp-for="NombreEmpresa" class="control-label"></label>
+                <label>Nombre de empresa:</label>
                 <input asp-for="NombreEmpresa" class="form-control" />
                 <span asp-validation-for="NombreEmpresa" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Categoria" class="control-label"></label>
+                <label>Categoría de empresa:</label>
                 <input asp-for="Categoria" class="form-control" />
                 @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
+            <div>
+                <label>Contacto de empresa:</label>
+                @*Si dice contactos, deberiamos dejar que la persona agregue varios telefonos a las empresas?*@
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Teléfono:</label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Correo electrónico:</label>
+                        <input asp-for="Correo" class="form-control" type="email" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+
+                </div>
             </div>
+
+            @*<div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>*@
+
+
+
             <div class="form-group">
-                <input type="submit" value="Ingresar" class="btn btn-primary" />
+                <input type="submit" value="Guardar empresa" class="btn btn-dark" />
             </div>
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+
+
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
