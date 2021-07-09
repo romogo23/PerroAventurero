@@ -24,7 +24,10 @@ namespace PerroAventurero.Controllers
         public async Task<IActionResult> Index()
         {
             var pAContext = _context.Afiliacions.Include(a => a.CedulaNavigation);
-            ViewBag.Image = ViewImage(pAContext.ToList()[0].ComprobantePago);
+            if (pAContext.ToList().Count > 1)
+            {
+                ViewBag.Image = ViewImage(pAContext.ToList()[0].ComprobantePago);
+            }
             return View(await pAContext.ToListAsync());
         }
 
