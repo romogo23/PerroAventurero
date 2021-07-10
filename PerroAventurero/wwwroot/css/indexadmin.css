@@ -1,0 +1,9 @@
+﻿body {
+   color : blueviolet;
+}
+
+.prueba1 {
+    line-height: 25px;
+    min-height: 100px;
+    height: 100px;
+}

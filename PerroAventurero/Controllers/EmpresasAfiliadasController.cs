@@ -21,7 +21,9 @@ namespace PerroAventurero.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Administrator")]
+      
+
+        //[Authorize(Roles = "Administrator")]
         // GET: EmpresasAfiliadas
         public async Task<IActionResult> Index()
         {

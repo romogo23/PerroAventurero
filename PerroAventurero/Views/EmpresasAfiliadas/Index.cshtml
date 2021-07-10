@@ -1,25 +1,37 @@
 ﻿@model IEnumerable<PerroAventurero.Models.EmpresasAfiliada>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/indexUser.css" />
+}
+
 @{
     ViewData["Title"] = "Index";
 }
 
 
 
+<div class="header">
+    <div class="w-container">
+        <h1 class="main-heading">AVENTURAS CON DESCUENTO</h1>
+        <div class="divider"></div>
+        @*<div class="main-subtitle">&quot;PERRO AVENTURERO...compartiendo  una vida de aventuras con nuestros mejores amigos!&quot;</div>*@
+    </div>
+</div>
+
 <div class="form-row">
     <div class="form-group col-md-6">
-        <h4>Lista de empresas</h4>
+        <h4 class="heading-13">Lista de empresas</h4>
     </div>
     <div class="form-group col-md-6">
         <p>
-            <a asp-action="Create">+Nueva Empresa</a>
+            <a class="heading-13" asp-action="Create">+Nueva Empresa</a>
         </p>
     </div>
 </div>
 <div class="form-row">
     <div class="form-group col-md-3">
-        <table class="table">
-            <thead>
+        <table class="table-borderless">
+            <thead class="table-borderless">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Logo)
@@ -41,15 +53,15 @@
     </div>
 
     <div class="form-group col-sm-auto">
-        <table class="table">
-            <thead>
+        <table class="table-borderless">
+            <thead class="table-borderless">
                 <tr>
                     @*<th>
                             @Html.DisplayNameFor(model => model.Logo)
                         </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.NombreEmpresa)
-                       
+
                     </th>
                     @*<th>
                             @Html.DisplayNameFor(model => model.Correo)
@@ -70,7 +82,7 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr class="prueba1" style="height: 130px;">
                         <!--<td>-->
                         @*<a href="" target="_blank"><img src="@ViewBag.Image" width="100" height="100" alt="Logo" /></a>*@
                         <!--</td>-->
@@ -93,7 +105,11 @@
                         <td>
                             <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
                             <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> |
-                            <a asp-action="Delete" asp-route-id="@item.CodigoEmpresa">Eliminar</a>
+                            <a href="#" id="btnShowModal">Eliminar</a>
+
+
+
+
                         </td>
 
                     </tr>
@@ -105,6 +121,89 @@
     </div>
 </div>
 
-        
-    
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+
+
+    .button4 {
+        border-radius: 12px;
+    }
+</style>
+<div>
+
+    <fieldset>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+
+
+                    <div class="modal fade" tabindex="-1" id="modalDelete"
+                         data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">¿Está seguro que desea eliminar la empresa seleccionada?</h5>
+                                    @*<button type="button" class="close" data-dismiss="modal">
+                                            ×
+                                        </button>*@
+
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <form asp-action="Delete">
+
+                                        @*<input type="hidden" asp-for="@item.CodigoEmpresa" />*@
+                                        <input type="submit" value="Delete" class="btn btn-danger" />
+                                    </form>
+                                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#modalDelete").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#modalDelete").modal('hide');
+        });
+    });
+</script>
+
+@*<button id="btnShowModal" type="button"
+            class="btn btn-sm btn-default pull-left col-lg-11 button button4">
+        Eliminar
+    </button>*@
+
 
