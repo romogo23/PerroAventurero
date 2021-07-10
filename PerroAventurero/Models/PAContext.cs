@@ -41,7 +41,7 @@ namespace PerroAventurero.Models
 
             modelBuilder.Entity<Acompannante>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("ACOMPANNANTE");
 
