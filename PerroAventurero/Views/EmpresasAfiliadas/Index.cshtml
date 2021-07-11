@@ -102,15 +102,14 @@
                         @*<td>
                                 @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
                             </td>*@
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
-                            <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> |
-                            <a href="#" id="btnShowModal">Eliminar</a>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
+                        <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> 
 
-
-
-
-                        </td>
+                        <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
+                            <input type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar"/>
+                        </form>
+                    </td>
 
                     </tr>
                 }
