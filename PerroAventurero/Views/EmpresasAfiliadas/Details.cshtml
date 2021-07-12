@@ -1,58 +1,27 @@
 ﻿@model PerroAventurero.Models.EmpresasAfiliada
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/indexUser.css" />
+}
+
 @{
     ViewData["Title"] = "Details";
 }
 
+
 <div class="m-0 row justify-content-md-center">
-    <h4>Detalles de empresa</h4>
+    <div class="card border-dark mb-5" style="width: 25rem;">
+        <div class="card-header text-center">Detalles de empresa</div>
+        <img class="card-img-top" src="@ViewBag.Image" alt="Logo" />
+        <div class="card-body text-dark text-center">
+            <h5 class="card-title">@Html.DisplayFor(model => model.NombreEmpresa)</h5>
+            <p class="card-text">Correo: @Html.DisplayFor(model => model.Correo)</p>
+            <p class="card-text">Categoria: @Html.DisplayFor(model => model.Categoria)</p>
+            <p class="card-text">Teléfono: @Html.DisplayFor(model => model.Telefono)</p>
+            <hr />
+            <a class="button-afiliacion w-button" asp-action="Edit" asp-route-id="@Model.CodigoEmpresa">Modificar</a> 
+            <a class="button-afiliacion w-button" asp-action="Index">Volver</a>
+        </div>
+    </div>
 </div>
-<hr />
-<div class="m-0 row justify-content-md-center">
-    <dl class="m-0 row justify-content-md-center">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreEmpresa)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NombreEmpresa)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Correo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Correo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Logo)
-        </dt>
-        <dd class="col-sm-10">
-            <a href="" target="_blank"><img src="@ViewBag.Image" width="200" height="200" alt="Logo" /></a>
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefono)
-        </dd>
-        @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CedulaNavigation)
-        </dt>*@
-        @*<dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CedulaNavigation.Cedula)
-        </dd>*@
-    </dl>
-     </div>
-<div>
-    
-    
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.CodigoEmpresa">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
