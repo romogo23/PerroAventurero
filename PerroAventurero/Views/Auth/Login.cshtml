@@ -42,10 +42,10 @@
                 <form id="email-form" name="email-form" data-name="Email Form" class="form-copy" asp-action="Login">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <label for="name" class="field-label-2-copy">Ingrese su correo electrónico:</label>
-                    <input asp-for="Correo" type="email" class="text-field-31 input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
+                    <input asp-for="Correo" type="email" class="form-control input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
                     <span asp-validation-for="Correo" class="text-danger"></span>
                     <label for="name" class="field-label-2-copy">Ingrese su contraseña:</label>
-                    <input asp-for="Contrasenna" type="password" class="text-field-32 input" maxlength="11" placeholder="Contraseña..." id="pass" required=""/>
+                    <input asp-for="Contrasenna" type="password" class="form-control input" maxlength="11" placeholder="Contraseña..." id="pass" required=""/>
                     <span asp-validation-for="Contrasenna" class="text-danger"></span>
                     <a asp-controller="Auth" asp-action="ModifyPassword" class="link-6-copy">¿Olvidó su contraseña?</a>
                     <a asp-controller="Auth" asp-action="SignIn" class="link-6-copy">¿No tienes una cuenta?<br />Registrate</a>
