@@ -220,7 +220,21 @@ p {
     text-align: center;
 }
 
+.contract-section {
+    background-color: #8c8851;
+    text-align: center;
+}
+
 .about-text {
+    margin-bottom: 40px;
+    color: #f5f5f5;
+    font-size: 18px;
+    line-height: 25px;
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
+.contract-text {
     margin-bottom: 40px;
     color: #f5f5f5;
     font-size: 18px;
@@ -726,6 +740,12 @@ p {
     }
 
     .about-section {
+        padding-right: 50px;
+        padding-bottom: 30px;
+        padding-left: 50px;
+    }
+
+    .contract-section {
         padding-right: 50px;
         padding-bottom: 30px;
         padding-left: 50px;

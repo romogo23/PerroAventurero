@@ -10,156 +10,147 @@
 
 @*<h1>Ingrese sus credenciales</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SignIn">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UsuarioComun.CedulaCliente" class="control-label"></label>
-                <input name="CedulaCliente" class="form-control" />
-                <span asp-validation-for="UsuarioComun.CedulaCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.NombreCompleto" class="control-label"></label>
-                <input name="NombreCompleto" class="form-control" />
-                <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.FechaNacimiento" class="control-label"></label>
-                <input name="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="Cliente.FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Genero" class="control-label"></label>
-                <input name="Genero" class="form-control" />
-                <span asp-validation-for="Cliente.Genero" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Telefono" class="control-label"></label>
-                <input name="Telefono" class="form-control" />
-                <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioComun.Foto" class="control-label"></label>
-                <input name="Foto" class="form-control" />
-                <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioComun.Descripcion" class="control-label"></label>
-                <textarea name="Descripcion" class="form-control"></textarea>
-                <span asp-validation-for="UsuarioComun.Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Correo" class="control-label"></label>
-                <input name="Correo" class="form-control" />
-                <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioComun.Contrasenna" class="control-label"></label>
-                <input name="Contrasenna" class="form-control" />
-                <span asp-validation-for="UsuarioComun.Contrasenna" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Registrarse" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>*@
-
-
-<div class="header-copy">
-    <div class="container-5 container">
-        <div class="form-block-4 row justify-content-center">
-            <div>
-                <h3 class="heading-6-copy">Formulario de registro:</h3>
-            </div>
-            <form asp-action="SignIn" class="form-copy">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="SignIn">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="UsuarioComun.CedulaCliente" class="field-label-2-copy"></label>
-                    <input name="CedulaCliente" class="text-field-33 input"/>
+                    <label asp-for="UsuarioComun.CedulaCliente" class="control-label"></label>
+                    <input name="CedulaCliente" class="form-control" />
                     <span asp-validation-for="UsuarioComun.CedulaCliente" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Cliente.NombreCompleto" class="field-label-2-copy"></label>
-                    <input name="NombreCompleto" class="text-field-33 input" />
+                    <label asp-for="Cliente.NombreCompleto" class="control-label"></label>
+                    <input name="NombreCompleto" class="form-control" />
                     <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Cliente.FechaNacimiento" class="field-label-2-copy"></label>
-                    <input name="FechaNacimiento" class="text-field-33 input"/>
+                    <label asp-for="Cliente.FechaNacimiento" class="control-label"></label>
+                    <input name="FechaNacimiento" class="form-control" />
                     <span asp-validation-for="Cliente.FechaNacimiento" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Cliente.Genero" class="field-label-2-copy"></label>
-                    <input name="Genero" class="text-field-33 input" />
+                    <label asp-for="Cliente.Genero" class="control-label"></label>
+                    <input name="Genero" class="form-control" />
                     <span asp-validation-for="Cliente.Genero" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Cliente.Telefono" class="field-label-2-copy"></label>
-                    <input name="Telefono" class="text-field-33 input" />
+                    <label asp-for="Cliente.Telefono" class="control-label"></label>
+                    <input name="Telefono" class="form-control" />
                     <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="UsuarioComun.Foto"class="field-label-2-copy"></label>
-                    <input name="Foto" class="text-field-33 input" />
+                    <label asp-for="UsuarioComun.Foto" class="control-label"></label>
+                    <input name="Foto" class="form-control" />
                     <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="UsuarioComun.Descripcion" class="field-label-2-copy"></label>
-                    <textarea name="Descripcion" class="text-field-33 input"></textarea>
+                    <label asp-for="UsuarioComun.Descripcion" class="control-label"></label>
+                    <textarea name="Descripcion" class="form-control"></textarea>
                     <span asp-validation-for="UsuarioComun.Descripcion" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Cliente.Correo" class="field-label-2-copy"></label>
-                    <input name="Correo" class="text-field-33 input"/>
+                    <label asp-for="Cliente.Correo" class="control-label"></label>
+                    <input name="Correo" class="form-control" />
                     <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="UsuarioComun.Contrasenna" class="field-label-2-copy"></label>
-                    <input name="Contrasenna" class="text-field-33 input" />
+                    <label asp-for="UsuarioComun.Contrasenna" class="control-label"></label>
+                    <input name="Contrasenna" class="form-control" />
                     <span asp-validation-for="UsuarioComun.Contrasenna" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Registrarse" class="btn btn-primary" />
                 </div>
             </form>
-            @*<form id="email-form" name="email-form" data-name="Email Form" class="form-copy">
-                <label for="name-3" class="field-label-2-copy">Cédula:</label>
-                <input type="text" class="text-field-33 input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Cedula..." id="name-2" required="">
-                <label for="name-3" class="field-label-2-copy">Nombre completo:</label>
-                <input type="text" class="text-field-34 w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Nombre..." id="name-2">
-                <label for="name-3" class="field-label-2-copy">Teléfono:</label>
-                <input type="email" class="text-field-35 w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Correo electrónico..." id="name-2">
-                <label for="name-3" class="field-label-2-copy">Descripción personal:</label>
-                <textarea placeholder="Descripción..." maxlength="5000" id="field" name="field" data-name="Field" class="textarea-5 w-input"></textarea>
-            <div class="w-row">
-                <div class="w-col w-col-6">
-                <label for="name-3" class="field-label-2-copy">Edad:</label>
-                <input type="number" class="text-field-36 w-input" maxlength="256" name="field-2" data-name="Field 2" placeholder="Edad..." id="field-2" required="">
+        </div>
+    </div>*@
+
+
+<div class="header-copy">
+    <div class="container-5 container">
+        <div class="form-block-4 row justify-content-center">
+            <div class="col-6">
+                <div>
+                    <h3 class="heading-6-copy">Formulario de registro:</h3>
+                    <br />
+                </div>
+                <form asp-action="SignIn" class="form-copy" id="email-form" name="email-form" data-name="Email Form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Cédula:</label>
+                        <br />
+                        <input name="CedulaCliente" type="number" class="text-field-33 input" maxlength="320" placeholder="Cédula..." id="email" required="" />
+                        <span asp-validation-for="UsuarioComun.CedulaCliente" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Nombre Completo</label>
+                        <input name="NombreCompleto" type="text" class="text-field-33 input" maxlength="320" placeholder="Nombre..." id="email" required="" />
+                        <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="field-label-2-copy">FechaNacimiento</label>
+                                <br />
+                                <input name="FechaNacimiento" type="date" class="text-field-34 input" maxlength="320" placeholder="Fecha..." id="email" required="" />
+                                <span asp-validation-for="Cliente.FechaNacimiento" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="field-label-2-copy">Genero</label>
+                                <br />
+                                <input name="Genero" type="text" class="text-field-35 input" maxlength="320" placeholder="Género..." id="email" required="" />
+                                <span asp-validation-for="Cliente.Genero" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Telefono</label>
+                        <br />
+                        <input name="Telefono" type="number" class="text-field-33 input" maxlength="320" placeholder="Teléfono..." id="email" required="" />
+                        <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Foto</label>
+                        <br />
+                        <input name="Foto" type="text" class="text-field-33 input" maxlength="320" placeholder="Foto..." id="email" required="" />
+                        <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Descripcion</label>
+                        <br />
+                        <textarea name="Descripcion" class="text-field-33 input" placeholder="Descripción..." required=""></textarea>
+                        <span asp-validation-for="UsuarioComun.Descripcion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Correo</label>
+                        <br />
+                        <input name="Correo" type="email" class="text-field-33 input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
+                        <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="field-label-2-copy">Contrasenna</label>
+                        <br />
+                        <input name="Contrasenna" type="password" class="text-field-33 input" maxlength="320" placeholder="Contraseña..." id="email" required="" />
+                        <span asp-validation-for="UsuarioComun.Contrasenna" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Registrarse" class="button-4-copy button" />
+                    </div>
+                </form>
             </div>
-                <div class="w-col w-col-6">
-                    <label for="name-3" class="field-label-2-copy">Genero:</label><select id="field-3" name="field-3" class="select-field-5 w-select">
-                        <option value="" Genero...></option>
-                        <option value="First" Femenino></option>
-                        <option value="Second" Masculino></option>
-                        <option value="Third" Otro></option>
-                    </select>
-                </div>
-            </div><label for="name-3" class="field-label-2-copy">Correo electrónico:</label><input type="email" class="text-field-37 w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Correo electrónico..." id="name-2"><label for="name-3" class="field-label-2-copy">Contraseña:</label><input type="text" class="text-field-38 w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Contraseña..." id="name-2">
-            <div class="columns-2-copy w-row">
-                <div class="w-col w-col-6">
-                    <label for="name-3" class="field-label-2">Foto de perfil (opcional):</label><select id="field-3" name="field-3" class="select-field-6 w-select">
-                        <option value="">Seleccionar archivo...</option>
-                        <option value="First">First Choice</option>
-                        <option value="Second">Second Choice</option>
-                        <option value="Third">Third Choice</option>
-                    </select>
-                </div>
-                <div class="column-4 w-col w-col-6"><img src="images/1.png" loading="lazy" alt="" class="image-3"></div>
-            </div><input type="submit" value="Registrarse" data-wait="Please wait..." class="button-4-copy w-button">
-        </form>*@
         </div>
     </div>
 </div>
 
+<script>
+    $("textarea").each(function () {
+        this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+    }).on("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -17,6 +17,10 @@ namespace PerroAventurero.Controllers
     {
         private readonly PAContext _context;
 
+        private static string emailModify;
+
+        private static string codeMod;
+
         public AuthController(PAContext context)
         {
             _context = context;
@@ -42,6 +46,40 @@ namespace PerroAventurero.Controllers
             return View();
         }
 
+        public ActionResult ModifyPassword_2()
+        {
+            ViewData["Email"] = emailModify;
+            return View();
+        }
+
+        public ActionResult ModifyPassword_3()
+        {
+            return View();
+        }
+
+        public ActionResult ModifyPassword_4()
+        {
+            ViewData["Code"] = codeMod;
+            return View();
+        }
+
+        public ActionResult ModifyPass(string NewPassword)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+
+        public ActionResult ValidateCode(string Code)
+        {
+            codeMod = Code;
+            return RedirectToAction("ModifyPassword_4", "Auth");
+        }
+
+        public ActionResult ValidateEmail(string correo)
+        {
+            emailModify = correo;
+            return RedirectToAction("ModifyPassword_2", "Auth");
+        }
+
         [HttpPost]
         public ActionResult SendCode(string Correo)
         {
@@ -63,7 +101,7 @@ namespace PerroAventurero.Controllers
                 //Attachment data = new Attachment(textBox3.Text);
                 //msg.Attachments.Add(data);
                 client.Send(msg);
-                return RedirectToAction("ModifyPassword", "Auth");
+                return RedirectToAction("ModifyPassword_3", "Auth");
             }
             catch (Exception ex)
             {

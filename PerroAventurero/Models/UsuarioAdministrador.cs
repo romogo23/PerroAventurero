@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -20,6 +21,9 @@ namespace PerroAventurero.Models
         public DateTime FechaNacimiento { get; set; }
         public string Genero { get; set; }
         public int? Telefono { get; set; }
+        
+        [Required(ErrorMessage = "Se requiere un correo de empresa")]
+        [RegularExpression(@"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "El correo no corresponde a uno válido")]
         public string Correo { get; set; }
         public string Descripcion { get; set; }
         public DateTime? FechaCambioC { get; set; }

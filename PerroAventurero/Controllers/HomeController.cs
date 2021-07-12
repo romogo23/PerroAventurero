@@ -30,8 +30,8 @@ namespace PerroAventurero.Controllers
             return View(await pAContext.ToListAsync());
         }
 
-        [Authorize(Roles = "Normal")]
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult Aventuras()
         {
             return View();
         }

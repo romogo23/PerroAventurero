@@ -1,0 +1,88 @@
+﻿@section Styles{
+    <link rel="stylesheet" href="~/css/indexUser.css" />
+}
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="header">
+    <div class="w-container">
+        <h1 class="main-heading">perro aventurero</h1>
+        <div class="divider"></div>
+        <div class="main-subtitle">&quot;PERRO AVENTURERO...compartiendo  una vida de aventuras con nuestros mejores amigos!&quot;</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <div id="aventurasContrato" class="about-section section">
+            <h2 class="heading-2">Programa Aventuras con Descuentos</h2>
+            <br />
+            <h4 class="heading-2">Conoce nuestros términos y condiciones:</h4>
+            <div class="divider grey"></div>
+            <div class="row justify-content-center">
+                <div class="container">
+                    <p class="about-text">
+                        En Perro Aventurero fomentamos un estilo de vida amigable y responsable con nuestras mascotas, estrechando el vinculo humano-animal
+                        con AVENTURAS donde nuestros perros juegan, corren, olfatean, nadan, en fin...donde ellos son REALMENTE PERROS!
+                        <br />
+                        <br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="aventuras" class="section grey">
+            <div id="aventuras" class="container">
+                <h2 class="heading-14">Aventuras con descuento:</h2>
+                <div class="divider grey"></div>
+                <div class="row justify-content-center">
+                    <form asp-controller="AfiliacionesUs" asp-action="Create">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-control-file">
+                                    <h5>Adjunte el comprobante de pago: </h5>
+                                    <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                                    <img id="output" width="200" height="200" />
+                                    <script>
+                                        var loadFile = function (event) {
+                                            var output = document.getElementById('output');
+                                            output.src = URL.createObjectURL(event.target.files[0]);
+                                            output.onload = function () {
+                                                URL.revokeObjectURL(output.src) // free memory
+                                            }
+                                        };
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <br />
+                                <br />
+                                <br />
+                                <input type="submit" class="button-reserva button" value="Solicitar Afiliación">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="container">
+        <form>
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="First name">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Last name">
+                </div>
+                <div class="col">
+                    <input type="button" class="button-afiliacion button" value="Solicitar Afiliación">
+                </div>
+            </div>
+        </form>
+    </div>*@

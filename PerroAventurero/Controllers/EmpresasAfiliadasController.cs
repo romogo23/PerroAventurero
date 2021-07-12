@@ -12,6 +12,7 @@ using PerroAventurero.Models;
 
 namespace PerroAventurero.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class EmpresasAfiliadasController : Controller
     {
         private readonly PAContext _context;
