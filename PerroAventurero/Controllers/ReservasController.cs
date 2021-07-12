@@ -51,6 +51,7 @@ namespace PerroAventurero.Models
         // GET: Reservas/Create
         public IActionResult Create(int id)
         {
+            if (id != 0) { 
             code = id;
             List<String> GroupTime = groupTime(code);
 
@@ -60,6 +61,8 @@ namespace PerroAventurero.Models
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
             ViewData["CodigoEvento"] = new SelectList(_context.Eventos, "CodigoEvento", "Cedula");
             return View();
+            }
+            return Redirect("~/Home/Index");
         }
 
         [HttpPost]
