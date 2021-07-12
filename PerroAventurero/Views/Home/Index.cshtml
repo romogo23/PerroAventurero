@@ -46,7 +46,7 @@
                             </a>
                             <div class="row">
                                 <div class="col-5">
-                                    <a asp-controller="Reservas" asp-action="Create" class="button-reserva w-button">Reservar</a>
+                                    <a asp-controller="Reservas" asp-action="Create" asp-route-id="@item.CodigoEvento" class="button-reserva w-button">Reservar</a>
                                 </div>
                                 <div class="col-7">
                                     <a class="button-comprob w-button">Enviar Comprobante</a>

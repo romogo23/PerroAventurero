@@ -53,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Grupo" class="control-label"></label>
-                <select onchange="SelectTime()" id="selectGroup" name="groupTime" class="form-control"
+                <select id="selectGroup" name="groupAndTime" class="form-control"
                         asp-items="@(new SelectList(ViewBag.GroupTimeList))">
                 </select>
                 <span asp-validation-for="Grupo" class="text-danger"></span>
@@ -89,8 +89,8 @@
                 <input class="form-control" name="files" type="file" accept="mage/png, image/jpeg" />
             </div>
             @*<div id="acompanantesContainer">
-            @Html.EditorFor(model => model.Acompannantes)
-        </div>*@
+                    @Html.EditorFor(model => model.Acompannantes)
+                </div>*@
 
 
             <div class="form-group">
@@ -109,6 +109,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @Html.ValidationMessageFor(m => m.CedulaClienteNavigation.CedulaCliente)
+    @Html.ValidationMessageFor(g => g.Grupo)
 
     @*<script type="text/javascript">
             $("#entradasGenerales").on('change', function () {

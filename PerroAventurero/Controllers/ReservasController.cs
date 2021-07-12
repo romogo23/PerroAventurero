@@ -13,7 +13,7 @@ namespace PerroAventurero.Models
     public class ReservasController : Controller
     {
         private readonly PAContext _context;
-
+        private int code;
         public ReservasController(PAContext context)
         {
             _context = context;
@@ -49,9 +49,10 @@ namespace PerroAventurero.Models
 
 
         // GET: Reservas/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            List<String> GroupTime = Both(2);
+            code = id;
+            List<String> GroupTime = groupTime(code);
 
             ViewBag.GroupTimeList = GroupTime;
             ViewData["Nav"] = "false";
@@ -75,15 +76,22 @@ namespace PerroAventurero.Models
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EntradasGenerales,EntradasNinnos,ComprobantePago,Acompannantes,CedulaClienteNavigation")] Reserva reserva, List<char> Gender, List<short> Age, IFormFile files, string groupTime)
+        public async Task<IActionResult> Create([Bind("EntradasGenerales,EntradasNinnos,ComprobantePago,Acompannantes,CedulaClienteNavigation")] Reserva reserva, List<char> Gender, List<short> Age, IFormFile files, string groupAndTime)
         {
-            reserva.CodigoEvento = 1;
-            List<String> GT = divide(groupTime);
+            Evento evento = new Evento();
+            evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
+            reserva.CodigoEvento = evento.CodigoEvento;
+
+            reserva.PrecioTotal = price(evento, Age);
+
+            List <String> GT = divide(groupAndTime);
             reserva.Grupo = short.Parse(GT[0]);
             reserva.HoraEntrada = DateTime.Parse(GT[1]);
+
             reserva.FechaReserva = DateTime.Now;
+
             reserva.CedulaCliente = reserva.CedulaClienteNavigation.CedulaCliente;
-            reserva.PrecioTotal = 3500 * (decimal)reserva.EntradasGenerales + 2599 * (decimal)reserva.EntradasNinnos;
+
             if (ModelState.IsValid)
             {
 
@@ -111,66 +119,133 @@ namespace PerroAventurero.Models
 
                     }
                 }
+                List<int> capacity = available(evento.CantidadAforo, evento.CantidadGrupos);
 
-                if (ValidateClient(reserva.CedulaCliente) == 0)
+                if (capacity[reserva.Grupo - 1] >= Age.Count() + 1)
                 {
 
-                    if (_context.Clientes.Find(reserva.CedulaCliente) == null)
+                    if (ValidateClient(reserva.CedulaCliente) == 0)
                     {
-                        _context.Add(reserva.CedulaClienteNavigation);
+
+                        if (_context.Clientes.Find(reserva.CedulaCliente) == null)
+                        {
+                            _context.Add(reserva.CedulaClienteNavigation);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        _context.Add(reserva);
                         await _context.SaveChangesAsync();
+
+                        int code = _context.Reservas.Max(item => item.CodigoReserva);
+                        for (int i = 0; i < Age.Count; i++)
+                        {
+                            Acompannante acompannante = new Acompannante();
+                            acompannante.Codigo = i;
+                            acompannante.CodigoReserva = code;
+                            acompannante.Genero = Gender[i];
+                            acompannante.Edad = Age[i];
+                            _context.Add(acompannante);
+                        }
+                        _context.SaveChanges();
+
+                        return Redirect("~/Home/Index");
                     }
-
-                    _context.Add(reserva);
-                    await _context.SaveChangesAsync();
-
-                    int code = _context.Reservas.Max(item => item.CodigoReserva);
-                    for (int i = 0; i < Age.Count; i++)
-                    {
-                        Acompannante acompannante = new Acompannante();
-                        acompannante.Codigo = i;
-                        acompannante.CodigoReserva = code;
-                        acompannante.Genero = Gender[i];
-                        acompannante.Edad = Age[i];
-                        _context.Add(acompannante);
-                    }
-                    _context.SaveChanges();
-
-                    return Redirect("~/Home/Index");
-                }
                 else
                 {
-                    ModelState.AddModelError("CedulaClienteNavigation.CedulaCliente", "Querido usuario le informamos que ya existe una reserva a su nombre");
+                    ModelState.AddModelError("CedulaClienteNavigation.CedulaCliente", "Le informamos que ya existe una reserva a su nombre");
+                    List<String> GroupTimeR = groupTime(code);
+
+                      ViewBag.GroupTimeList = GroupTimeR;
+                        return View(reserva);
+                }
+            }
+            else
+                {
+                    List<String> GroupTimeR = groupTime(code);
+
+                    ViewBag.GroupTimeList = GroupTimeR;
+                    ModelState.AddModelError("Grupo", "Le informamos que no quedan entradas disponibles");
                     return View(reserva);
+
                 }
             }
             ViewData["CedulaCliente"] = new SelectList(_context.Clientes, "CedulaCliente", "CedulaCliente", reserva.CedulaCliente);
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", reserva.Cedula);
             ViewData["CodigoEvento"] = new SelectList(_context.Eventos, "CodigoEvento", "Cedula", reserva.CodigoEvento);
+            List<String> GroupTime = groupTime(code);
+            ViewBag.GroupTimeList = GroupTime;
             return View(reserva);
         }
 
 
 
+        private decimal price(Evento evento, List<short> reserva) { 
+            decimal precioTotal = evento.PrecioGeneral;
 
-
-        private List<int> AmountGroups(int code)
-        {
-            Evento evento = new Evento();
-            evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
-            List<int> groupList = new List<int>();
-            for (int i = 1; i <= evento.CantidadGrupos; i++)
-            {
-                groupList.Add(i);
+            for (int i = 0; i < reserva.Count; i++) {
+                if (reserva[i] > 12)
+                {
+                    precioTotal += evento.PrecioGeneral;
+                }
+                else {
+                    precioTotal += evento.PrecioNinno;
+                }
             }
-            return groupList;
+            return precioTotal;
         }
 
-        private List<String> Entry(int groupList,int code)
+        private List<int> AmountGroup(int totalCapacity, int groups)
         {
-            Evento evento = new Evento();
-            evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
+            int capacity = totalCapacity / groups;
+
+            List<int> GroupsCapacity = new List<int>();
+
+            for (int i = 1; i <= groups; i++)
+            {
+                GroupsCapacity.Add(capacity);
+
+            }
+
+            int validate = totalCapacity - (capacity * groups);
+
+            if (validate > 1)
+            {
+                for (int i = 0; i < validate; i++)
+                {
+                    GroupsCapacity[i] = GroupsCapacity[i] + 1;
+                }
+            } else {
+                for (int i = 0; i < -validate; i++)
+                {
+                    GroupsCapacity[i] = GroupsCapacity[i] + 1;
+                }
+
+            }
+
+            return GroupsCapacity;
+        }
+
+
+
+        private List<int> available(int totalCapacity, int groups)
+        {
+
+            List<int> capacity = AmountGroup(totalCapacity, groups);
+
+            for (int i = 1; i <= groups; i++)
+            {
+                int num = _context.Reservas.Where(reserva => reserva.Grupo == i).Count();
+                capacity[i-1] = capacity[i-1] - num;
+
+            }
+
+            return capacity;
+        }
+
+        private List<String> Entry(Evento evento)
+        {
             List<String> entryList = new List<String>();
+            int groupList = evento.CantidadGrupos;
             DateTime initTime = evento.HoraInicio;
             DateTime finalTime = evento.HoraFinal;
             TimeSpan diference = finalTime.Subtract(initTime);
@@ -185,17 +260,25 @@ namespace PerroAventurero.Models
             return entryList;
         }
 
-        private List<String> Both(int code)
+        private List<String> groupTime(int code)
         {
-            int num = AmountGroups(code).Count;
-            List<String> time = Entry(num , 2);
+            Evento evento = new Evento();
+            evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
+
+            int num = evento.CantidadGrupos;
+
+            List<int> capacity = available(evento.CantidadAforo, num);
+
+            List<String> time = Entry(evento);
+
             List<String> gT = new List<String>();
 
             for (int i = 1; i <= num; i++)
             {
-
-                gT.Add("Grupo " + i + " entrada "+ time[i-1]);
-                
+                if (capacity[i-1] > 0)
+                {
+                    gT.Add("Grupo " + i + " Entrada " + time[i - 1] + " disponibles " + capacity[i-1]);
+                }
             }
             return gT;
 
@@ -203,13 +286,17 @@ namespace PerroAventurero.Models
 
         private List<String> divide(string grouptime)
         {
-            char[] separators = new char[] {' '};
+            if (grouptime != null)
+            {
+                char[] separators = new char[] { ' ' };
 
-            string[] subs = grouptime.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            List<string> GroupAndTime = new List<string>();
-            GroupAndTime.Add(subs[1]);
-            GroupAndTime.Add(subs[3]);
-            return GroupAndTime;
+                string[] subs = grouptime.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                List<string> GroupAndTime = new List<string>();
+                GroupAndTime.Add(subs[1]);
+                GroupAndTime.Add(subs[3]);
+                return GroupAndTime;
+            }
+            return null;
 
         }
 
