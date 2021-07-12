@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - PerroAventurero</title>
     @RenderSection("Styles", false)
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/navUser.css" />
 </head>
 <body>
@@ -42,9 +41,9 @@
         </nav>
     </header>
 
-        <main role="main" class="pb-3">
+    <main role="main" class="">
             @RenderBody()
-        </main>
+    </main>
 
     <footer id="footer" class="section-f footer">
         <div class="container-f">
@@ -52,6 +51,7 @@
             <p class="footer-text">2021 - Perro Aventurero</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
