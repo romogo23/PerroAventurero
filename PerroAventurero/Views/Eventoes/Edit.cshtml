@@ -4,19 +4,20 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Formulario de modificación de Evento:</h1>
-
+<div class="m-0 row justify-content-md-center">
+    <h4>Formulario de modificación de Evento:</h4>
+</div>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="m-0 row justify-content-md-center">
+
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CodigoEvento" />
             @*<div class="form-group">
-                    <label asp-for="Cedula" class="control-label"></label>
-                    <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
-                    <span asp-validation-for="Cedula" class="text-danger"></span>
-                </div>*@
+            <label asp-for="Cedula" class="control-label"></label>
+            <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
+            <span asp-validation-for="Cedula" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="NombreEvento" class="control-label">Nombre</label>
                 <input asp-for="NombreEvento" class="form-control" />
@@ -77,16 +78,20 @@
                 <input asp-for="Comentarios" class="form-control" />
                 <span asp-validation-for="Comentarios" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <input type="submit" value="Guardar Evento" class="btn btn-dark" />
             </div>
+
         </form>
-    </div>
+
 </div>
 
 <div>
     <a asp-action="Index">Volver a lista de eventos</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

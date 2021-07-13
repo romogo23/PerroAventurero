@@ -12,197 +12,200 @@
 
 <div class="header">
     <div class="w-container">
-        <h1 class="main-heading">AVENTURAS CON DESCUENTO</h1>
+        <h1 class="main-heading">Empresas Afiliadas</h1>
         <div class="divider"></div>
         @*<div class="main-subtitle">&quot;PERRO AVENTURERO...compartiendo  una vida de aventuras con nuestros mejores amigos!&quot;</div>*@
     </div>
 </div>
 
-<div class="form-row border-bottom ">
-    <div class="form-group col-md-6 justify-content-center">
-        <h4 class="h4">Lista de empresas:</h4>
+<div class="section-event container">
+    <br />
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h1>Lista de empresas:</h1>
+            </div>
+            <div class="col-2 justify-content-right">
+                <a asp-action="Create"><h5>+Nueva Empresa</h5></a>
+            </div>
+        </div>
     </div>
-    <div class="form-group col-md-6 justify-content-center">
-        <p>
-            <a class="h6" asp-action="Create">+Nueva Empresa</a>
-        </p>
-    </div>
-</div>
-<div class="m-0 row justify-content-md-center">
-    <div class="form-group col-md-3">
-        <table class="table-borderless">
-            <thead class="table-borderless">
-                <tr>
-                    <th>
-                        <p class="paragraph">@Html.DisplayNameFor(model => model.Logo)</p> 
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        @foreach (var img in @ViewBag.List)
-                        {
-                            <img src="@Url.Content(img)" alt="tbd" width="100" height="100" />
-                            <hr />
-                        }
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="form-group col-sm-auto">
-        <table class="table-borderless">
-            <thead class="table-borderless">
-                <tr>
-                    @*<th>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <table class="table-borderless">
+                <thead class="table-borderless">
+                    <tr>
+                        <th>
                             @Html.DisplayNameFor(model => model.Logo)
-                        </th>*@
-                    <th>
-                        <h6 class="h6"> @Html.DisplayNameFor(model => model.NombreEmpresa)</h6>
-
-                    </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.Correo)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Categoria)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Telefono)
-                        </th>*@
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.CedulaNavigation)
-                        </th>*@
-                    @*<th></th>*@
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var item in Model)
-                {
-                    <tr class="prueba1" style="height: 130px;">
-                        <!--<td>-->
-                        @*<a href="" target="_blank"><img src="@ViewBag.Image" width="100" height="100" alt="Logo" /></a>*@
-                        <!--</td>-->
-                        <td>
-                            <p class="paragraph">@Html.DisplayFor(modelItem => item.NombreEmpresa)</p> 
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.Correo)
-                            </td>*@
-
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.Categoria)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Telefono)
-                            </td>*@
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-                            </td>*@
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
-                        <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a> 
-
-                        <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
-                            <input type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar"/>
-                        </form>
-                    </td>
-
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @foreach (var img in @ViewBag.List)
+                            {
+                                <img src="@Url.Content(img)" alt="tbd" width="100" height="100" />
+                                <hr />
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group col-sm-auto">
+            <table class="table-borderless">
+                <thead class="table-borderless">
+                    <tr>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.Logo)
+                            </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.NombreEmpresa)
+
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.Correo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Categoria)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Telefono)
+                            </th>*@
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.CedulaNavigation)
+                            </th>*@
+                        @*<th></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="prueba1" style="height: 130px;">
+                            <!--<td>-->
+                            @*<a href="" target="_blank"><img src="@ViewBag.Image" width="100" height="100" alt="Logo" /></a>*@
+                            <!--</td>-->
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreEmpresa)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Correo)
+                                </td>*@
+
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Categoria)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Telefono)
+                                </td>*@
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
+                                </td>*@
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.CodigoEmpresa">Detalles</a> |
+                                <a asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Modificar</a>
+
+                                <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
+                                    <input type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
+                                </form>
+                            </td>
+
+                        </tr>
+                    }
 
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<!--<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-    }
-
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
 
 
-    .button4 {
-        border-radius: 12px;
-    }
-</style>
-<div>
 
-    <fieldset>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
+        .button4 {
+            border-radius: 12px;
+        }
+    </style>
+    <div>
+
+        <fieldset>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
 
 
-                    <div class="modal fade" tabindex="-1" id="modalDelete"
-                         data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">¿Está seguro que desea eliminar la empresa seleccionada?</h5>-->
-                                    @*<button type="button" class="close" data-dismiss="modal">
-                                            ×
-                                        </button>*@
+                        <div class="modal fade" tabindex="-1" id="modalDelete"
+                             data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">¿Está seguro que desea eliminar la empresa seleccionada?</h5>
+                                        @*<button type="button" class="close" data-dismiss="modal">
+                                                ×
+                                            </button>*@
 
-                                <!--</div>
-                                <div class="modal-body">
+                                    </div>
+                                    <div class="modal-body">
 
-                                </div>
-                                <div class="modal-footer">
-                                    <form asp-action="Delete">-->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form asp-action="Delete">
 
-                                        @*<input type="hidden" asp-for="@item.CodigoEmpresa" />*@
-                                        <!--<input type="submit" value="Delete" class="btn btn-danger" />
-                                    </form>
-                                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
-                                        Cancelar
-                                    </button>
+                                            @*<input type="hidden" asp-for="@item.CodigoEmpresa" />*@
+                                            <input type="submit" value="Delete" class="btn btn-danger" />
+                                        </form>
+                                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                                            Cancelar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </fieldset>
-</div>
+        </fieldset>
+    </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-</script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    </script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnShowModal").click(function () {
-            $("#modalDelete").modal('show');
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnShowModal").click(function () {
+                $("#modalDelete").modal('show');
+            });
+
+            $("#btnHideModal").click(function () {
+                $("#modalDelete").modal('hide');
+            });
         });
+    </script>
 
-        $("#btnHideModal").click(function () {
-            $("#modalDelete").modal('hide');
-        });
-    });
-</script>-->
-
-@*<button id="btnShowModal" type="button"
-            class="btn btn-sm btn-default pull-left col-lg-11 button button4">
-        Eliminar
-    </button>*@
+    @*<button id="btnShowModal" type="button"
+                class="btn btn-sm btn-default pull-left col-lg-11 button button4">
+            Eliminar
+        </button>*@
 
 
