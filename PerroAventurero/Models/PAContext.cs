@@ -96,6 +96,8 @@ namespace PerroAventurero.Models
                     .HasColumnType("image")
                     .HasColumnName("COMPROBANTE_PAGO");
 
+                entity.Property(e => e.EsAceptada).HasColumnName("ES_ACEPTADA");
+
                 entity.Property(e => e.Fecha)
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA");

@@ -25,6 +25,8 @@ namespace PerroAventurero.Models
         [Display(Name = "Comprobante de pago")]
         public byte[] ComprobantePago { get; set; }
 
+        public bool? EsAceptada { get; set; }
+
         public virtual UsuarioComun CedulaClienteNavigation { get; set; }
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
     }
