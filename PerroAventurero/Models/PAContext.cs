@@ -285,7 +285,6 @@ namespace PerroAventurero.Models
                 entity.Property(e => e.Asistencia).HasColumnName("ASISTENCIA");
 
                 entity.Property(e => e.Cedula)
-                    .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("CEDULA");

@@ -49,7 +49,7 @@
                                     <a asp-controller="Reservas" asp-action="Create" asp-route-id="@item.CodigoEvento" class="button-reserva w-button">Reservar</a>
                                 </div>
                                 <div class="col-7">
-                                    <a class="button-comprob w-button">Enviar Comprobante</a>
+                                    <a asp-controller="ComprobantePagoReserva" asp-action="Index" asp-route-id="@item.CodigoEvento"  class="button-comprob w-button">Enviar Comprobante</a>
                                 </div>
                             </div>
                         </div>

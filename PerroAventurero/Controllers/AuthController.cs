@@ -117,13 +117,27 @@ namespace PerroAventurero.Controllers
             // NOOOOOOO ME SIRVE!!!!!!!!!!!!!!!!!!!! VIENEN NULL
             if (ModelState.IsValid)
             {
-                //empresasAfiliada.Cedula = session;
-                _context.Add(usuario);
-                _context.Add(usuarioCliente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "EmpresasAfiliadas");
+                if (ValidateClient(usuario.CedulaCliente) == 0)
+                {
+                    //empresasAfiliada.Cedula = session;
+                    _context.Add(usuarioCliente);
+
+                }
+                    _context.Add(usuario);
+                    
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "EmpresasAfiliadas");
+                
             }
             return View(usuario);
+        }
+
+        private int ValidateClient(String id)
+        {
+            
+            int cliente = _context.Clientes.Where(c => c.CedulaCliente == id).Count();
+            return cliente;
+
         }
 
         /*[HttpPost]

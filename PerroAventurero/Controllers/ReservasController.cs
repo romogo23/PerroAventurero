@@ -13,7 +13,7 @@ namespace PerroAventurero.Models
     public class ReservasController : Controller
     {
         private readonly PAContext _context;
-        private int code;
+        private static int code;
         public ReservasController(PAContext context)
         {
             _context = context;
@@ -21,6 +21,13 @@ namespace PerroAventurero.Models
 
         // GET: Reservas
         public async Task<IActionResult> Index()
+        {
+            var pAContext = _context.Reservas.Include(r => r.CedulaClienteNavigation).Include(r => r.CedulaNavigation).Include(r => r.CodigoEventoNavigation);
+            return View(await pAContext.ToListAsync());
+        }
+
+
+        public async Task<IActionResult> home()
         {
             var pAContext = _context.Reservas.Include(r => r.CedulaClienteNavigation).Include(r => r.CedulaNavigation).Include(r => r.CodigoEventoNavigation);
             return View(await pAContext.ToListAsync());
@@ -97,8 +104,6 @@ namespace PerroAventurero.Models
 
             if (ModelState.IsValid)
             {
-
-
                 if (files != null)
                 {
                     if (files.Length > 0)
@@ -116,6 +121,7 @@ namespace PerroAventurero.Models
 
                             reserva.ComprobantePago = target.ToArray();
                         }
+
 
 
                         // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
@@ -237,13 +243,31 @@ namespace PerroAventurero.Models
 
             for (int i = 1; i <= groups; i++)
             {
-                int num = _context.Reservas.Where(reserva => reserva.Grupo == i).Count();
-                capacity[i-1] = capacity[i-1] - num;
+
+                capacity[i-1] = capacity[i-1] - acompannanteG(i);
 
             }
 
             return capacity;
         }
+
+        private int acompannanteG(int group)
+        {
+
+            List<Reserva> reserva = _context.Reservas.Where(reserva => reserva.CodigoEvento == code && reserva.Grupo == group).ToList();
+            int sum = 0;
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                sum += reserva[i].EntradasGenerales + (int) reserva[i].EntradasNinnos;
+
+
+            }
+
+            return sum;
+        }
+
+
 
         private List<String> Entry(Evento evento)
         {
@@ -317,32 +341,31 @@ namespace PerroAventurero.Models
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CodigoReserva,CodigoEvento,CedulaCliente,Cedula,EntradasGenerales,EntradasNinnos,FechaReserva,Grupo,HoraEntrada,EsAceptada,ComprobantePago,PrecioTotal,Asistencia")] Reserva reserva)
+        public async Task<IActionResult> Edit([Bind("CedulaClienteNavigation")] Reserva reserva, IFormFile files)
         {
-            if (id != reserva.CodigoReserva)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(reserva);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservaExists(reserva.CodigoReserva))
+                if(ValidateClient(reserva.CedulaClienteNavigation.CedulaCliente) !=0) {
+                    Reserva reservaTempo = _context.Reservas.Where(re => re.CedulaCliente == reserva.CedulaClienteNavigation.CedulaCliente).FirstOrDefault();
+                    try
                     {
-                        return NotFound();
+                        _context.Update(reserva);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ReservaExists(reserva.CodigoReserva))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
             ViewData["CedulaCliente"] = new SelectList(_context.Clientes, "CedulaCliente", "CedulaCliente", reserva.CedulaCliente);
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", reserva.Cedula);
@@ -382,6 +405,45 @@ namespace PerroAventurero.Models
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+          [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Insert([Bind("CedulaCliente")] Cliente cliente, IFormFile files)
+        {
+
+            Reserva reserva = new Reserva();
+            if (ValidateClient(cliente.CedulaCliente) != 0) {
+                if (files != null)
+                {
+                    if (files.Length > 0)
+                    {
+                        //Getting FileName
+                        var fileName = Path.GetFileName(files.FileName);
+                        //Getting file Extension
+                        var fileExtension = Path.GetExtension(fileName);
+                        // concatenating  FileName + FileExtension
+                        var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                        using (var target = new MemoryStream())
+                        {
+                            files.CopyTo(target);
+
+                            reserva.ComprobantePago = target.ToArray();
+                        }
+
+
+                        // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
+
+                    }
+                }
+
+            }
+            return Redirect("~/Home/Index");
+
+        }
         private bool ReservaExists(int id)
         {
             return _context.Reservas.Any(e => e.CodigoReserva == id);

@@ -14,7 +14,7 @@ namespace PerroAventurero.Models
         }
 
         [Display(Name = "Cédula")]
-        [Required(ErrorMessage = "Su cédula es requerido")]
+        [Required(ErrorMessage = "Su cédula es requerida")]
         [MaxLength(35, ErrorMessage = "Cédula muy larga")]
         public string CedulaCliente { get; set; }
 

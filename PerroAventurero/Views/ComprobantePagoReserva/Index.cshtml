@@ -1,0 +1,60 @@
+﻿@model PerroAventurero.Models.Reserva
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Envio de comprobante de pago</h1>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4">
+        
+        <form asp-action="Edit" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
+                <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.CedulaCliente" name="CedulaCliente">
+                <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-control-file">
+                <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                <img id="output" width="200" height="200" />
+                <script>
+                    var loadFile = function (event) {
+                        var output = document.getElementById('output');
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                        output.onload = function () {
+                            URL.revokeObjectURL(output.src) // free memory
+                        }
+                    };
+                </script>
+                <span asp-validation-for="ComprobantePago" class="text-danger"></span>
+            </div>
+
+            <hr />
+
+            <div class="form-group">
+                <input type="submit" value="Enviar" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @Html.ValidationMessageFor(m => m.CedulaClienteNavigation.CedulaCliente)
+}

@@ -9,11 +9,6 @@ namespace PerroAventurero.Models
 {
     public partial class Reserva
     {
-        public Reserva()
-        {
-            Acompannantes = new List<Acompannante>();
-        }
-
         public int CodigoReserva { get; set; }
         public int CodigoEvento { get; set; }
         public string CedulaCliente { get; set; }
@@ -53,7 +48,6 @@ namespace PerroAventurero.Models
         public virtual Cliente CedulaClienteNavigation { get; set; }
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
         public virtual Evento CodigoEventoNavigation { get; set; }
-        [NotMapped]
-        public virtual List<Acompannante> Acompannantes { get; set; }
+        public virtual ICollection<Acompannante> Acompannantes { get; set; }
     }
 }
