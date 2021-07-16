@@ -13,85 +13,89 @@
     <h4>Formulario de ingreso de empresa:</h4>
 </div>
 <hr />
-<div class="m-0 row justify-content-md-center">
+
+<div class="container py-5">
     <form asp-action="Create" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @*<div class="form-group">
-                <label asp-for="Cedula" class="control-label"></label>
-                <select asp-for="Cedula" class ="form-control" asp-items="ViewBag.Cedula"></select>
-            </div>*@
-
-
-        <div class="form-control-file">
-            <label>Logo de empresa:</label>
-            <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-            <img id="output" width="200" height="200" />
-            <script>
-                var loadFile = function (event) {
-                    var output = document.getElementById('output');
-                    output.src = URL.createObjectURL(event.target.files[0]);
-                    output.onload = function () {
-                        URL.revokeObjectURL(output.src) // free memory
-                    }
-                };
-            </script>
-            <span asp-validation-for="Logo" class="text-danger"></span>
-        </div>
-        <hr />
-        <div class="form-group">
-            <label>Nombre de empresa:</label>
-            <input asp-for="NombreEmpresa" class="form-control" />
-            <span asp-validation-for="NombreEmpresa" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label>Categoría de empresa:</label>
-            <input asp-for="Categoria" class="form-control" />
-            @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
-            <span asp-validation-for="Categoria" class="text-danger"></span>
-        </div>
-        <div>
-            <label>Contacto de empresa:</label>
-            @*Si dice contactos, deberiamos dejar que la persona agregue varios telefonos a las empresas?*@
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Teléfono:</label>
-                    <input asp-for="Telefono" class="form-control" />
-                    <span asp-validation-for="Telefono" class="text-danger"></span>
+        <div class="messages"></div>
+        <div class="controls">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Nombre de empresa:</label>
+                        <input asp-for="NombreEmpresa" class="form-control" />
+                        <span asp-validation-for="NombreEmpresa" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría de empresa:</label>
+                        <select asp-for="Categoria" class="form-control">
+                            @*hacer que lo agarre de la bd*@
+                            <option value="1">Servicio</option>
+                            <option value="2">Producto</option>
+                        </select>
+                        @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
+                        <span asp-validation-for="Categoria" class="text-danger"></span>
+                    </div>
                 </div>
+                <div class="col-sm-4">
+                    @*<label>Contacto de empresa:</label>*@
 
-                <div class="form-group col-md-6">
-                    <label>Correo electrónico:</label>
-                    <input asp-for="Correo" class="form-control" type="email" />
-                    <span asp-validation-for="Correo" class="text-danger"></span>
+                    <div class="form-group">
+                        <label>Teléfono:</label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo electrónico:</label>
+                        <input asp-for="Correo" class="form-control" type="email" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre de contacto:</label>
+                        <input class="form-control" />
+                        @*<span asp-validation-for="Telefono" class="text-danger"></span>*@
+                    </div>
+
                 </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Logo de empresa:</label>
+                        <br />
+                        <img id="output" width="200" height="200" src="@ViewBag.Image" />
+                        <br />
+                        <br />
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" required/>
+                        <span asp-validation-for="Logo" class="text-danger"></span>
+                        <br />
+                        <br />
 
+
+                        <input type="submit" class="button-empresas w-button" value="Guardar">
+                        <script>
+                            var loadFile = function (event) {
+                                var output = document.getElementById('output');
+                                output.src = URL.createObjectURL(event.target.files[0]);
+                                output.onload = function () {
+                                    URL.revokeObjectURL(output.src) // free memory
+                                }
+                            };
+                        </script>
+
+                    </div>
+                </div>
             </div>
-        <hr>
-            <input type="submit" value="Guardar empresa" class="button-afiliacion w-button" />
+
         </div>
-
-        @*<div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
-            </div>*@
-
-
-                
-            
-            @*<div class="form-group col-md-6">
-
-                <a class="button-afiliacion w-button" asp-action="Index">Volver</a>
-            </div>*@
-        
+      
     </form>
-    
 </div>
 
 
 
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+
