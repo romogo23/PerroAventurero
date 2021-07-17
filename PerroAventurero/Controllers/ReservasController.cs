@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +24,7 @@ namespace PerroAventurero.Models
         // GET: Reservas
         public async Task<IActionResult> Index()
         {
-            var pAContext = _context.Reservas.Include(r => r.CedulaClienteNavigation).Include(r => r.CedulaNavigation).Include(r => r.CodigoEventoNavigation);
+            var pAContext = _context.Reservas.Where(r => r.EsAceptada == null && r.ComprobantePago != null).Include(r => r.CedulaClienteNavigation).Include(r => r.CedulaNavigation).Include(r => r.CodigoEventoNavigation);
             return View(await pAContext.ToListAsync());
         }
 
@@ -52,6 +54,53 @@ namespace PerroAventurero.Models
             }
 
             return View(reserva);
+        }
+
+
+        public async Task<IActionResult> Accept(int id)
+        {
+            var reserva = await _context.Reservas.FindAsync(id);
+            //Enviar correo con el detalle de la reserva. No está sirviendo, REVISAR
+            //SmtpClient client = new SmtpClient("smtp.gmail.com");
+            //client.Port = 587;
+            //client.EnableSsl = true;
+            //client.Timeout = 100000;
+            //client.EnableSsl = true;
+            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //client.UseDefaultCredentials = false;
+            //client.Credentials = new NetworkCredential("correo", "contraseña");
+            //MailMessage msg = new MailMessage();
+            ////msg.To.Add(Correo.ToString()); correo se recibía por parámetro, supuse que era el correo al que se envía el codigo como tal
+            //msg.To.Add("allan.najera@gmail.com");
+            //msg.From = new MailAddress("juanperez33op@gmail.com");
+            //msg.Subject = "Prueba de correo";
+            //msg.Body = "Estos es todo el texto que lleva el mensaje con las diferentes descripciones";
+            ////Attachment data = new Attachment(textBox3.Text);
+            ////msg.Attachments.Add(data);
+            //client.Send(msg);//Aquí está el problema
+
+            //Con esto hace modifica la afiliación
+            reserva.EsAceptada = true;
+            _context.Update(reserva);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Reject(int id)
+        {
+            //Enviar correo de que la solicitud de reserva ha sido rechazada, aún no funciona
+            var reserva = await _context.Reservas.FindAsync(id);
+            Acompannante acompannate;
+            while (_context.Acompannantes.Where(a => a.CodigoReserva == reserva.CodigoReserva).FirstOrDefault() != null)
+            {
+                acompannate = _context.Acompannantes.Where(a => a.CodigoReserva == reserva.CodigoReserva).FirstOrDefault();
+                _context.Acompannantes.Remove(acompannate);
+                await _context.SaveChangesAsync();
+            }
+            _context.Reservas.Remove(reserva);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -101,6 +150,11 @@ namespace PerroAventurero.Models
             reserva.FechaReserva = DateTime.Now;
 
             reserva.CedulaCliente = reserva.CedulaClienteNavigation.CedulaCliente;
+
+            if (Age.Count() == 0)
+            {
+                reserva.EntradasNinnos = 0;
+            }
 
             if (ModelState.IsValid)
             {
@@ -187,7 +241,7 @@ namespace PerroAventurero.Models
         }
 
 
-
+        
         private decimal price(Evento evento, List<short> reserva) { 
             decimal precioTotal = evento.PrecioGeneral;
 
