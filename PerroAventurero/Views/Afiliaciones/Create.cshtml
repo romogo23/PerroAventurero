@@ -1,56 +1,125 @@
-﻿@model PerroAventurero.Models.Afiliacion
+﻿
+@section Styles{
+    <link rel="stylesheet" href="~/css/indexUser.css" />
+}
 
+@model PerroAventurero.Models.Afiliacion
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@*<h1>Create</h1>
 
-<h4>Afiliacion</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaCliente" class="control-label"></label>
-                <select asp-for="CedulaCliente" class ="form-control" asp-items="ViewBag.CedulaCliente"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cedula" class="control-label"></label>
-                <select asp-for="Cedula" class ="form-control" asp-items="ViewBag.Cedula"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ComprobantePago" class="control-label"></label>
-                <input asp-for="ComprobantePago" class="form-control" />
-                <span asp-validation-for="ComprobantePago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EsAceptada" class="control-label"></label>
-                <input asp-for="EsAceptada" class="form-control" />
-                <span asp-validation-for="EsAceptada" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Afiliacion</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Codigo" class="control-label"></label>
+                    <input asp-for="Codigo" class="form-control" />
+                    <span asp-validation-for="Codigo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CedulaCliente" class="control-label"></label>
+                    <select asp-for="CedulaCliente" class="form-control" asp-items="ViewBag.CedulaCliente"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cedula" class="control-label"></label>
+                    <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fecha" class="control-label"></label>
+                    <input asp-for="Fecha" class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ComprobantePago" class="control-label"></label>
+                    <input asp-for="ComprobantePago" class="form-control" />
+                    <span asp-validation-for="ComprobantePago" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EsAceptada" class="control-label"></label>
+                    <input asp-for="EsAceptada" class="form-control" />
+                    <span asp-validation-for="EsAceptada" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+
+
+
+
+
+<div class="header">
+    <div class="w-container">
+        <h1 class="main-heading">perro aventurero</h1>
+        <div class="divider"></div>
+        <div class="main-subtitle">&quot;PERRO AVENTURERO...compartiendo  una vida de aventuras con nuestros mejores amigos!&quot;</div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col-6">
+        <div id="aventurasContrato" class="about-section section">
+            <h2 class="heading-2">Programa Aventuras con Descuentos</h2>
+            <br />
+            <h4 class="heading-2">Conoce nuestros términos y condiciones:</h4>
+            <div class="divider grey"></div>
+            <div class="row justify-content-center">
+                <div class="container">
+                    <p class="about-text">
+                        En Perro Aventurero fomentamos un estilo de vida amigable y responsable con nuestras mascotas, estrechando el vinculo humano-animal
+                        con AVENTURAS donde nuestros perros juegan, corren, olfatean, nadan, en fin...donde ellos son REALMENTE PERROS!
+                        <br />
+                        <br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="aventuras" class="section grey">
+            <div id="aventuras" class="container">
+                <h2 class="heading-14">Aventuras con descuento:</h2>
+                <div class="divider grey"></div>
+                <div class="row justify-content-center">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-control-file">
+                                    <h5>Adjunte el comprobante de pago: </h5>
+                                    <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                                    <img id="output" width="200" height="200" />
+                                    <script>
+                                        var loadFile = function (event) {
+                                            var output = document.getElementById('output');
+                                            output.src = URL.createObjectURL(event.target.files[0]);
+                                            output.onload = function () {
+                                                URL.revokeObjectURL(output.src) // free memory
+                                            }
+                                        };
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <br />
+                                <br />
+                                <br />
+                                <input type="submit" class="button-reserva button" value="Solicitar Afiliación">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

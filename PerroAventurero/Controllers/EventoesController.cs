@@ -96,6 +96,7 @@ namespace PerroAventurero.Controllers
             {
                 return NotFound();
             }
+
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", evento.Cedula);
             return View(evento);
         }
@@ -114,6 +115,9 @@ namespace PerroAventurero.Controllers
 
             if (ModelState.IsValid)
             {
+                evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
+                evento.HoraFinal = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraFinal.Hour, evento.HoraFinal.Minute, evento.HoraFinal.Second);
+
                 if (DateTime.Compare(evento.HoraInicio, evento.HoraFinal) > 0 || DateTime.Compare(evento.HoraInicio, evento.HoraFinal) == 0)
                 {
                     //Validar que la fecha hora final sea posterior que hora inicio, ver que hago cuando es mayor

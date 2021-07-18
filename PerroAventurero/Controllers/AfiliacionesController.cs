@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -105,18 +107,70 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Codigo,CedulaCliente,Cedula,Fecha,ComprobantePago,EsAceptada")] Afiliacion afiliacion)
+        public async Task<IActionResult> Create(IFormFile files)
         {
-            if (ModelState.IsValid)
+
+            var CedulaCliente = User.Identity.Name;
+            if (_context.Afiliacions.Where(af => af.CedulaCliente == CedulaCliente).FirstOrDefault() == null)
             {
-                _context.Add(afiliacion);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (files != null)
+                {
+                    Afiliacion afiliacionTemporal = new Afiliacion();
+
+                    //Agregar codigo desde bd
+                    //afiliacionTemporal.Codigo = 
+                    afiliacionTemporal.CedulaCliente = CedulaCliente;
+                    afiliacionTemporal.Fecha = DateTime.Today;
+                    //afiliacionTemporal.ComprobantePago = 
+                    if (files.Length > 0)
+                    {
+                        //Getting FileName
+                        var fileName = Path.GetFileName(files.FileName);
+                        //Getting file Extension
+                        var fileExtension = Path.GetExtension(fileName);
+                        // concatenating  FileName + FileExtension
+                        var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                        using (var target = new MemoryStream())
+                        {
+                            files.CopyTo(target);
+                            afiliacionTemporal.ComprobantePago = target.ToArray();
+                        }
+
+                        int code;
+
+
+                        //Agregar codigo ramdon verificando los que hay en la bd
+                        do
+                        {
+                            code = generateCode();
+                        } while (_context.Afiliacions.Where(af => af.Codigo == code).FirstOrDefault() != null);
+
+                        afiliacionTemporal.Codigo = code;
+                        afiliacionTemporal.CedulaCliente = CedulaCliente;
+                        afiliacionTemporal.Fecha = DateTime.Today;
+
+                        _context.Add(afiliacionTemporal);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                //Ver a donde lo mando, solo puse eso para que dejara de molestar
+                return Redirect("~/Home/Index");
             }
-            ViewData["CedulaCliente"] = new SelectList(_context.UsuarioComuns, "CedulaCliente", "CedulaCliente", afiliacion.CedulaCliente);
-            ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", afiliacion.Cedula);
-            return View(afiliacion);
+            else
+            {
+                //Ver a donde lo mando, solo puse eso para que dejara de molestar
+                //Ya tiene una afiliacion a su nombre
+                return Redirect("~/Home/Index");
+            }
         }
+
+
+        private int generateCode()
+        {
+            return new Random().Next(1000, 9999);
+        }
+
 
         // GET: Afiliaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
