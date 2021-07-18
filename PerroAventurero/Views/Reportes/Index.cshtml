@@ -1,0 +1,106 @@
+﻿@model PerroAventurero.Models.Reports
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <h4>Reportes</h4>
+
+ 
+</div>
+
+<hr />
+
+<div class="m-0 row justify-content-md-center">
+        <select id="selectGroup" name="groupAndTime" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Reports))">
+        </select>
+</div>
+
+<hr />
+
+<div>
+    <hr />
+
+    @*reporte de comparacion entre asistentes y reservaciones por evento *@
+
+    @*@foreach (var item in Model)
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Nombre
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(modelItem => item.NombreEvento)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(modelItem => item.reservas)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(modelItem => item.reservas)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(modelItem => item.asistencia)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(modelItem => item.asistencia)
+                </dd>
+            </dl>
+        }*@
+
+    @*reporte de comparacion entre asistentes y reservaciones de todos los eventos *@
+    @*<dl class="row">
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.reservas)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.reservas)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.asistencia)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.asistencia)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.percentage)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.percentage)
+            </dd>
+        </dl>*@
+
+
+    @* Reportes de comparacion de asistencia y reservaciones de niños *@
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.reservas)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.reservas)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.asistencia)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.asistencia)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.percentage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.percentage)
+        </dd>
+    </dl>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+

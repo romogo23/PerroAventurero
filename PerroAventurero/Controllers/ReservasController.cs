@@ -16,6 +16,8 @@ namespace PerroAventurero.Models
     {
         private readonly PAContext _context;
         private static int code;
+        private int AGE_CHILDREN = 12;
+
         public ReservasController(PAContext context)
         {
             _context = context;
@@ -246,7 +248,7 @@ namespace PerroAventurero.Models
             decimal precioTotal = evento.PrecioGeneral;
 
             for (int i = 0; i < reserva.Count; i++) {
-                if (reserva[i] > 12)
+                if (reserva[i] > AGE_CHILDREN)
                 {
                     precioTotal += evento.PrecioGeneral;
                 }

@@ -182,11 +182,16 @@ namespace PerroAventurero.Controllers
 
                 return RedirectToAction("Index", "EmpresasAfiliadas");
             }
-            var normal = CreateComun(usuarioComun);
+            if (usuarioComun.Cliente != null)
+            {
+                var normal = CreateComun(usuarioComun);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
 
-            return RedirectToAction("Create", "EmpresasAfiliadas");
+                return RedirectToAction("Create", "EmpresasAfiliadas");
+            }
+            ModelState.AddModelError("correo", "Correo o contraseña incorrecta");
+            return View();
         }
 
         public async Task<IActionResult> Logout()

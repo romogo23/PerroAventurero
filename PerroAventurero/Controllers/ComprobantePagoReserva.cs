@@ -26,7 +26,7 @@ namespace PerroAventurero.Controllers
             if (id != 0)
             {
                 code = id;
-                //showEvento();
+                showEvento();
                 return View();
             }
             return Redirect("~/Home/Index");
@@ -51,7 +51,7 @@ namespace PerroAventurero.Controllers
                 if (ValidateClient(CedulaCliente) != 0)
                 {
                     Reserva reservaTempo = new Reserva();
-                    reservaTempo = _context.Reservas.Where(re => re.CedulaCliente == CedulaCliente).FirstOrDefault();
+                    reservaTempo = _context.Reservas.Where(re => re.CedulaCliente == CedulaCliente && re.CodigoEvento == code).FirstOrDefault();
 
                     if (files != null)
                     {
@@ -90,10 +90,8 @@ namespace PerroAventurero.Controllers
 
         private int ValidateClient(String id)
         {
-
-            int reserva = _context.Reservas.Where(re => re.CedulaCliente == id).Count();
+            int reserva = _context.Reservas.Where(re => re.CedulaCliente == id && re.CodigoEvento == code).Count();
             return reserva;
-
         }
 
     }
