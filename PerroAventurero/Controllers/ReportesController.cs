@@ -118,7 +118,7 @@ namespace PerroAventurero.Controllers
                 report.reservas += reservations(listEventos[i].CodigoEvento);
 
             }
-            report.percentage = percentage(report.asistencia, report.reservas);
+            report.porcentaje = percentage(report.asistencia, report.reservas);
             return report;
         }
 
@@ -148,7 +148,7 @@ namespace PerroAventurero.Controllers
                 report.reservas += reservationsChildren(listEventos[i].CodigoEvento);
 
             }
-            report.percentage = percentage(report.asistencia, report.reservas);
+            report.porcentaje = percentage(report.asistencia, report.reservas);
             return report;
         }
 
@@ -190,7 +190,37 @@ namespace PerroAventurero.Controllers
         //Cédula de usuario (se debe agrupar por este dato). 
         //Nombre de usuario.
         //Número de teléfono del usuario.
-        // Cantidad de eventos asistidos: realizar una cuenta de los eventos a los que ha asistido el usuario (se debe ordenar por este dato). 
+        //Cantidad de eventos asistidos: realizar una cuenta de los eventos a los que ha asistido el usuario (se debe ordenar por este dato). 
+
+        private List<Reports> reportsTopUserAttending()
+        {
+            List<Cliente> listClientes = _context.Clientes.ToList();
+            List<Reports> ListReport = new List<Reports>();
+
+
+            for (int i = 0; i < listClientes.Count; i++)
+            {
+                Reports report = new Reports();
+                report.cedulacliente = listClientes[i].CedulaCliente;
+                report.NombreCliente = listClientes[i].NombreCompleto;
+                report.telefono = listClientes[i].Telefono;
+
+                report.AttendanceEvent = attendanceTop(listClientes[i].CedulaCliente);
+                ListReport.Add(report);
+
+            }
+            ListReport.Sort();
+
+            return ListReport;
+        }
+
+        private int attendanceTop(string id)
+        {
+            int attendance = _context.Reservas.Where(re => re.CedulaCliente == id).Count();
+
+            return attendance;
+        }
+
 
         //Report average age attending event date range
         //Nombre del evento. 

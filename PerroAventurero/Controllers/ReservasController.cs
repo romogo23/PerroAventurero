@@ -192,12 +192,15 @@ namespace PerroAventurero.Models
                     if (ValidateClient(reserva.CedulaCliente) == 0)
                     {
 
-                        if (_context.Clientes.Find(reserva.CedulaCliente) == null)
+
+                        if (_context.Clientes.AsNoTracking().Where(cli => cli.CedulaCliente == reserva.CedulaCliente).Count() == 0)
                         {
                             _context.Add(reserva.CedulaClienteNavigation);
                             await _context.SaveChangesAsync();
                         }
-
+                        else { 
+                            reserva.CedulaClienteNavigation = null;
+                        }
                         _context.Add(reserva);
                         await _context.SaveChangesAsync();
 
@@ -387,7 +390,7 @@ namespace PerroAventurero.Models
         private int ValidateClient(String id)
         {
 
-            int reserva = _context.Reservas.Where(re => re.CedulaCliente == id).Count();
+            int reserva = _context.Reservas.AsNoTracking().Where(re => re.CedulaCliente == id && re.CodigoEvento == code).Count();
             return reserva;
 
         }

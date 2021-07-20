@@ -15,24 +15,20 @@ namespace PerroAventurero.Models
 
         [RegularExpression(@"^\d+\.\d{0,2}$")]
         [Range(0, 999.99)]
-        public decimal percentage { get; set; }
+        public decimal porcentaje { get; set; }
 
         public string cedulacliente { get; set; }
 
         public string NombreCliente { get; set; }
 
-        public double AverageAge { get; set; }
+        public double edadPromedio { get; set; }
 
-        public double AverageGemderM { get; set; }
-        public double AverageGemderF { get; set; }
+        public double generoPromedioM { get; set; }
+        public double generoPromedioF { get; set; }
         public double AverageGemderO { get; set; }
+        public int telefono{ get; set; }
 
-
-
-
-
-
-
+        public int AttendanceEvent { get; set; }
 
     }
 }
