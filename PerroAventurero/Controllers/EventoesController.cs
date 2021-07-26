@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -36,12 +38,20 @@ namespace PerroAventurero.Controllers
             var evento = await _context.Eventos
                 .Include(e => e.CedulaNavigation)
                 .FirstOrDefaultAsync(m => m.CodigoEvento == id);
+            ViewBag.Image = ViewImage(evento.Imagen);
             if (evento == null)
             {
                 return NotFound();
             }
 
             return View(evento);
+        }
+
+        private string ViewImage(byte[] arrayImage)
+
+        {
+            string base64String = Convert.ToBase64String(arrayImage, 0, arrayImage.Length);
+            return "data:image/png;base64," + base64String;
         }
 
         // GET: Eventoes/Create
@@ -56,7 +66,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
+        public async Task<IActionResult> Create([Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento, IFormFile files)
         {
 
             if (ModelState.IsValid)
@@ -73,6 +83,29 @@ namespace PerroAventurero.Controllers
                 }
                 else
                 {
+                    if (files != null)
+                    {
+                        if (files.Length > 0)
+                        {
+                            //Getting FileName
+                            var fileName = Path.GetFileName(files.FileName);
+                            //Getting file Extension
+                            var fileExtension = Path.GetExtension(fileName);
+                            // concatenating  FileName + FileExtension
+                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                            using (var target = new MemoryStream())
+                            {
+                                files.CopyTo(target);
+
+                                evento.Imagen = target.ToArray();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //agregar imagen por defecto pero aun no se cual o como se va tratar
+                    }
                     _context.Add(evento);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -106,7 +139,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo, CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento)
+        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo, CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento, IFormFile files)
         {
             if (id != evento.CodigoEvento)
             {
@@ -126,6 +159,29 @@ namespace PerroAventurero.Controllers
                 }
                 else
                 {
+                    if (files != null)
+                    {
+                        if (files.Length > 0)
+                        {
+                            //Getting FileName
+                            var fileName = Path.GetFileName(files.FileName);
+                            //Getting file Extension
+                            var fileExtension = Path.GetExtension(fileName);
+                            // concatenating  FileName + FileExtension
+                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                            using (var target = new MemoryStream())
+                            {
+                                files.CopyTo(target);
+
+                                evento.Imagen = target.ToArray();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //supongo que no pasa nada, pero queria preguntar, creo que este else se podria borrar
+                    }
                     try
                     {
                         _context.Update(evento);

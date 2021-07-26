@@ -63,6 +63,8 @@ namespace PerroAventurero.Models
         public bool EnvioAnuncios { get; set; }
         public string Comentarios { get; set; }
 
+        public byte[] Imagen { get; set; }
+
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
         public virtual ICollection<Reserva> Reservas { get; set; }
     }

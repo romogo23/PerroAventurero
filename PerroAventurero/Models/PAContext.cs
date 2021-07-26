@@ -241,6 +241,8 @@ namespace PerroAventurero.Models
                     .HasColumnType("datetime")
                     .HasColumnName("HORA_INICIO");
 
+                entity.Property(e => e.Imagen).HasColumnType("image").HasColumnName("IMAGEN");
+
                 entity.Property(e => e.Lugar)
                     .IsRequired()
                     .HasMaxLength(100)
