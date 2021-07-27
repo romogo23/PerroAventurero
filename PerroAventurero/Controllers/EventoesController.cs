@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -129,6 +131,10 @@ namespace PerroAventurero.Controllers
             {
                 return NotFound();
             }
+            if (evento.Imagen != null)
+            {
+                ViewBag.Image = ViewImage(evento.Imagen);
+            }
 
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", evento.Cedula);
             return View(evento);
@@ -139,7 +145,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo, CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento, IFormFile files)
+        public async Task<IActionResult> Edit(int id, [Bind("CodigoEvento,Cedula,NombreEvento,Lugar,Direccion,Fecha,PrecioGeneral,PrecioNinno,CantidadAforo,CantidadGrupos,HoraInicio,HoraFinal,EnvioAnuncios,Comentarios")] Evento evento, IFormFile files)
         {
             if (id != evento.CodigoEvento)
             {
@@ -239,6 +245,21 @@ namespace PerroAventurero.Controllers
         private bool EventoExists(int id)
         {
             return _context.Eventos.Any(e => e.CodigoEvento == id);
+        }
+
+        public ActionResult getImage(int id)
+        {
+            var eventoVieja = _context.Eventos.Find(id);
+            byte[] byteImage = eventoVieja.Imagen;
+
+            MemoryStream memoryStream = new MemoryStream(byteImage);
+            Image image = Image.FromStream(memoryStream);
+
+            memoryStream = new MemoryStream();
+            image.Save(memoryStream, ImageFormat.Jpeg);
+            memoryStream.Position = 0;
+
+            return File(memoryStream, "image/jpg");
         }
     }
 }

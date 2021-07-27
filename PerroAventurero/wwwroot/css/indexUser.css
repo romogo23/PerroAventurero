@@ -29,6 +29,31 @@ a {
         color: green;
     }*/
 
+p {
+    text-align: center;
+}
+
+.name {
+    text-align: center;
+}
+
+.nameLink {
+    text-decoration: none;
+    outline: none;
+    color: black;
+}
+
+    .nameLink:hover {
+        text-decoration: none;
+        outline: none;
+        color: #ffa600;
+        border-bottom-color: #ffa600;
+    }
+
+.deletebtn{
+    margin-top: -20px;
+}
+
 h1 {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -39,7 +64,6 @@ h1 {
 
 h2 {
     margin: 10px 0px;
-    font-family: Montserrat, sans-serif;
     font-size: 23px;
     line-height: 36px;
     font-weight: 400;
@@ -49,7 +73,6 @@ h2 {
 
 h3 {
     margin: 0px 0px 20px;
-    font-family: Montserrat, sans-serif;
     font-size: 16px;
     line-height: 20px;
     font-weight: 400;
@@ -255,8 +278,8 @@ p {
 }
 
 .section-event {
-    padding-top: 69px;
-    padding-bottom: 69px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
     .section.grey {
@@ -678,187 +701,8 @@ p {
         text-decoration: none;
     }
 
-@media screen and (max-width: 991px) {
-    .nav-link {
-        margin: 0px auto;
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-
-        .nav-link:hover {
-            border-bottom-color: transparent;
-        }
-
-    .main-heading {
-        font-size: 38px;
-        line-height: 44px;
-    }
-
-    .project-wrapper:hover {
-        -webkit-transform: translate(0px, 0px);
-        -ms-transform: translate(0px, 0px);
-        transform: translate(0px, 0px);
-    }
-
-    .social-wrapper {
-        margin-left: 30%;
-    }
-
-    .menu-button {
-        margin-top: 7px;
-        padding: 10px;
-        font-size: 32px;
-    }
-
-        .menu-button.w--open {
-            background-color: transparent;
-            color: #7ec4bd;
-        }
-
-    .nav-menu {
-        background-color: #f5f5f5;
-    }
+.empresa-section {
+    justify-content: center;
+    padding: 20px;
+    margin: 10px;
 }
-
-@media screen and (max-width: 767px) {
-    .header {
-        padding-top: 45px;
-        padding-bottom: 45px;
-    }
-
-    .navbar {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .nav-link {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        padding-left: 10px;
-    }
-
-    .logo-title {
-        margin-top: 6px;
-    }
-
-    .logo-img {
-        width: 50px;
-    }
-
-    .about-section {
-        padding-right: 50px;
-        padding-bottom: 30px;
-        padding-left: 50px;
-    }
-
-    .contract-section {
-        padding-right: 50px;
-        padding-bottom: 30px;
-        padding-left: 50px;
-    }
-
-    .x-icon {
-        margin-bottom: 21px;
-    }
-
-    .section {
-        padding-top: 30px;
-        padding-bottom: 30px;
-    }
-
-    .section-event {
-        padding-top: 30px;
-        padding-bottom: 30px;
-    }
-
-    .grey-icon-wrapper {
-        display: inline-block;
-        margin-bottom: 16px;
-        padding: 34px 56px;
-    }
-
-        .grey-icon-wrapper.push-top {
-            margin-top: 30px;
-        }
-
-    .testimonial-slide {
-        width: 100%;
-    }
-
-        .testimonial-slide.left-border {
-            border-left-width: 0px;
-        }
-
-    .icon-wrapper {
-        height: 85px;
-    }
-
-        .icon-wrapper._2 {
-            margin-top: 37px;
-        }
-
-    .social-wrapper {
-        margin-left: 0%;
-        text-align: center;
-    }
-
-    .form-wrapper {
-        padding-right: 10%;
-        padding-left: 10%;
-    }
-
-    .menu-button {
-        margin-top: 0px;
-    }
-
-    .member {
-        padding-bottom: 47px;
-    }
-
-    .grow-row {
-        margin-bottom: 0px;
-    }
-
-    .screenshot {
-        width: 90%;
-    }
-}
-
-@media screen and (max-width: 479px) {
-    .main-heading {
-        font-size: 34px;
-        line-height: 38px;
-    }
-
-    .grey-icon-wrapper {
-        display: block;
-    }
-
-    .form-wrapper {
-        padding-right: 5%;
-        padding-left: 5%;
-    }
-}
-
-.button-empresas {
-    display: inline-block;
-    border-style: solid;
-    border-width: 1px 1px 2px;
-    border-color: #47474f;
-    border-radius: 10px;
-    background-color: #3c3c40;
-    -webkit-transition: background-color 300ms ease;
-    transition: background-color 300ms ease;
-    font-family: Montserrat, sans-serif;
-    color: #f5f5f5;
-    font-size: 15px;
-    font-style: italic;
-    text-align: center;
-    text-decoration: none;
-}
-
-    .button-empresas:hover {
-        background-color: #fff;
-        color: #000;
-        text-decoration: none;
-    }

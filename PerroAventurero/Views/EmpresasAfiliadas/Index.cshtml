@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PerroAventurero.Models.EmpresasAfiliada>
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/indexUser.css" />
+    <link rel="stylesheet" href="~/css/company.css" />
 }
 
 @{ ViewData["Title"] = "Index"; }
@@ -9,7 +9,7 @@
 
 
 <div class="header">
-    <div class="w-container">
+    <div class="container">
         <h1 class="main-heading">Empresas Afiliadas</h1>
         <div class="divider"></div>
         
@@ -17,8 +17,6 @@
 </div>
 
 <div class="section-event container">
-    <br />
-    <br />
     <div class="container">
         <div class="row">
             <div class="col-10">
@@ -29,99 +27,27 @@
             </div>
         </div>
     </div>
-    <div class="form-row">
-        <div class="form-group col-md-3">
-            <table class="table-borderless">
-                <thead class="table-borderless">
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Logo)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @foreach (var img in @ViewBag.List)
-                            {
-                <img src="@Url.Content(img)" alt="tbd" width="100" height="100" />
-                                <hr />}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="empresa-section col-sm-3">
+                <div class="container justify-content-center">
+                    <h4 class="name"><a class="nameLink" asp-action="Edit" asp-route-id="@item.CodigoEmpresa">@Html.DisplayFor(modelItem => item.NombreEmpresa)</a></h4>
+                    <img class="imgLogo" width="200" height="200" src="@Url.Action("getImage", "EmpresasAfiliadas", new { id = item.CodigoEmpresa })" />
+                    @*<div class="row justify-content-center">
+                        <div class="col-6 justify-content-center">
+                            <a class="button-empresa" >Detalles</a>
+                        </div>
 
-        <div class="form-group col-sm-auto">
-            <table class="table-borderless">
-                <thead class="table-borderless">
-                    <tr>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.Logo)
-                            </th>*@
-                        <th>
-                            @Html.DisplayNameFor(model => model.NombreEmpresa)
-
-                        </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.Correo)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Categoria)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Telefono)
-                            </th>*@
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.CedulaNavigation)
-                            </th>*@
-                       
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-        <tr class="prueba1" style="height: 130px;">
-            <!--<td>-->
-           
-            <!--</td>-->
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreEmpresa)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>*@
-
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Categoria)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefono)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-                </td>*@
-            <td>
-                <div class="row">
-                    <div class="col-6">
-                        <a class="button-afiliacion" asp-action="Edit" asp-route-id="@item.CodigoEmpresa">Detalles</a>
-                    </div>
-                    
-                    <div class="col-6">
-                        <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
-                            <input class="button-afiliacion" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
+                        <div class="col-6 justify-content-center">
+                            <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
+                                <input class="button-empresa" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
                             </form>
                         </div>
-                    </div>
-</td>
-
-        </tr>}
-
-
-                </tbody>
-            </table>
-        </div>
+                    </div>*@
+                </div>
+            </div>
+        }
     </div>
 </div>
 

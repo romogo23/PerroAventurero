@@ -38,7 +38,14 @@
                     <div class="col-4" style="padding: 10px;">
                         <div class="project-wrapper">
                             <a class="project-wrapper inline-block">
-                                <img src="~/images/3.png" width="211" alt="">
+                                @if (item.Imagen == null)
+                                {
+                                    <img src="~/images/3.png" width="211" height="180" alt="">
+                                }
+                                else
+                                {
+                                    <img src="@Url.Action("getImage", "Eventoes", new { id = item.CodigoEvento })" width="211" height="180" alt="">
+                                }
                                 <div class="event-info">
                                     <h3 class="heading-13">@Html.DisplayFor(modelItem => item.NombreEvento)</h3>
                                     <p class="paragraph">@Html.DisplayFor(modelItem => item.Lugar)<br /><br />@Html.DisplayFor(modelItem => item.Direccion)<br /><br />@Html.DisplayFor(modelItem => item.Comentarios)</p>
@@ -99,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <a asp-controller="Home" asp-action="Aventuras" class="button-afiliacion w-button" >Afíliate</a>
+        <a asp-controller="Afiliaciones" asp-action="Create" class="button-afiliacion w-button" >Afíliate</a>
     </div>
 </div>
 <div id="contact" class="section contact">

@@ -82,96 +82,117 @@
 
 <div class="container py-5">
     <form asp-action="Edit" enctype="multipart/form-data" method="post">
-        
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <input type="hidden" asp-for="CodigoEmpresa" />
-                        <label>Nombre de empresa:</label>
-                        <input asp-for="NombreEmpresa" class="form-control" />
-                        <span asp-validation-for="NombreEmpresa" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Categoría de empresa:</label>
-                        <select asp-for="Categoria" class="form-control">
-                            @*hacer que lo agarre de la bd*@
-                            @*@if (ViewBag.Category == "2")
-                                {
-                                    <option value="1">Servicio</option>
-                                    <option value="2" selected>Producto</option>
-                                    }
-                                else
-                                {
 
-                                    <option value="1" selected>Servicio</option>
-                                    <option value="2">Producto</option>
-
-                                }*@
-
-                            <option value="1">Servicio</option>
-                            <option value="2" selected>Producto</option>
-                        </select>
-                        @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
-                        <span asp-validation-for="Categoria" class="text-danger"></span>
-                    </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <input type="hidden" asp-for="CodigoEmpresa" />
+                    <label>Nombre de empresa:</label>
+                    <input asp-for="NombreEmpresa" class="form-control" />
+                    <span asp-validation-for="NombreEmpresa" class="text-danger"></span>
                 </div>
-                <div class="col-sm-4">
-                    @*<label>Contacto de empresa:</label>*@
-
-                    <div class="form-group">
-                        <label>Teléfono:</label>
-                        <input asp-for="Telefono" class="form-control" />
-                        <span asp-validation-for="Telefono" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Correo electrónico:</label>
-                        <input asp-for="Correo" class="form-control" type="email" />
-                        <span asp-validation-for="Correo" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nombre de contacto:</label>
-                        <input class="form-control" />
-                        @*<span asp-validation-for="Telefono" class="text-danger"></span>*@
-                    </div>
-
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Logo de empresa:</label>
-                        <br />
-                        <img id="output" width="200" height="200" src="@ViewBag.Image" />
-                        <br />
-                        <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                        <span asp-validation-for="Logo" class="text-danger"></span>
-                        <br />
-                        <br />
-
-
-                        <script>
-                            var loadFile = function (event) {
-                                var output = document.getElementById('output');
-                                output.src = URL.createObjectURL(event.target.files[0]);
-                                output.onload = function () {
-                                    URL.revokeObjectURL(output.src) // free memory
+                <div class="form-group">
+                    <label>Categoría de empresa:</label>
+                    <select asp-for="Categoria" class="form-control">
+                        @*hacer que lo agarre de la bd*@
+                        @*@if (ViewBag.Category == "2")
+                            {
+                                <option value="1">Servicio</option>
+                                <option value="2" selected>Producto</option>
                                 }
-                            };
-                        </script>
+                            else
+                            {
 
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Guardar" class="button-empresas button"  />
-                    </div>
+                                <option value="1" selected>Servicio</option>
+                                <option value="2">Producto</option>
 
+                            }*@
+
+                        <option value="1">Servicio</option>
+                        <option value="2" selected>Producto</option>
+                    </select>
+                    @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
+                    <span asp-validation-for="Categoria" class="text-danger"></span>
                 </div>
             </div>
+            <div class="col-sm-4">
+                @*<label>Contacto de empresa:</label>*@
 
-      
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <input asp-for="Telefono" class="form-control" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo electrónico:</label>
+                    <input asp-for="Correo" class="form-control" type="email" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre de contacto:</label>
+                    <input class="form-control" />
+                    @*<span asp-validation-for="Telefono" class="text-danger"></span>*@
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>Logo de empresa:</label>
+                    <br />
+                    <img id="output" width="200" height="200" src="@ViewBag.Image" />
+                    <br />
+                    <br />
+                    <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                    <br />
+                    <br />
+
+
+                    <script>
+                        var loadFile = function (event) {
+                            var output = document.getElementById('output');
+                            output.src = URL.createObjectURL(event.target.files[0]);
+                            output.onload = function () {
+                                URL.revokeObjectURL(output.src) // free memory
+                            }
+                        };
+                    </script>
+
+                </div>
+                <div class="form-group">
+                    <div class="row justify-content-right">
+                        <div class="col-6 justify-content-center">
+                            <input type="submit" value="Guardar" class="button-empresas button" />
+                        </div>
+
+                        <div class="col-6 justify-content-center">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
 
     </form>
+    <div @*class="deletebtn"*@>
+        <form asp-action="Delete" asp-route-id="CodigoEmpresa" method="post">
+            <input type="hidden" asp-for="CodigoEmpresa" />
+            <input class="button-empresa button" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa?')" value="Eliminar" />
+        </form>
+    </div>
+    @*@using (Html.BeginForm("Delete", "EmpresasAfiliadas", FormMethod.Post))
+        {
+
+            <input type="submit" value="Eliminar" class="button-empresa" onclick="return confirm('¿Está seguro que desea eliminar esta empresa')" />
+        }*@
 </div>
+
 
 
 @section Scripts {

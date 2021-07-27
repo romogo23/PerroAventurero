@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PerroAventurero.Models;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace PerroAventurero.Controllers
 {
@@ -253,9 +255,9 @@ namespace PerroAventurero.Controllers
         // POST: EmpresasAfiliadas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int CodigoEmpresa)
         {
-            var empresasAfiliada = await _context.EmpresasAfiliadas.FindAsync(id);
+            var empresasAfiliada = await _context.EmpresasAfiliadas.FindAsync(CodigoEmpresa);
             _context.EmpresasAfiliadas.Remove(empresasAfiliada);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -265,5 +267,21 @@ namespace PerroAventurero.Controllers
         {
             return _context.EmpresasAfiliadas.Any(e => e.CodigoEmpresa == id);
         }
+
+        public ActionResult getImage(int id)
+        {
+            var empresasAfiliadaVieja = _context.EmpresasAfiliadas.Find(id);
+            byte[] byteImage = empresasAfiliadaVieja.Logo;
+
+            MemoryStream memoryStream = new MemoryStream(byteImage);
+            Image image = Image.FromStream(memoryStream);
+
+            memoryStream = new MemoryStream();
+            image.Save(memoryStream, ImageFormat.Jpeg);
+            memoryStream.Position = 0;
+
+            return File(memoryStream, "image/jpg");
+        }
+
     }
 }
