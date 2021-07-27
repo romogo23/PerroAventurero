@@ -16,6 +16,7 @@ namespace PerroAventurero.Controllers
 
         private readonly PAContext _context;
         private static int code;
+        private static Reserva cliente; 
         public ComprobantePagoReserva(PAContext context)
         {
             _context = context;
@@ -26,22 +27,34 @@ namespace PerroAventurero.Controllers
             if (id != 0)
             {
                 code = id;
-                showEvento();
                 return View();
             }
             return Redirect("~/Home/Index");
         }
-        private void showEvento() {
+
+        private int ValidateClient(String id)
+        {
+            int reserva = _context.Reservas.Where(re => re.CedulaCliente == id && re.CodigoEvento == code).Count();
+            return reserva;
+        }
+
+
+
+        private Evento showEvento()
+        {
             Evento evento = new Evento();
             evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
-            ViewBag.name = evento.NombreEvento;
-            ViewBag.address = evento.Direccion;
-            ViewBag.EntradaNinno = evento.PrecioNinno;
-            ViewBag.EntradaGeneral= evento.PrecioGeneral;
-            ViewBag.address = evento.Direccion;
-
+            return evento;
 
         }
+
+        public async Task<ActionResult> _Evento()
+        {
+            return PartialView("_Evento", showEvento());
+
+        }
+
+
 
 
         // POST: Reservas/Edit/5
@@ -51,52 +64,61 @@ namespace PerroAventurero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string CedulaCliente, IFormFile files)
         {
-            
-                if (ValidateClient(CedulaCliente) != 0)
-                {
-                    Reserva reservaTempo = new Reserva();
-                    reservaTempo = _context.Reservas.Where(re => re.CedulaCliente == CedulaCliente && re.CodigoEvento == code).FirstOrDefault();
+            if (cliente != null)
+            {
 
-                    if (files != null)
+                if (files != null)
+                {
+                    if (files.Length > 0)
                     {
-                        if (files.Length > 0)
+                        //Getting FileName
+                        var fileName = Path.GetFileName(files.FileName);
+                        //Getting file Extension
+                        var fileExtension = Path.GetExtension(fileName);
+                        // concatenating  FileName + FileExtension
+                        var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                        using (var target = new MemoryStream())
                         {
-                            //Getting FileName
-                            var fileName = Path.GetFileName(files.FileName);
-                            //Getting file Extension
-                            var fileExtension = Path.GetExtension(fileName);
-                            // concatenating  FileName + FileExtension
-                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+                            files.CopyTo(target);
 
-                            using (var target = new MemoryStream())
-                            {
-                                files.CopyTo(target);
-
-                                reservaTempo.ComprobantePago = target.ToArray();
-                            }
-
-                            // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
-
+                            cliente.ComprobantePago = target.ToArray();
                         }
+
+                        // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
+
                     }
-                _context.Update(reservaTempo);
-                //_context.Update(reservaTempo);
-                await _context.SaveChangesAsync();
+                    _context.Update(cliente);
+                    await _context.SaveChangesAsync();
                     return Redirect("~/Home/Index");
-                }   else
+
+                }
+                else
                 {
-                    ModelState.AddModelError("CedulaClienteNavigation.CedulaCliente", "Le informamos que ya existe una reserva a su nombre");
-                    return View();
+                    ModelState.AddModelError("ComprobantePago", "Debe adjuntar el comprobante de pago");
+                    return View("ComprobantePago", cliente);
                 }
 
-            
-        }
+            }
+            else
+            {
+                if (ValidateClient(CedulaCliente) != 0)
+                {
+                    cliente = _context.Reservas.Where(re => re.CedulaCliente == CedulaCliente && re.CodigoEvento == code).FirstOrDefault();
+                    return View("ComprobantePago", cliente);
+                }
+                else
+                {
+                    ModelState.AddModelError("CedulaClienteNavigation.CedulaCliente", "Le informamos que no existe una reserva a su nombre");
+                    return View("ComprobantePago");
+                }
+            }
 
-        private int ValidateClient(String id)
-        {
-            int reserva = _context.Reservas.Where(re => re.CedulaCliente == id && re.CodigoEvento == code).Count();
-            return reserva;
         }
 
     }
 }
+
+
+
+

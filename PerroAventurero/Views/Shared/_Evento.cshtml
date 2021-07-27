@@ -1,0 +1,42 @@
+﻿@model PerroAventurero.Models.Evento
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+           Nombre
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NombreEvento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Lugar)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Lugar)
+        </dd>
+        <dt class="col-sm-2">
+            Dirección
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt class="col-sm-2">
+            Precio general
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrecioGeneral)
+        </dd>
+        <dt class="col-sm-2">
+            Precio niño
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrecioNinno)
+        </dd>
+    </dl>
+</div>

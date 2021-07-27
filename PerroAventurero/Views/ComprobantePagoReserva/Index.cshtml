@@ -12,10 +12,19 @@
 <div class="row">
     <div class="col-md-4">
         <label>Información del evento</label>
-        <label>@ViewBag.name</label>
-        <label>@ViewBag.address</label>
-        
 
+        <div id="eventoP">
+
+
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <div>
+
+            </div>
+           
+        }
 
         <form asp-action="Edit" enctype="multipart/form-data">
 
@@ -31,25 +40,8 @@
             </div>
 
 
-            <div class="form-control-file">
-                <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                <img id="output" width="200" height="200" />
-                <script>
-                    var loadFile = function (event) {
-                        var output = document.getElementById('output');
-                        output.src = URL.createObjectURL(event.target.files[0]);
-                        output.onload = function () {
-                            URL.revokeObjectURL(output.src) // free memory
-                        }
-                    };
-                </script>
-                <span asp-validation-for="ComprobantePago" class="text-danger"></span>
-            </div>
-
-            <hr />
-
             <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
+                <input type="submit" value="Buscar" class="btn btn-primary" />
             </div>
 
         </form>
@@ -62,4 +54,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @Html.ValidationMessageFor(m => m.CedulaClienteNavigation.CedulaCliente)
+
+<script type="text/javascript">
+   
+        $.ajax({
+            type: "POST",
+            url: '/ComprobantePagoReserva/_Evento',
+            success: function (partialView) {
+                console.log("partialView: " + partialView);
+                $('#eventoP').html(partialView)
+            }
+
+        });
+
+ 
+</script>
 }

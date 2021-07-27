@@ -360,9 +360,19 @@ namespace PerroAventurero.Controllers
                 report.NombreEvento = listEventos[i].NombreEvento;
                 report.Fecha_Evento = listEventos[i].Fecha;
                 int totalAttendance = totalAttendace(listEventos[i].CodigoEvento);
-                report.generoPromedioM = (averageGenderM(listEventos[i].CodigoEvento)*100)/ totalAttendance;
-                report.generoPromedioF = (averageGenderF(listEventos[i].CodigoEvento)*100)/ totalAttendance;
-                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                if (totalAttendance > 0)
+                {
+                    report.generoPromedioM = (averageGenderM(listEventos[i].CodigoEvento) * 100) / totalAttendance;
+                    report.generoPromedioF = (averageGenderF(listEventos[i].CodigoEvento) * 100) / totalAttendance;
+                    report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+
+                }
+                else {
+                    report.generoPromedioM = 0;
+                    report.generoPromedioF = 0;
+                    report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                }
+                
                 ListReports.Add(report);
 
             }
@@ -457,11 +467,18 @@ namespace PerroAventurero.Controllers
 
                 Reports report = new Reports();
                 int totalAttendance = totalAllAttendace();
+            if (totalAttendance > 0)
+            {
                 report.generoPromedioM = (averageAllGenderM() * 100) / totalAttendance;
                 report.generoPromedioF = (averageAllGenderF() * 100) / totalAttendance;
                 report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+            }
+            else {
+                report.generoPromedioM = 0;
+                report.generoPromedioF = 0;
+                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
 
-            
+            }            
 
             return report;
         }
