@@ -17,6 +17,16 @@
     text-align: center;
 }
 
+.header-sigin {
+    
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(166, 159, 68, 0.48)), to (rgba(166, 159, 68, 0.48))), url( '../images/p3.jpg' );
+    background-image: linear-gradient(180deg, rgba(166, 159, 68, 0.48), rgba(166, 159, 68, 0.48)), url( '../images/p3.jpg' );
+    background-position: 0px 0px, 50% 60%;
+    background-size: auto, cover;
+    background-repeat: repeat, repeat-y;
+    color: #fff;
+    text-align: center;
+}
     .header-copy .project-page {
         padding-top: 77px;
         padding-bottom: 77px;
