@@ -120,14 +120,21 @@ function childTickets() {
         var doc = divAge.parentNode;
         doc.removeChild(divAge);
     }
-    var niLabel = document.createElement('label');
-    let niText = document.createTextNode("Niños:");
-    niLabel.appendChild(niText);
+
+    var divGen = document.getElementById("divChildGen");
+    if (divGen) {
+        var doc = divGen.parentNode;
+        doc.removeChild(divGen);
+    }
+
+
+
 
     var divAge = document.createElement('div');
     divAge.setAttribute("id", "divChildAge");
 
-
+    var divGen = document.createElement('div');
+    divGen.setAttribute("id", "divChildGen");
 
     for (let i = 0; i < m2; i++) {
         var Age = document.createElement('input');
@@ -172,8 +179,10 @@ function childTickets() {
 
         divAge.appendChild(AgeLabel);
         divAge.appendChild(Age);
-        divAge.appendChild(genderLabel);
-        divAge.appendChild(gender);
-        document.getElementById("ChildTickets").appendChild(divAge)
+        divGen.appendChild(genderLabel);
+        divGen.appendChild(gender);
+
+        document.getElementById("ChildTicketsAge").appendChild(divAge)
+        document.getElementById("ChildTicketsGen").appendChild(divGen)
     }
 }
