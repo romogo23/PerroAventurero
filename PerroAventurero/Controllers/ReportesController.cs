@@ -364,13 +364,13 @@ namespace PerroAventurero.Controllers
                 {
                     report.generoPromedioM = (averageGenderM(listEventos[i].CodigoEvento) * 100) / totalAttendance;
                     report.generoPromedioF = (averageGenderF(listEventos[i].CodigoEvento) * 100) / totalAttendance;
-                    report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                    report.generoPromedioO = (averageGenderO(listEventos[i].CodigoEvento) * 100) / totalAttendance;
 
                 }
                 else {
                     report.generoPromedioM = 0;
                     report.generoPromedioF = 0;
-                    report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                    report.generoPromedioO = 0;
                 }
                 
                 ListReports.Add(report);
@@ -453,6 +453,32 @@ namespace PerroAventurero.Controllers
 
         }
 
+        private decimal averageGenderO(int code)
+        {
+            decimal averageGF = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code && re.Asistencia == true).ToList();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'o')
+                {
+                    averageGF += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'o').Count();
+
+                averageGF += acompannantes;
+            }
+
+            return averageGF;
+
+        }
+
 
 
         //Gender attendance all events
@@ -471,12 +497,12 @@ namespace PerroAventurero.Controllers
             {
                 report.generoPromedioM = (averageAllGenderM() * 100) / totalAttendance;
                 report.generoPromedioF = (averageAllGenderF() * 100) / totalAttendance;
-                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                report.generoPromedioO = (averageAllGenderO() * 100) / totalAttendance;
             }
             else {
                 report.generoPromedioM = 0;
                 report.generoPromedioF = 0;
-                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                report.generoPromedioO = 0;
 
             }            
 
@@ -549,6 +575,34 @@ namespace PerroAventurero.Controllers
 
                 decimal acompannantes = 0;
                 acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'f').Count();
+
+                averageGF += acompannantes;
+            }
+
+            return averageGF;
+
+        }
+
+
+
+        private decimal averageAllGenderO()
+        {
+            decimal averageGF = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.Asistencia == true).ToList();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'o')
+                {
+                    averageGF += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'o').Count();
 
                 averageGF += acompannantes;
             }
