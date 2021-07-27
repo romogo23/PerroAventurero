@@ -27,21 +27,93 @@ namespace PerroAventurero.Controllers
         {
             List<String> rp = reports();
             ViewBag.Reports = rp;
-            return View(reportsAllAtendanceReservationsChildren());
+            return View();
+        }
+
+        public ActionResult RenderMenu(string selectReport, DateTime start, DateTime final)
+        {
+            List<String> rp = reports();
+            ViewBag.Reports = rp;
+            if (selectReport == "Comparación entre asistencia y reservaciones por evento")
+            {
+                if (start == default(DateTime) || final == default(DateTime))
+                {
+                    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
+                    return View("RenderMenu");
+                }
+                else
+                {
+                    return View("ReportAttendanceReservationsEvent", reportsAttendanceReservationsEvents(start, final));
+
+                }
+
+            }
+            else if (selectReport == "Comparación entre asistencia y reservaciones de todos los eventos")
+            {
+                return View("ReportAllAtendanceReservatios", reportsAllAtendanceReservations());
+            }
+            else if (selectReport == "Comparación entre asistencia y reservaciones de niños")
+            {
+                return View("ReportsAllAtendanceReservationsChildren", reportsAllAtendanceReservationsChildren());
+
+
+            }
+            else if (selectReport == ("Top 10 usuarios que han asistido a más eventos"))
+            {
+                return View("ReportsTopUserAttending", reportsTopUserAttending());
+
+            }
+            else if (selectReport == ("Promedio de edad de asistencia por evento"))
+            {
+                //if (start == default(DateTime) || final == default(DateTime))
+                //{
+                //    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
+                //    return View("RenderMenu");
+                //}
+                //else
+                //{
+                //    return View("ReportAttendanceReservationsEvent", reportsAttendanceReservationsEvents());
+
+                //}
+
+            }
+            else if (selectReport == ("Promedio de edad de asistencia por evento"))
+            {
+                //if (start == default(DateTime) || final == default(DateTime))
+                //{
+                //    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
+                //    return View("RenderMenu");
+                //}
+                //else
+                //{
+                //    return View("ReportAttendanceReservationsEvent", reportsAttendanceReservationsEvents());
+
+                //}
+
+            }
+            else {
+                // rp.Add("Género de asistentes");
+
+            }
+
+
+            return View();
+            
         }
 
 
         //hay que agregar el rango de fechas
-        private List<Reports> reportsAttendanceReservationsEvents()
+        private List<Reports> reportsAttendanceReservationsEvents(DateTime start, DateTime final)
         {
             List<Reports> ListReports = new List<Reports>();
-            List<Evento> listEventos = _context.Eventos.ToList();
+            List<Evento> listEventos = _context.Eventos.Where(ev=> ev.Fecha >= start && ev.Fecha <= final).ToList();
 
 
             for (int i = 0; i < listEventos.Count; i++)
             {
                 Reports report = new Reports();
                 report.NombreEvento = listEventos[i].NombreEvento;
+                report.Fecha_Evento = listEventos[i].Fecha;
                 report.asistencia = attendance(listEventos[i].CodigoEvento);
                 report.reservas = reservations(listEventos[i].CodigoEvento);
                 ListReports.Add(report);
@@ -194,8 +266,9 @@ namespace PerroAventurero.Controllers
 
         private List<Reports> reportsTopUserAttending()
         {
-            List<Cliente> listClientes = _context.Clientes.ToList();
-            List<Reports> ListReport = new List<Reports>();
+            List<Cliente> listClientes = _context.Clientes.FromSqlRaw("Select top 10 RECEPCION_ANUNCIOS, NOMBRE_COMPLETO, GENERO, FECHA_NACIMIENTO, TELEFONO,correo, Cliente.CEDULA_CLIENTE,  count(Cliente.CEDULA_CLIENTE) as 'asistencia' from cliente inner join RESERVA on CLIENTE.CEDULA_CLIENTE = RESERVA.CEDULA_CLIENTE group by cliente.CEDULA_CLIENTE, correo, NOMBRE_COMPLETO, TELEFONO, GENERO, FECHA_NACIMIENTO, RECEPCION_ANUNCIOS order by asistencia desc").ToList();
+
+             List<Reports> ListReport = new List<Reports>();
 
 
             for (int i = 0; i < listClientes.Count; i++)
@@ -209,14 +282,13 @@ namespace PerroAventurero.Controllers
                 ListReport.Add(report);
 
             }
-            ListReport.Sort();
-
+            
             return ListReport;
         }
 
         private int attendanceTop(string id)
         {
-            int attendance = _context.Reservas.Where(re => re.CedulaCliente == id).Count();
+            int attendance = _context.Reservas.Where(re => re.CedulaCliente == id && re.Asistencia == true).Count();
 
             return attendance;
         }

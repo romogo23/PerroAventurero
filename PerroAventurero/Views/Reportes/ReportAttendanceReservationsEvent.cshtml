@@ -1,0 +1,94 @@
+﻿@model IEnumerable<PerroAventurero.Models.Reports>
+
+
+
+    @{
+        ViewData["Title"] = "Create";
+    }
+
+<div>
+    <h4>Reportes</h4>
+    <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+
+</div>
+
+    <hr />
+
+    <form asp-action="RenderMenu">
+
+        <div class="m-0 row justify-content-md-center">
+            <select id="report" name="selectReport" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Reports))">
+            </select>
+        </div>
+
+
+        <div id="start" style="display : block">
+            <label for="start">Fecha de inicio:</label>
+
+            <input type="date" id="start" name="start"
+                   min="2021-01-01">
+        </div>
+
+
+        <div id="final" style="display : block">
+            <label for="start">Fecha de final:</label>
+
+            <input type="date" id="start" name="final"
+                   min="2021-01-01">
+        </div>
+
+
+        <div class="form-group">
+            <input type="submit" value="Generar reporte" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+    <hr />
+
+    <div>
+        <hr />
+
+        @*reporte de comparacion entre asistentes y reservaciones por evento *@
+
+    <h1 id="reportName">Comparación entre asistencia y reservaciones por evento</h1>
+
+@foreach (var item in Model)
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(modelItem => item.NombreEvento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(modelItem => item.NombreEvento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(modelItem => item.Fecha_Evento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(modelItem => item.Fecha_Evento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(modelItem => item.reservas)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(modelItem => item.reservas)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(modelItem => item.asistencia)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(modelItem => item.asistencia)
+        </dd>
+    </dl>
+}
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}

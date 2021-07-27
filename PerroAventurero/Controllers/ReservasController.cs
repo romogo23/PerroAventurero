@@ -109,11 +109,15 @@ namespace PerroAventurero.Models
         // GET: Reservas/Create
         public IActionResult Create(int id)
         {
-            if (id != 0) { 
-            code = id;
-            List<String> GroupTime = groupTime(code);
+            if (id != 0) {
+                code = id;
+                List<String> GroupTime = groupTime(code);
 
-            ViewBag.GroupTimeList = GroupTime;
+                Evento evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
+
+                ViewBag.EntradasNinnos = evento.PrecioNinno;
+                ViewBag.EntradasGenerales = evento.PrecioGeneral;
+                ViewBag.GroupTimeList = GroupTime;
             ViewData["Nav"] = "false";
             ViewData["CedulaCliente"] = new SelectList(_context.Clientes, "CedulaCliente", "CedulaCliente");
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
@@ -224,6 +228,9 @@ namespace PerroAventurero.Models
                     List<String> GroupTimeR = groupTime(code);
 
                       ViewBag.GroupTimeList = GroupTimeR;
+
+                        ViewBag.EntradasNinnos = evento.PrecioNinno;
+                        ViewBag.EntradasGenerales = evento.PrecioGeneral;
                         return View(reserva);
                 }
             }
@@ -231,6 +238,8 @@ namespace PerroAventurero.Models
                 {
                     List<String> GroupTimeR = groupTime(code);
 
+                    ViewBag.EntradasNinnos = evento.PrecioNinno;
+                    ViewBag.EntradasGenerales = evento.PrecioGeneral;
                     ViewBag.GroupTimeList = GroupTimeR;
                     ModelState.AddModelError("Grupo", "Le informamos que no quedan entradas disponibles");
                     return View(reserva);
@@ -241,6 +250,8 @@ namespace PerroAventurero.Models
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", reserva.Cedula);
             ViewData["CodigoEvento"] = new SelectList(_context.Eventos, "CodigoEvento", "Cedula", reserva.CodigoEvento);
             List<String> GroupTime = groupTime(code);
+            ViewBag.EntradasNinnos = evento.PrecioNinno;
+            ViewBag.EntradasGenerales = evento.PrecioGeneral;
             ViewBag.GroupTimeList = GroupTime;
             return View(reserva);
         }
