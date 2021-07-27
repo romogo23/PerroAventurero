@@ -179,6 +179,7 @@ namespace PerroAventurero.Controllers
             {
                 return NotFound();
             }
+
             var empresasAfiliadaVieja = _context.EmpresasAfiliadas.Find(id);
             byte[] logoEmp = ViewBag.Image = empresasAfiliadaVieja.Logo;
             _context.Entry(empresasAfiliadaVieja).State = EntityState.Detached;

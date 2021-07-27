@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace PerroAventurero.Controllers
 {
@@ -111,23 +113,42 @@ namespace PerroAventurero.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente)
+        public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente, IFormFile files)
         {
-            //VALIDAR QUE LA CEDULA NO EXISTA!!
-            // NOOOOOOO ME SIRVE!!!!!!!!!!!!!!!!!!!! VIENEN NULL
             if (ModelState.IsValid)
             {
                 if (ValidateClient(usuario.CedulaCliente) == 0)
                 {
-                    //empresasAfiliada.Cedula = session;
-                    _context.Add(usuarioCliente);
+                    if (files != null)
+                    {
+                        if (files.Length > 0)
+                        {
+                            var fileName = Path.GetFileName(files.FileName);
+                            //Getting file Extension
+                            var fileExtension = Path.GetExtension(fileName);
+                            // concatenating  FileName + FileExtension
+                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
-                }
+                            using (var target = new MemoryStream())
+                            {
+                                files.CopyTo(target);
+
+                                usuario.Foto = target.ToArray();
+                            }
+
+                        }
+                    }
+                    _context.Add(usuarioCliente);
                     _context.Add(usuario);
-                    
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", "EmpresasAfiliadas");
+                }
+                else
+                {
+                    ModelState.AddModelError("UsuarioComun.CedulaCliente", "Ya existe un usuario con esa cédula ingresada");
+                }
                 
+                return RedirectToAction("Index", "EmpresasAfiliadas");
+
             }
             return View(usuario);
         }

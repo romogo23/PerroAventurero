@@ -156,6 +156,11 @@ namespace PerroAventurero.Controllers
                 return NotFound();
             }
 
+
+            var eventoVieja = _context.Eventos.Find(id);
+            byte[] logoEmp = ViewBag.Image = eventoVieja.Imagen;
+            _context.Entry(eventoVieja).State = EntityState.Detached;
+
             if (ModelState.IsValid)
             {
                 evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
@@ -187,10 +192,14 @@ namespace PerroAventurero.Controllers
                                 evento.Imagen = target.ToArray();
                             }
                         }
+                        else
+                        {
+                            evento.Imagen = logoEmp;
+                        }
                     }
                     else
                     {
-                        //supongo que no pasa nada, pero queria preguntar, creo que este else se podria borrar
+                        evento.Imagen = logoEmp;
                     }
                     try
                     {

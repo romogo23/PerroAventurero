@@ -106,7 +106,7 @@
                         <img id="output" width="200" height="200" src="@ViewBag.Image" />
                         <br />
                         <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" required />
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)"/>
                         <span asp-validation-for="Imagen" class="text-danger"></span>
                         <br />
                         <br />
@@ -131,11 +131,17 @@
             </div>
         </div>
     </form>
-    <div @*class="deletebtn"*@>
+    <div class="row">
         <form asp-action="Delete" asp-route-id="CodigoEvento" method="post">
             <input type="hidden" asp-for="CodigoEvento" />
-            <input class="button-empresa button" type="submit" onclick="return confirm('¿Está seguro que desea cancelar este evento:')" value="Cancelar" />
+            <input class="btn btn-dark" type="submit" onclick="return confirm('¿Está seguro que desea cancelar este evento:')" value="Cancelar" />
         </form>
+        <div>
+            <a class="btn btn-dark" asp-controller="" asp-action="">Ver Reservaciones"</a>
+        </div>
+        <div>
+            <a class="btn btn-dark" asp-controller="" asp-action="">Enviar Recordatorios</a>
+        </div>
     </div>
 </div>
 
