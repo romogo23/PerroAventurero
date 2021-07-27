@@ -9,6 +9,7 @@
     <h4>Reportes</h4>
 
     <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+
 </div>
 
 <hr />
@@ -16,13 +17,13 @@
 <form asp-action="RenderMenu">
 
     <div class="m-0 row justify-content-md-center">
-        <select id="report" name="selectReport" class="form-control"
+        <select id="report" onchange="rangeDatetime()" name="selectReport" class="form-control"
                 asp-items="@(new SelectList(ViewBag.Reports))">
         </select>
     </div>
 
 
-    <div id="start" style="display : none">
+    <div id="start" style="display : block">
         <label for="start">Fecha de inicio:</label>
 
         <input type="date" id="start" name="start"
@@ -30,7 +31,7 @@
     </div>
 
 
-    <div id="final" style="display : none">
+    <div id="final" style="display : block">
         <label for="start">Fecha de final:</label>
 
         <input type="date" id="start" name="final"
@@ -51,6 +52,8 @@
 
 
     @* Reportes de comparacion de asistencia y reservaciones de niños *@
+<h1 id="reportName">Comparación de asistencia y reservaciones de niños</h1>
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.reservas)

@@ -63,42 +63,28 @@ namespace PerroAventurero.Controllers
                 return View("ReportsTopUserAttending", reportsTopUserAttending());
 
             }
-            else if (selectReport == ("Promedio de edad de asistencia por evento"))
+            else if (selectReport == ("Género de los asistentes por evento"))
             {
-                //if (start == default(DateTime) || final == default(DateTime))
-                //{
-                //    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
-                //    return View("RenderMenu");
-                //}
-                //else
-                //{
-                //    return View("ReportAttendanceReservationsEvent", reportsAttendanceReservationsEvents());
+                if (start == default(DateTime) || final == default(DateTime))
+                {
+                    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
+                    return View("RenderMenu");
+                }
+                else
+                {
+                    return View("ReportGenderPerEvent", GenderPerEvent(start,final));
 
-                //}
-
-            }
-            else if (selectReport == ("Promedio de edad de asistencia por evento"))
-            {
-                //if (start == default(DateTime) || final == default(DateTime))
-                //{
-                //    ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
-                //    return View("RenderMenu");
-                //}
-                //else
-                //{
-                //    return View("ReportAttendanceReservationsEvent", reportsAttendanceReservationsEvents());
-
-                //}
+                }
 
             }
-            else {
-                // rp.Add("Género de asistentes");
+            else if (selectReport == "Género de asistentes"){
 
+                return View("ReportGenderAllEvents", GenderAllEvent());
             }
 
 
-            return View();
-            
+            return View("RenderMenu");
+
         }
 
 
@@ -106,7 +92,8 @@ namespace PerroAventurero.Controllers
         private List<Reports> reportsAttendanceReservationsEvents(DateTime start, DateTime final)
         {
             List<Reports> ListReports = new List<Reports>();
-            List<Evento> listEventos = _context.Eventos.Where(ev=> ev.Fecha >= start && ev.Fecha <= final).ToList();
+            List<Evento> listEventos = new List<Evento>();
+            listEventos = _context.Eventos.Where(ev=> ev.Fecha >= start && ev.Fecha <= final).ToList();
 
 
             for (int i = 0; i < listEventos.Count; i++)
@@ -125,7 +112,8 @@ namespace PerroAventurero.Controllers
 
         private int attendance(int code)
         {
-            List<Reserva> reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
 
             int sumAttendance = 0;
 
@@ -144,7 +132,8 @@ namespace PerroAventurero.Controllers
 
         private int reservations(int code)
         {
-            List<Reserva> reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
 
             int sumReservations = reserva.Count;
 
@@ -165,7 +154,7 @@ namespace PerroAventurero.Controllers
             rp.Add("Comparación entre asistencia y reservaciones de todos los eventos");
             rp.Add("Comparación entre asistencia y reservaciones de niños");
             rp.Add("Top 10 usuarios que han asistido a más eventos");
-            rp.Add("Promedio de edad de asistencia por evento");
+            //rp.Add("Promedio de edad de asistencia por evento");
             rp.Add("Género de los asistentes por evento");
             rp.Add("Género de asistentes");
 
@@ -181,7 +170,8 @@ namespace PerroAventurero.Controllers
         private Reports reportsAllAtendanceReservations()
         {
             Reports report = new Reports();
-            List<Evento> listEventos = _context.Eventos.ToList();
+            List<Evento> listEventos = new List<Evento>();
+            listEventos = _context.Eventos.ToList();
 
 
             for (int i = 0; i < listEventos.Count; i++)
@@ -211,7 +201,8 @@ namespace PerroAventurero.Controllers
         private Reports reportsAllAtendanceReservationsChildren()
         {
             Reports report = new Reports();
-            List<Evento> listEventos = _context.Eventos.ToList();
+            List<Evento> listEventos = new List<Evento>();
+            listEventos = _context.Eventos.ToList();
 
 
             for (int i = 0; i < listEventos.Count; i++)
@@ -226,7 +217,8 @@ namespace PerroAventurero.Controllers
 
         private int attendanceChildren(int code)
         {
-            List<Reserva> reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
 
             int sumAttendance = 0;
 
@@ -243,7 +235,8 @@ namespace PerroAventurero.Controllers
 
         private int reservationsChildren(int code)
         {
-            List<Reserva> reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
+            List<Reserva> reserva = new List<Reserva>(); 
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code).ToList();
 
             int sumReservations = 0;
 
@@ -266,7 +259,8 @@ namespace PerroAventurero.Controllers
 
         private List<Reports> reportsTopUserAttending()
         {
-            List<Cliente> listClientes = _context.Clientes.FromSqlRaw("Select top 10 RECEPCION_ANUNCIOS, NOMBRE_COMPLETO, GENERO, FECHA_NACIMIENTO, TELEFONO,correo, Cliente.CEDULA_CLIENTE,  count(Cliente.CEDULA_CLIENTE) as 'asistencia' from cliente inner join RESERVA on CLIENTE.CEDULA_CLIENTE = RESERVA.CEDULA_CLIENTE group by cliente.CEDULA_CLIENTE, correo, NOMBRE_COMPLETO, TELEFONO, GENERO, FECHA_NACIMIENTO, RECEPCION_ANUNCIOS order by asistencia desc").ToList();
+            List<Cliente> listClientes = new List<Cliente>();
+            listClientes = _context.Clientes.FromSqlRaw("Select top 10 RECEPCION_ANUNCIOS, NOMBRE_COMPLETO, GENERO, FECHA_NACIMIENTO, TELEFONO,correo, Cliente.CEDULA_CLIENTE,  count(Cliente.CEDULA_CLIENTE) as 'asistencia' from cliente inner join RESERVA on CLIENTE.CEDULA_CLIENTE = RESERVA.CEDULA_CLIENTE group by cliente.CEDULA_CLIENTE, correo, NOMBRE_COMPLETO, TELEFONO, GENERO, FECHA_NACIMIENTO, RECEPCION_ANUNCIOS order by asistencia desc").ToList();
 
              List<Reports> ListReport = new List<Reports>();
 
@@ -299,6 +293,53 @@ namespace PerroAventurero.Controllers
         //Fecha del evento.
         //Promedio de edad por evento: suma de las edades de los asistentes dividido entre la cantidad total de asistencia
 
+        private List<Reports> AverageEventAge(DateTime start, DateTime final)
+        {
+            List<Reports> ListReports = new List<Reports>();
+            List<Evento> listEventos= new List<Evento>();
+            listEventos = _context.Eventos.Where(ev => ev.Fecha >= start && ev.Fecha <= final).ToList();
+
+
+            for (int i = 0; i < listEventos.Count; i++)
+            {
+                Reports report = new Reports();
+                report.NombreEvento = listEventos[i].NombreEvento;
+                report.Fecha_Evento = listEventos[i].Fecha;
+                //report.edadPromedio = averageAge(listEventos[i].CodigoEvento);
+                ListReports.Add(report);
+
+            }
+
+            return ListReports;
+        }
+
+
+        //private int averageAge(int code)
+        //{
+        //    int average = 0;
+        //    List<Reserva> reserva = new List<Reserva>();
+        //    reserva = _context.Reservas.Where(re => re.CodigoEvento == code && re.Asistencia == true).ToList();
+
+        //    for (int i = 0; i < reserva.Count; i++)
+        //    {
+        //        Cliente cliente = _context.Clientes.Where(re => re.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+        //        average += reserva[i].FechaReserva.Year - cliente.FechaNacimiento.Year;
+        //        List<Acompannante> acompannantes = new List<Acompannante>();
+        //        acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true).ToList();
+        //        if (acompannantes.Count > 0)
+        //        {
+        //            for (int j = 0; j < acompannantes.Count; j++)
+        //            {
+        //                average += acompannantes[j].Edad;
+
+        //            }
+        //        }
+
+        //    }
+
+
+        //    return average;
+        //}
 
         //Gender attendance per event (date range)
         //Nombre del evento. 
@@ -306,12 +347,198 @@ namespace PerroAventurero.Controllers
         //Porcentaje de asistencia de género masculino: cantidad de asistentes de género masculino por 100 dividido entre asistentes totales. 
         //Porcentaje de asistencia de género femenino: cantidad de asistentes de género femenino por 100 dividido entre asistentes totales. 
         //Porcentaje de asistencia de género otro: cantidad de asistentes de género otro por 100 dividido entre asistentes totales. 
+        private List<Reports> GenderPerEvent(DateTime start, DateTime final)
+        {
+            List<Reports> ListReports = new List<Reports>();
+            List<Evento> listEventos = new List<Evento>();
+            listEventos = _context.Eventos.Where(ev => ev.Fecha >= start && ev.Fecha <= final).ToList();
+
+
+            for (int i = 0; i < listEventos.Count; i++)
+            {
+                Reports report = new Reports();
+                report.NombreEvento = listEventos[i].NombreEvento;
+                report.Fecha_Evento = listEventos[i].Fecha;
+                int totalAttendance = totalAttendace(listEventos[i].CodigoEvento);
+                report.generoPromedioM = (averageGenderM(listEventos[i].CodigoEvento)*100)/ totalAttendance;
+                report.generoPromedioF = (averageGenderF(listEventos[i].CodigoEvento)*100)/ totalAttendance;
+                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+                ListReports.Add(report);
+
+            }
+
+            return ListReports;
+        }
+
+        private decimal averageGenderM(int code) {
+            decimal averageGM = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code && re.Asistencia == true).ToList();
+
+            
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'm')
+                {
+                    averageGM += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'm').Count();
+
+                averageGM += acompannantes;
+            }
+
+            return averageGM;
+
+        }
+
+        private int totalAttendace(int code)
+        {
+            int totalAttendance = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code && re.Asistencia == true).ToList();
+            totalAttendance = reserva.Count();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                int acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true).Count();
+
+                totalAttendance += acompannantes;
+            }
+
+            return totalAttendance;
+
+        }
+
+        private decimal averageGenderF(int code)
+        {
+            decimal averageGF = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.CodigoEvento == code && re.Asistencia == true).ToList();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'f') {
+                    averageGF += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'f').Count();
+
+                averageGF += acompannantes;
+            }
+
+            return averageGF;
+
+        }
+
+
 
         //Gender attendance all events
         //Porcentaje de asistencia de género masculino: cantidad de asistentes de género masculino por 100 dividido entre asistentes totales. 
         //Porcentaje de asistencia de género femenino: cantidad de asistentes de género femenino por 100 dividido entre asistentes totales. 
         //Porcentaje de asistencia de género otro: cantidad de asistentes de género otro por 100 dividido entre asistentes totales. 
 
+        private Reports GenderAllEvent()
+        {
+          
+
+
+                Reports report = new Reports();
+                int totalAttendance = totalAllAttendace();
+                report.generoPromedioM = (averageAllGenderM() * 100) / totalAttendance;
+                report.generoPromedioF = (averageAllGenderF() * 100) / totalAttendance;
+                report.generoPromedioO = 100 - report.generoPromedioF - report.generoPromedioM;
+
+            
+
+            return report;
+        }
+
+        private decimal averageAllGenderM()
+        {
+            decimal averageGM = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.Asistencia == true).ToList();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'm')
+                {
+                    averageGM += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'm').Count();
+
+                averageGM += acompannantes;
+            }
+
+            return averageGM;
+
+        }
+
+        private int totalAllAttendace()
+        {
+            int totalAttendance = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.Asistencia == true).ToList();
+            totalAttendance = reserva.Count();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                int acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true).Count();
+
+                totalAttendance += acompannantes;
+            }
+
+            return totalAttendance;
+
+        }
+
+        private decimal averageAllGenderF()
+        {
+            decimal averageGF = 0;
+
+            List<Reserva> reserva = new List<Reserva>();
+            reserva = _context.Reservas.Where(re => re.Asistencia == true).ToList();
+
+
+            for (int i = 0; i < reserva.Count; i++)
+            {
+                Cliente cliente = _context.Clientes.Where(cli => cli.CedulaCliente == reserva[i].CedulaCliente).FirstOrDefault();
+                if (cliente.Genero == 'f')
+                {
+                    averageGF += 1;
+                }
+
+                decimal acompannantes = 0;
+                acompannantes = _context.Acompannantes.Where(ac => ac.CodigoReserva == reserva[i].CodigoReserva && ac.Asistencia == true && ac.Genero == 'f').Count();
+
+                averageGF += acompannantes;
+            }
+
+            return averageGF;
+
+        }
 
     }
 }

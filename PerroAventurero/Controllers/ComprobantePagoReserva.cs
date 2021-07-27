@@ -36,6 +36,10 @@ namespace PerroAventurero.Controllers
             evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
             ViewBag.name = evento.NombreEvento;
             ViewBag.address = evento.Direccion;
+            ViewBag.EntradaNinno = evento.PrecioNinno;
+            ViewBag.EntradaGeneral= evento.PrecioGeneral;
+            ViewBag.address = evento.Direccion;
+
 
         }
 

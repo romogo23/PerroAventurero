@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<PerroAventurero.Models.Reports>
 
 
+
 @{
+    ViewData["Title"] = "Create";
 }
 
 <div>
     <h4>Reportes</h4>
     <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+
 
 </div>
 
@@ -48,38 +51,43 @@
 <div>
     <hr />
 
+    @*reporte de comparacion entre asistentes y reservaciones por evento *@
 
-
-    @*reporte top de usuarios que mas asisten *@
-<h1 id="reportName">Top de usuarios que más asisten</h1>
+    <h1 id="reportName">Comparación entre géneros de asistencia por evento</h1>
 
 
     @foreach (var item in Model)
     {
         <dl class="row">
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(modelItem => item.cedulacliente)
+                @Html.DisplayNameFor(modelItem => item.NombreEvento)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(modelItem => item.cedulacliente)
+                @Html.DisplayFor(modelItem => item.NombreEvento)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(modelItem => item.NombreCliente)
+                @Html.DisplayNameFor(modelItem => item.Fecha_Evento)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(modelItem => item.NombreCliente)
+                @Html.DisplayFor(modelItem => item.Fecha_Evento)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(modelItem => item.telefono)
+                @Html.DisplayNameFor(modelItem => item.generoPromedioM)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(modelItem => item.telefono)
+                @Html.DisplayFor(modelItem => item.generoPromedioM)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(modelItem => item.AttendanceEvent)
+                @Html.DisplayNameFor(modelItem => item.generoPromedioF)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(modelItem => item.AttendanceEvent)
+                @Html.DisplayFor(modelItem => item.generoPromedioF)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(modelItem => item.generoPromedioO)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(modelItem => item.generoPromedioO)
             </dd>
         </dl>
     }
@@ -92,9 +100,3 @@
 
 
 }
-
-@*//Report Users attending the most events
-    //Cédula de usuario (se debe agrupar por este dato).
-    //Nombre de usuario.
-    //Número de teléfono del usuario.
-    //Cantidad de eventos asistidos: realizar una cuenta de los eventos a los que ha asistido el usuario (se debe ordenar por este dato).*@

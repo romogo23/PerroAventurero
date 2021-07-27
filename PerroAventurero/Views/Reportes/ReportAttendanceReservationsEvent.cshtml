@@ -17,7 +17,7 @@
     <form asp-action="RenderMenu">
 
         <div class="m-0 row justify-content-md-center">
-            <select id="report" name="selectReport" class="form-control"
+            <select id="report" onchange="rangeDatetime()" name="selectReport" class="form-control"
                     asp-items="@(new SelectList(ViewBag.Reports))">
             </select>
         </div>

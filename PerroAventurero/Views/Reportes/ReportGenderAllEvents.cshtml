@@ -8,6 +8,7 @@
     <h4>Reportes</h4>
     <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
 
+
 </div>
 
 <hr />
@@ -51,29 +52,28 @@
 
 
     @*reporte de comparacion entre asistentes y reservaciones de todos los eventos *@
-<h1 id="reportName">Comparación entre asistentes y reservaciones de todos los eventos</h1>
-    <dl class="row">
+<h1 id="reportName">Comparación entre géneros de asistencia de todos los eventos</h1>
 
+    <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.reservas)
+            @Html.DisplayNameFor(model => model.generoPromedioM)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.reservas)
+            @Html.DisplayFor(model => model.generoPromedioM)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.asistencia)
+            @Html.DisplayNameFor(model => model.generoPromedioF)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.asistencia)
+            @Html.DisplayFor(model => model.generoPromedioF)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.porcentaje)
+            @Html.DisplayNameFor(model => model.generoPromedioO)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.porcentaje)
+            @Html.DisplayFor(model => model.generoPromedioO)
         </dd>
     </dl>
-
 
 
 </div>
@@ -84,4 +84,3 @@
 
 
 }
-
