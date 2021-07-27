@@ -24,13 +24,7 @@
 </div>
 
 
-@using (Html.BeginForm())
-{
-    <p>
-        Find by name: @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    </p>
-}
+
 
 <div class="section-event container">
     <div class="container">
@@ -43,6 +37,13 @@
             </div>
         </div>
     </div>
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
     <div class="row justify-content-center">
         @foreach (var item in Model)
         {

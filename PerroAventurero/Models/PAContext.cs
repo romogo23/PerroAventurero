@@ -182,6 +182,8 @@ namespace PerroAventurero.Models
                     .HasColumnType("image")
                     .HasColumnName("LOGO");
 
+                entity.Property(e => e.NombreContacto).HasMaxLength(250).IsUnicode(false).HasColumnName("NOMBRE_CONTACTO");
+
                 entity.Property(e => e.NombreEmpresa)
                     .IsRequired()
                     .HasMaxLength(100)

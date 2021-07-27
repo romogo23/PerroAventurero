@@ -25,6 +25,8 @@ namespace PerroAventurero.Models
         [Required(ErrorMessage = "Su télefono requerido")]
         public int? Telefono { get; set; }
 
+        public string NombreContacto { get; set; }
+
         public virtual UsuarioAdministrador CedulaNavigation { get; set; }
     }
 }

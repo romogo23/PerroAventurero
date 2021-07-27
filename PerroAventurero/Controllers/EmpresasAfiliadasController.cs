@@ -33,7 +33,7 @@ namespace PerroAventurero.Controllers
             var pAContext = _context.EmpresasAfiliadas.Include(e => e.CedulaNavigation);
             if (!String.IsNullOrEmpty(searchString))
             {
-                pAContext = _context.EmpresasAfiliadas.Where(e => e.NombreEmpresa.Contains(searchString)).Include(e => e.CedulaNavigation);
+                pAContext = _context.EmpresasAfiliadas.Where(e => e.NombreEmpresa.Contains(searchString) || e.NombreContacto.Contains(searchString)).Include(e => e.CedulaNavigation);
             }
             List<byte[]> listP = new List<byte[]>();
 
@@ -111,7 +111,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodigoEmpresa,Cedula,NombreEmpresa,Correo,Logo,Categoria,Telefono")] EmpresasAfiliada empresasAfiliada, IFormFile files)
+        public async Task<IActionResult> Create([Bind("CodigoEmpresa,Cedula,NombreEmpresa,Correo,Logo,Categoria,Telefono,NombreContacto")] EmpresasAfiliada empresasAfiliada, IFormFile files)
         {
             if (ModelState.IsValid)
             {
@@ -173,7 +173,7 @@ namespace PerroAventurero.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CodigoEmpresa,Cedula,NombreEmpresa,Correo,Logo,Categoria,Telefono")] EmpresasAfiliada empresasAfiliada, IFormFile files)
+        public async Task<IActionResult> Edit(int id, [Bind("CodigoEmpresa,Cedula,NombreEmpresa,Correo,Logo,Categoria,Telefono,NombreContacto")] EmpresasAfiliada empresasAfiliada, IFormFile files)
         {
             if (id != empresasAfiliada.CodigoEmpresa)
             {
