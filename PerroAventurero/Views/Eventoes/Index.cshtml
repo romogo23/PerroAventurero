@@ -23,6 +23,15 @@
     </div>
 </div>
 
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
 <div class="section-event container">
     <div class="container">
         <div class="row">
@@ -51,18 +60,18 @@
                     <br />
                     <p>Fecha: @Html.DisplayFor(modelItem => item.Fecha)</p>
                     <p>Lugar: @Html.DisplayFor(modelItem => item.Lugar)</p>
-                    
-                    @*<div class="row justify-content-center">
-            <div class="col-6 justify-content-center">
-                <a class="button-empresa" >Detalles</a>
-            </div>
 
-            <div class="col-6 justify-content-center">
-                <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
-                    <input class="button-empresa" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
-                </form>
-            </div>
-        </div>*@
+                    @*<div class="row justify-content-center">
+                            <div class="col-6 justify-content-center">
+                                <a class="button-empresa" >Detalles</a>
+                            </div>
+
+                            <div class="col-6 justify-content-center">
+                                <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
+                                    <input class="button-empresa" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
+                                </form>
+                            </div>
+                        </div>*@
                 </div>
             </div>
         }

@@ -27,6 +27,13 @@
             </div>
         </div>
     </div>
+    @using (Html.BeginForm())
+    {
+        <p>
+            Find by name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
     <div class="row justify-content-center">
         @foreach (var item in Model)
         {
@@ -35,16 +42,16 @@
                     <h4 class="name"><a class="nameLink" asp-action="Edit" asp-route-id="@item.CodigoEmpresa">@Html.DisplayFor(modelItem => item.NombreEmpresa)</a></h4>
                     <img class="imgLogo" width="200" height="200" src="@Url.Action("getImage", "EmpresasAfiliadas", new { id = item.CodigoEmpresa })" />
                     @*<div class="row justify-content-center">
-                        <div class="col-6 justify-content-center">
-                            <a class="button-empresa" >Detalles</a>
-                        </div>
+                            <div class="col-6 justify-content-center">
+                                <a class="button-empresa" >Detalles</a>
+                            </div>
 
-                        <div class="col-6 justify-content-center">
-                            <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
-                                <input class="button-empresa" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
-                            </form>
-                        </div>
-                    </div>*@
+                            <div class="col-6 justify-content-center">
+                                <form asp-action="Delete" asp-route-id="@item.CodigoEmpresa" method="post">
+                                    <input class="button-empresa" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEmpresa')" value="Eliminar" />
+                                </form>
+                            </div>
+                        </div>*@
                 </div>
             </div>
         }

@@ -23,9 +23,13 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var pAContext = _context.Eventos.Include(e => e.CedulaNavigation);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pAContext = _context.Eventos.Where(e => e.NombreEvento.Contains(searchString)).Include(e => e.CedulaNavigation);
+            }
             return View(await pAContext.ToListAsync());
         }
 

@@ -28,9 +28,13 @@ namespace PerroAventurero.Controllers
 
         //[Authorize(Roles = "Administrator")]
         // GET: EmpresasAfiliadas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var pAContext = _context.EmpresasAfiliadas.Include(e => e.CedulaNavigation);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pAContext = _context.EmpresasAfiliadas.Where(e => e.NombreEmpresa.Contains(searchString)).Include(e => e.CedulaNavigation);
+            }
             List<byte[]> listP = new List<byte[]>();
 
             foreach (var empr in pAContext.ToList())
