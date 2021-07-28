@@ -34,10 +34,21 @@ namespace PerroAventurero.Controllers
         {
             List<String> rp = reports();
             ViewBag.Reports = rp;
+
+            if (start != default(DateTime) && final != default(DateTime))
+            {
+                if (DateTime.Compare(start, final) > 0 || DateTime.Compare(start, final) == 0)
+                {
+                    ModelState.AddModelError("Fecha_Evento", "La fecha final debe ser posterior a la fecha inicial");
+                    return View("RenderMenu");
+                }
+            }
+
             if (selectReport == "Comparación entre asistencia y reservaciones por evento")
             {
                 if (start == default(DateTime) || final == default(DateTime))
                 {
+
                     ModelState.AddModelError("Fecha_Evento", "Seleccione un rango de fechas");
                     return View("RenderMenu");
                 }

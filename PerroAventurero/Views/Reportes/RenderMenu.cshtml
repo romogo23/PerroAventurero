@@ -30,7 +30,6 @@
 
                     <input type="date" id="start" name="start"
                            min="2021-01-01">
-                    <span asp-validation-for="Fecha_Evento" class="text-danger"></span>
                 </div>
 
             </div>
@@ -41,7 +40,7 @@
                     <input type="date" id="start" name="final"
                            min="2021-01-01">
                 </div>
-
+                <span asp-validation-for="Fecha_Evento" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
@@ -53,6 +52,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    @Html.ValidationMessageFor(g => g.Fecha_Evento)
 
 
 }
