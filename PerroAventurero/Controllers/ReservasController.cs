@@ -165,7 +165,7 @@ namespace PerroAventurero.Models
 
             reserva.CedulaCliente = reserva.CedulaClienteNavigation.CedulaCliente;
 
-            if (Age.Count() == 0)
+            if (reserva.EntradasNinnos == null)
             {
                 reserva.EntradasNinnos = 0;
             }

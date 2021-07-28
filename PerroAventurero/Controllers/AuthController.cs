@@ -21,6 +21,10 @@ namespace PerroAventurero.Controllers
 
         private static string emailModify;
 
+        private static Cliente_UsuarioComun userComun;
+
+        private static UsuarioAdministrador userAdmin;
+
         private static string codeMod;
 
         public AuthController(PAContext context)
@@ -65,25 +69,166 @@ namespace PerroAventurero.Controllers
             return View();
         }
 
-        public ActionResult ModifyPass(string NewPassword)
+        public ActionResult ModifyPass(string NewPassword, string ConfirmPassword)
         {
-            return RedirectToAction("Login", "Auth");
+            if (NewPassword.Equals(ConfirmPassword)) {
+
+                if (userAdmin != null)
+                {
+                    userAdmin.Contrasenna= NewPassword;
+                    userAdmin.CodigoTemporal = null;
+                    _context.Update(userAdmin);
+                }
+                else if (userComun != null)
+                {
+                    userComun.UsuarioComun.Contrasenna = NewPassword;
+                    userComun.UsuarioComun.CodigoTemporal = null;
+                    _context.Update(userComun.UsuarioComun);
+                    _context.SaveChanges();
+                }
+                return RedirectToAction("Login", "Auth");
+
+            }
+            else
+            {
+                ModelState.AddModelError("UsuarioComun.Contrasenna", "Las contraseñas no coinciden");
+                return View("ModifyPassword_4");
+            }
         }
 
-        public ActionResult ValidateCode(string Code)
+        public ActionResult ValidateCode(short Code)
         {
-            codeMod = Code;
-            return RedirectToAction("ModifyPassword_4", "Auth");
+
+            if (emailModify != null)
+            {
+                if (userAdmin != null)
+                {
+                    if (userAdmin.CodigoTemporal == Code)
+                    {
+                        return RedirectToAction("ModifyPassword_4", "Auth");
+
+                    }
+                    else {
+                        ModelState.AddModelError("UsuarioComun.CodigoTemporal", "Código incorrecto");
+                        return View("ModifyPassword_3");
+                    }
+
+                }
+                else if (userComun != null)
+                {
+                    if (userComun.UsuarioComun.CodigoTemporal == Code)
+                    {
+                        return RedirectToAction("ModifyPassword_4", "Auth");
+
+                    }
+                    else {
+                        ModelState.AddModelError("UsuarioComun.CodigoTemporal", "Código incorrecto");
+                        return View("ModifyPassword_3");
+                    }
+
+
+                }
+                return View("Login");
+
+
+            }
+            else {
+                return View("Login");
+            }
+        }
+
+
+        public ActionResult ValidateSendCode()
+        {
+            if (emailModify != null)
+            {
+                
+                short codeMod = generateCode();
+                if (userAdmin != null)
+                {
+                    userAdmin.CodigoTemporal = codeMod;
+                    _context.Update(userAdmin);
+                }
+                else if(userComun != null  ) {
+                    userComun.UsuarioComun.CodigoTemporal = codeMod;
+                    _context.Update(userComun.UsuarioComun);
+                    _context.SaveChanges();
+                }
+                string message = "Su contraseña temporal es: " + codeMod;
+                string subject = "Cambio de contraseña Perro Aventurero";
+                SendCode(emailModify, message, subject);
+                return RedirectToAction("ModifyPassword_3", "Auth");
+            }
+            else
+            {
+                return View("Login");
+            }
+        }
+
+        private short generateCode()
+        {
+            return (short)new Random().Next(1000, 9999);
         }
 
         public ActionResult ValidateEmail(string correo)
         {
-            emailModify = correo;
-            return RedirectToAction("ModifyPassword_2", "Auth");
+            if (correo != null)
+            {
+                Cliente_UsuarioComun cliente = null;
+                UsuarioAdministrador admin = null;
+                cliente = EmailNUser(correo);
+                admin = EmailAdminUser(correo);
+
+                if (cliente != null || admin != null)
+                {
+                    emailModify = correo;
+                    userComun= cliente;
+                    userAdmin = admin;
+                   return RedirectToAction("ModifyPassword_2", "Auth");
+
+                }else
+                {
+                    ModelState.AddModelError("Correo", "Correo inválido");
+                    return View("ModifyPassword");
+                }
+                
+            }
+            else {
+                ModelState.AddModelError("Correo", "Correo inválido");
+                return View("ModifyPassword");
+            }
+           
         }
 
+
+
+        private UsuarioAdministrador EmailAdminUser(String email)
+        {
+            UsuarioAdministrador usuarioAdmin = null;
+            usuarioAdmin = _context.UsuarioAdministradors.Where(u => u.Correo == email).FirstOrDefault();
+            return usuarioAdmin;
+        }
+
+        private Cliente_UsuarioComun EmailNUser(String email)
+        {
+            Cliente cliente = null;
+            UsuarioComun usuarioC = null;
+            Cliente_UsuarioComun c_U = null;
+            cliente = _context.Clientes.Where(u => u.Correo == email).FirstOrDefault();
+            if (cliente != null) {
+                usuarioC = _context.UsuarioComuns.Where(u => u.CedulaCliente.Equals(cliente.CedulaCliente)).FirstOrDefault();
+                if (usuarioC != null)
+                {
+                    c_U = new Cliente_UsuarioComun(usuarioC, cliente);
+                }
+            }
+            return c_U;
+        }
+
+
+
         [HttpPost]
-        public ActionResult SendCode(string Correo)
+        public ActionResult SendCode(string Correo, string message, string subject)
         {
             try
             {
@@ -98,8 +243,8 @@ namespace PerroAventurero.Controllers
                 MailMessage msg = new MailMessage();
                 msg.To.Add(Correo.ToString());
                 msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Prueba de correo";
-                msg.Body = "Prueba de correo";
+                msg.Subject = subject;
+                msg.Body = message;
                 //Attachment data = new Attachment(textBox3.Text);
                 //msg.Attachments.Add(data);
                 client.Send(msg);
@@ -115,10 +260,23 @@ namespace PerroAventurero.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente, IFormFile files)
         {
+            Cliente_UsuarioComun cu = new Cliente_UsuarioComun(usuario, usuarioCliente);
+
             if (ModelState.IsValid)
             {
-                if (ValidateClient(usuario.CedulaCliente) == 0)
-                {
+                
+               if (ValidateUser(usuario.CedulaCliente) == 0) {
+
+                    if (ValidateClient(usuario.CedulaCliente) == 0)
+                    {
+                        _context.Add(usuarioCliente);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _context.Update(usuarioCliente);
+                    }
+
                     if (files != null)
                     {
                         if (files.Length > 0)
@@ -138,19 +296,19 @@ namespace PerroAventurero.Controllers
 
                         }
                     }
-                    _context.Add(usuarioCliente);
                     _context.Add(usuario);
                     await _context.SaveChangesAsync();
                 }
                 else
                 {
                     ModelState.AddModelError("UsuarioComun.CedulaCliente", "Ya existe un usuario con esa cédula ingresada");
-                }
+                    return View(cu);
+                }   
                 
                 return RedirectToAction("Index", "EmpresasAfiliadas");
 
             }
-            return View(usuario);
+            return View(cu);
         }
 
         private int ValidateClient(String id)
@@ -211,13 +369,13 @@ namespace PerroAventurero.Controllers
 
                 return RedirectToAction("Index", "EmpresasAfiliadas");
             }
-            if (usuarioComun.Cliente != null)
+            if (usuarioComun != null)
             {
                 var normal = CreateComun(usuarioComun);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, normal);
 
-                return RedirectToAction("Create", "EmpresasAfiliadas");
+                return Redirect("~/Home/Index");
             }
             ModelState.AddModelError("correo", "Correo o contraseña incorrecta");
             return View();
@@ -241,12 +399,20 @@ namespace PerroAventurero.Controllers
             Cliente_UsuarioComun ret = null;
             UsuarioComun usuarioComun = null;
             Cliente cliente = null;
-            usuarioComun = _context.UsuarioComuns.Where(u => u.Contrasenna == password).FirstOrDefault();
             cliente = _context.Clientes.Where(u => u.Correo == email).FirstOrDefault();
+            if (cliente != null) {
+                usuarioComun = _context.UsuarioComuns.Where(u => u.CedulaCliente.Equals(cliente.CedulaCliente) && u.Contrasenna == password).FirstOrDefault();
+                if (usuarioComun != null)
+                {
+                    if (cliente.CedulaCliente.Equals(usuarioComun.CedulaCliente))
+                    {
+                        ret = new Cliente_UsuarioComun(usuarioComun, cliente);
 
-            ret = new Cliente_UsuarioComun(usuarioComun, cliente);
-
-            return ret;
+                        return ret;
+                    }
+                }
+            }
+            return null;
         }
 
         private ClaimsPrincipal CreatePrincipal(UsuarioAdministrador userAdmin)

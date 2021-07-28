@@ -22,13 +22,18 @@ namespace PerroAventurero.Models
         public string Genero { get; set; }
         public int? Telefono { get; set; }
         
-        [Required(ErrorMessage = "Se requiere un correo de empresa")]
+        [Required(ErrorMessage = "Debe de ingresar un correo")]
         [RegularExpression(@"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "El correo no corresponde a uno válido")]
         public string Correo { get; set; }
         public string Descripcion { get; set; }
         public DateTime? FechaCambioC { get; set; }
         public byte[] Foto { get; set; }
         public short? CodigoTemporal { get; set; }
+
+        [Display(Name = "Contraseña")]
+        [Required(ErrorMessage = "La contraseña es requerida")]
+        [MaxLength(11, ErrorMessage = "Constraseña debe tener máximo 11 caracteres")]
+        [MinLength(8, ErrorMessage = "Constraseña debe tener mínimo 8 caracteres")]
         public string Contrasenna { get; set; }
 
         public virtual ICollection<Afiliacion> Afiliacions { get; set; }
