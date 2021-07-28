@@ -66,6 +66,7 @@ namespace PerroAventurero.Controllers
 
                 do
                 {
+                    msg.To.Clear();
                     currentReservation = listOfReservations.First();
                     cliente = _context.Clientes.Where(c => c.CedulaCliente == currentReservation.CedulaCliente).FirstOrDefault();
 
