@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -522,6 +524,22 @@ namespace PerroAventurero.Models
         private bool ReservaExists(int id)
         {
             return _context.Reservas.Any(e => e.CodigoReserva == id);
+        }
+
+
+        public ActionResult getImage(int id)
+        {
+            var eventoVieja = _context.Reservas.Find(id);
+            byte[] byteImage = eventoVieja.ComprobantePago;
+
+            MemoryStream memoryStream = new MemoryStream(byteImage);
+            Image image = Image.FromStream(memoryStream);
+
+            memoryStream = new MemoryStream();
+            image.Save(memoryStream, ImageFormat.Jpeg);
+            memoryStream.Position = 0;
+
+            return File(memoryStream, "image/jpg");
         }
     }
 }

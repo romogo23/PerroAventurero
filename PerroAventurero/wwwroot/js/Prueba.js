@@ -17,7 +17,10 @@ function TicketsChildrens() {
 function Price() {
     var m1 = document.getElementById("entradasGenerales").value;
     var m2 = document.getElementById("entradasNinnos").value;
-    r = m1 * 3500 + m2 * 2500;
+    var priceKids = document.getElementById("ticketKid").textContent;
+    var priceTicket = document.getElementById("ticket").textContent;
+
+    r = m1 * priceTicket + m2 * priceKids;
     document.getElementById("price").innerHTML = r;
 }
 

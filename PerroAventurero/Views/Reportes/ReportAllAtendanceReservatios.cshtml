@@ -1,82 +1,85 @@
 ﻿@model PerroAventurero.Models.Reports
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
+}
 
 @{
 }
 
-<div>
-    <h4>Reportes</h4>
-    <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
-
+<div class="header">
+    <div class="container">
+        <h1 class="main-heading">Reportes</h1>
+        <div class="divider"></div>
+        <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+    </div>
 </div>
 
-<hr />
 
 <form asp-action="RenderMenu">
 
-    <div class="m-0 row justify-content-md-center">
-        <select id="report" onchange="rangeDatetime()" name="selectReport" class="form-control"
-                asp-items="@(new SelectList(ViewBag.Reports))">
-        </select>
+    <div class="container justify-content-center p-5">
+        <h4>Reportes:</h4>
+        <div class="m-0 row justify-content-md-center">
+            <select id="report" onchange="rangeDatetime()" name="selectReport" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Reports))">
+            </select>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-6">
+                <div id="start" style="display : block">
+                    <label for="start">Fecha de inicio:</label>
+
+                    <input type="date" id="start" name="start"
+                           min="2021-01-01">
+                </div>
+            </div>
+            <div class="col-6">
+
+                <div id="final" style="display : block">
+                    <label for="start">Fecha de final:</label>
+
+                    <input type="date" id="start" name="final"
+                           min="2021-01-01">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Generar reporte" class="btn btn-primary" />
+        </div>
     </div>
-
-
-    <div id="start" style="display : block">
-        <label for="start">Fecha de inicio:</label>
-
-        <input type="date" id="start" name="start"
-               min="2021-01-01">
-    </div>
-
-
-    <div id="final" style="display : block">
-        <label for="start">Fecha de final:</label>
-
-        <input type="date" id="start" name="final"
-               min="2021-01-01">
-    </div>
-
-
-    <div class="form-group">
-        <input type="submit" value="Generar reporte" class="btn btn-primary" />
-    </div>
-
 </form>
 
-<hr />
-
-<div>
-    <hr />
-
-
+<div class="container justify-content-center p-5">
 
     @*reporte de comparacion entre asistentes y reservaciones de todos los eventos *@
-<h1 id="reportName">Comparación entre asistentes y reservaciones de todos los eventos</h1>
-    <dl class="row">
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.reservas)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.reservas)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.asistencia)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.asistencia)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.porcentaje)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.porcentaje)
-        </dd>
-    </dl>
-
-
-
+    <h1 id="reportName">Comparación entre asistentes y reservaciones de todos los eventos</h1>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.reservas)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.asistencia)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.porcentaje)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.reservas)</td>
+                <td>@Html.DisplayFor(model => model.asistencia)</td>
+                <td>@Html.DisplayFor(model => model.porcentaje)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -1,58 +1,58 @@
 ﻿@model IEnumerable<PerroAventurero.Models.Afiliacion>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/indexUser.css" />
+}
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Verificar afiliaciones</h1>
+<div class="header">
+    <div class="w-container">
+        <h1 class="main-heading">Afiliaciones</h1>
+        <div class="divider"></div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ComprobantePago)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EsAceptada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CedulaClienteNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CedulaNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ComprobantePago)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EsAceptada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CedulaClienteNavigation.CedulaCliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CedulaNavigation.Cedula)
-            </td>
-            <td>
-                <a asp-action="Accept" asp-route-id="@item.Codigo">Aceptar</a> |
-                <a asp-action="Reject" asp-route-id="@item.Codigo">Rechazar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    </div>
+</div>
+
+<div id="eventos" class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-3" style="padding: 10px; margin-bottom:10px;">
+                    <div class="project-wrapper">
+                        <a class="project-wrapper inline-block">
+                            @if (item.ComprobantePago == null)
+                            {
+                                <img src="~/images/3.png" width="211" height="211" alt="">
+                            }
+                            else
+                            {
+                                <img src="@Url.Action("getImage", "Afiliaciones", new { id = item.Codigo })" width="200" height="300" alt="">
+                            }
+                            <div class="form-group">
+
+                                <p class="paragraph">Cédula: @Html.DisplayFor(modelItem => item.CedulaCliente)</p>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-7">
+                                <a asp-action="Accept" asp-route-id="@item.Codigo" class="button-reserva w-button">Aceptar</a>
+                            </div>
+                            <div class="col-4">
+                                <a asp-action="Reject" asp-route-id="@item.Codigo" class="button-comprob w-button">Rechazar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+</div>
+
+

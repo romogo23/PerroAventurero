@@ -1,21 +1,26 @@
 ﻿@model IEnumerable<PerroAventurero.Models.Reports>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
+}
 
+@{
+    ViewData["Title"] = "Create";
+}
 
-    @{
-        ViewData["Title"] = "Create";
-    }
-
-<div>
-    <h4>Reportes</h4>
-    <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
-
+<div class="header">
+    <div class="container">
+        <h1 class="main-heading">Reportes</h1>
+        <div class="divider"></div>
+        <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+    </div>
 </div>
 
-    <hr />
 
-    <form asp-action="RenderMenu">
+<form asp-action="RenderMenu">
 
+    <div class="container justify-content-center p-5">
+        <h4>Reportes:</h4>
         <div class="m-0 row justify-content-md-center">
             <select id="report" onchange="rangeDatetime()" name="selectReport" class="form-control"
                     asp-items="@(new SelectList(ViewBag.Reports))">
@@ -23,68 +28,68 @@
         </div>
 
 
-        <div id="start" style="display : block">
-            <label for="start">Fecha de inicio:</label>
 
-            <input type="date" id="start" name="start"
-                   min="2021-01-01">
+        <div class="row">
+            <div class="col-6">
+                <div id="start" style="display : block">
+                    <label for="start">Fecha de inicio:</label>
+
+                    <input type="date" id="start" name="start"
+                           min="2021-01-01">
+                </div>
+            </div>
+            <div class="col-6">
+
+                <div id="final" style="display : block">
+                    <label for="start">Fecha de final:</label>
+
+                    <input type="date" id="start" name="final"
+                           min="2021-01-01">
+                </div>
+            </div>
         </div>
-
-
-        <div id="final" style="display : block">
-            <label for="start">Fecha de final:</label>
-
-            <input type="date" id="start" name="final"
-                   min="2021-01-01">
-        </div>
-
 
         <div class="form-group">
             <input type="submit" value="Generar reporte" class="btn btn-primary" />
         </div>
+    </div>
+</form>
 
-    </form>
-
-    <hr />
-
-    <div>
-        <hr />
-
-        @*reporte de comparacion entre asistentes y reservaciones por evento *@
-
+@*reporte de comparacion entre asistentes y reservaciones por evento *@
+<div class="container justify-content-center p-5">
     <h1 id="reportName">Comparación entre asistencia y reservaciones por evento</h1>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Evento</th>
+                <th scope="col">Fecha Evento</th>
+                <th scope="col">Reservas</th>
+                <th scope="col">Asistencias</th>
 
-@foreach (var item in Model)
-{
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(modelItem => item.NombreEvento)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(modelItem => item.NombreEvento)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(modelItem => item.Fecha_Evento)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(modelItem => item.Fecha_Evento)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(modelItem => item.reservas)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(modelItem => item.reservas)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(modelItem => item.asistencia)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(modelItem => item.asistencia)
-        </dd>
-    </dl>
-}
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.NombreEvento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Fecha_Evento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.reservas)</td>
+                    <td>@Html.DisplayFor(modelItem => item.asistencia)</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 
 </div>
+
+
+
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
