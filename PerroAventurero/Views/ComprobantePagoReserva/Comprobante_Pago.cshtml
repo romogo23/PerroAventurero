@@ -1,0 +1,82 @@
+﻿@model PerroAventurero.Models.Reserva
+
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
+}
+
+<div class="header">
+    <div class="container">
+        <h1 class="main-heading">Reserva</h1>
+        <div class="divider"></div>
+    </div>
+</div>
+
+<div class="container pt-5">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h4>Información del evento:</h4>
+
+            <div id="eventoP">
+
+
+            </div>
+
+            @if (ViewBag.Message != null)
+            {
+                <div>
+
+                </div>
+
+            }
+
+        </div>
+        <div class="col-6">
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <form asp-action="Edit" enctype="multipart/form-data" class="p-5">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
+                    <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.CedulaCliente" name="CedulaCliente">
+                    <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Buscar" class="btn btn-dark" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @Html.ValidationMessageFor(m => m.CedulaClienteNavigation.CedulaCliente)
+
+    <script type="text/javascript">
+
+        $.ajax({
+            type: "POST",
+            url: '/ComprobantePagoReserva/_Evento',
+            success: function (partialView) {
+                console.log("partialView: " + partialView);
+                $('#eventoP').html(partialView)
+            }
+
+        });
+
+
+    </script>
+}

@@ -115,7 +115,7 @@ namespace PerroAventurero.Controllers
                 else
                 {
                     ModelState.AddModelError("CedulaClienteNavigation.CedulaCliente", "Le informamos que no existe una reserva a su nombre");
-                    return View("ComprobantePago");
+                    return View("Comprobante_Pago");
                 }
             }
             return null;

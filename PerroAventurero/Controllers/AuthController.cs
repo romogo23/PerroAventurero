@@ -301,7 +301,7 @@ namespace PerroAventurero.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("UsuarioComun.CedulaCliente", "Ya existe un usuario con esa cédula ingresada");
+                    ModelState.AddModelError("UsuarioComun.CedulaCliente", "Ya existe un usuario con la cédula ingresada");
                     return View(cu);
                 }   
                 
