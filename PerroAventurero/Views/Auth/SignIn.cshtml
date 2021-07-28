@@ -94,7 +94,7 @@
                         <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
                     </div>
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="form-group">
                                 <label class="field-label-2-copy">FechaNacimiento</label>
                                 <br />
@@ -263,5 +263,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    @Html.ValidationMessageFor(m => m.UsuarioComun.CedulaCliente)
+   
+
+
 }
