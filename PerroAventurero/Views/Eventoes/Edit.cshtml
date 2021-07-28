@@ -136,9 +136,12 @@
             <input type="hidden" asp-for="CodigoEvento" />
             <input class="btn btn-dark" type="submit" onclick="return confirm('¿Está seguro que desea cancelar este evento:')" value="Cancelar" />
         </form>
-        <div>
-            <a class="btn btn-dark" asp-controller="" asp-action="">Ver Reservaciones"</a>
-        </div>
+
+        <form asp-controller="Reservas" asp-action="ReservasEventos" asp-route-id="CodigoEvento" method="post">
+            <input type="hidden" asp-for="CodigoEvento" />
+            <input class="btn btn-dark" type="submit" value="Ver reservaciones" />
+        </form>
+
         <div>
             <a class="btn btn-dark" asp-controller="" asp-action="">Enviar Recordatorios</a>
         </div>

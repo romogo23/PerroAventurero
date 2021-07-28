@@ -30,6 +30,12 @@ namespace PerroAventurero.Models
             return View(await pAContext.ToListAsync());
         }
 
+        public async Task<IActionResult> ReservasEventos(int codigoEvento)
+        {
+            var pAContext = _context.Reservas.Where(r => r.CodigoEvento == codigoEvento).Include(r => r.CedulaClienteNavigation).Include(r => r.CedulaNavigation).Include(r => r.CodigoEventoNavigation);
+            return View(await pAContext.ToListAsync());
+        }
+
 
         public async Task<IActionResult> home()
         {
