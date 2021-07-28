@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,68 @@ namespace PerroAventurero.Controllers
                 pAContext = _context.Eventos.Where(e => e.NombreEvento.Contains(searchString)).Include(e => e.CedulaNavigation);
             }
             return View(await pAContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> SendReminders(int codigoEvento)
+        {
+            Reserva currentReservation;
+            Evento evento = _context.Eventos.Where(e => e.CodigoEvento == codigoEvento).Include(e => e.CedulaNavigation).FirstOrDefault();
+            Cliente cliente;
+            List<Reserva> listOfReservations = new List<Reserva>();
+            if (_context.Reservas.Where(r => r.CodigoEvento == codigoEvento && r.EsAceptada == true).FirstOrDefault() != null)
+            {
+                listOfReservations = await (_context.Reservas.Where(r => r.CodigoEvento == codigoEvento).Include(e => e.CedulaNavigation)).ToListAsync();
+            }
+            else
+            {
+                //No se tienen a quien mandar recordatorios, preguntar que se hace en estos casos, se tiene que terminar para que no de errores
+            }
+            try
+            {
+
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Recordatorio de evento Perro Aventurero";
+
+                do
+                {
+                    currentReservation = listOfReservations.First();
+                    cliente = _context.Clientes.Where(c => c.CedulaCliente == currentReservation.CedulaCliente).FirstOrDefault();
+
+                    msg.Body = "Perro aventurero le recuerda que el día " + evento.Fecha.ToString() + " se llevará a cabo el evento " + evento.NombreEvento +
+                        " el cual tomará lugar en " + evento.Lugar + ". Poseemos una reservación con los siguientes datos: \n" +
+                        "\nNombre de la persona: " + cliente.NombreCompleto + "\n" +
+                        "Cédula: " + cliente.CedulaCliente + "\n" +
+                        "Cantidad entradas generales: " + currentReservation.EntradasGenerales.ToString() + "\n" +
+                        "Cantidad entradas niños: " + currentReservation.EntradasNinnos.ToString() + "\n" +
+                        "Grupo : " + currentReservation.Grupo.ToString() + "\n" +
+                        "Hora de entrada : " + currentReservation.HoraEntrada.ToString();
+
+                    msg.To.Add(cliente.Correo.ToString());
+                    //Attachment data = new Attachment(textBox3.Text);
+                    //msg.Attachments.Add(data);
+                    client.Send(msg);//Aquí está el problema
+
+                    listOfReservations.Remove(currentReservation);
+
+                } while (listOfReservations.Count() >= 1);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+            
+            
+            return RedirectToAction(nameof(Index));//hay que cambiarlo
         }
 
         // GET: Eventoes/Details/5
@@ -155,7 +219,6 @@ namespace PerroAventurero.Controllers
             {
                 return NotFound();
             }
-
 
             var eventoVieja = _context.Eventos.Find(id);
             byte[] logoEmp = ViewBag.Image = eventoVieja.Imagen;

@@ -142,9 +142,10 @@
             <input class="btn btn-dark" type="submit" value="Ver reservaciones" />
         </form>
 
-        <div>
-            <a class="btn btn-dark" asp-controller="" asp-action="">Enviar Recordatorios</a>
-        </div>
+        <form  asp-action="SendReminders" asp-route-id="CodigoEvento" method="post">
+            <input type="hidden" asp-for="CodigoEvento" />
+            <input class="btn btn-dark" type="submit" value="Enviar recordatorios" />
+        </form>
     </div>
 </div>
 
