@@ -212,11 +212,9 @@ namespace PerroAventurero.Models
                         for (int i = 0; i < Age.Count; i++)
                         {
                             Acompannante acompannante = new Acompannante();
-                            acompannante.Codigo = i;
                             acompannante.CodigoReserva = codeReserva.CodigoReserva;
                             acompannante.Genero = Gender[i];
                             acompannante.Edad = Age[i];
-                            acompannante.CodigoReservaNavigation = codeReserva;
                             _context.Add(acompannante);
                         }
                         _context.SaveChanges();
