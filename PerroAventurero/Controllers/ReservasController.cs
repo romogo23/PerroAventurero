@@ -170,6 +170,15 @@ namespace PerroAventurero.Models
                 reserva.EntradasNinnos = 0;
             }
 
+            if (validateAge(Age, reserva.EntradasNinnos, reserva.EntradasGenerales) ==  false) {
+                List<String> GroupTimeR = groupTime(code);
+
+                ViewBag.EntradasNinnos = evento.PrecioNinno;
+                ViewBag.EntradasGenerales = evento.PrecioGeneral;
+                ViewBag.GroupTimeList = GroupTimeR;
+                ModelState.AddModelError("EntradasNinnos", "Debe ingresar correctamente las edades de los acompañantes, se considerará niño o niña a toda persona desde su concepción hasta los doce años de edad cumplidos");
+                return View(reserva);
+            }
             if (ModelState.IsValid)
             {
                 if (files != null)
@@ -264,7 +273,29 @@ namespace PerroAventurero.Models
         }
 
 
-        
+        private Boolean validateAge(List<short> age, short? kids, short adult) {
+            int k = 0;
+            int a = 0;
+            for (int i = 0; i < age.Count(); i++) {
+                if (age[i] > 12)
+                {
+                    a++;
+                }
+                else {
+                    k++;
+                }
+            }
+
+            if (k == kids && adult-1 == a)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+
+        }
         private decimal price(Evento evento, List<short> reserva) { 
             decimal precioTotal = evento.PrecioGeneral;
 

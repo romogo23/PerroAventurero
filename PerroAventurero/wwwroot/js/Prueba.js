@@ -12,7 +12,12 @@ function TicketsChildrens() {
 
 }
 
+function ticketsOnload() {
+    childTickets();
+    adultTickets();
 
+
+}
 
 function Price() {
     var m1 = document.getElementById("entradasGenerales").value;

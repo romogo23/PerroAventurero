@@ -22,7 +22,7 @@ namespace PerroAventurero.Models
         public short EntradasGenerales { get; set; }
 
         [Display(Name = "Entradas niños")]
-        [Range(1, 100, ErrorMessage = "Debe ingresar un número válido")]
+        [Range(0, 100, ErrorMessage = "Debe ingresar un número válido")]
         public short? EntradasNinnos { get; set; }
 
 
