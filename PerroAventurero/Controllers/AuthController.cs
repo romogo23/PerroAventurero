@@ -272,6 +272,9 @@ namespace PerroAventurero.Controllers
                 new Claim("Contrasenna", userAdmin.Contrasenna)*/
                 new Claim(ClaimTypes.Name, userComun.UsuarioComun.CedulaCliente),
                 new Claim("FullName", userComun.Cliente.NombreCompleto),
+                new Claim("Email", userComun.Cliente.Correo),
+                new Claim("Tel", userComun.Cliente.Telefono.ToString()),
+                new Claim("Fecha", userComun.Cliente.FechaNacimiento.ToString()),
                 new Claim(ClaimTypes.Role, "Normal"),
             };
             var principal = new ClaimsPrincipal();

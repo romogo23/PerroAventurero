@@ -1,5 +1,8 @@
 ﻿@model PerroAventurero.Models.Reserva
 
+@using System.Threading
+
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Create";
@@ -14,45 +17,52 @@
 </div>
 <script type="text/javascript" src="~/js/Prueba.js"></script>
 <div class="container py-5">
-    <form asp-action="Create" id="form" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
-                    <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" asp-items="ViewBag.NombreCompleto">
-                    <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
-                    <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.Cedula">
-                    <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
-                    <input asp-for="CedulaClienteNavigation.Correo" class="form-control" asp-items="ViewBag.Correo">
-                    <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
-                    <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" asp-items="ViewBag.Telefono">
-                    <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
-                </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        @*{
+            UsuarioComun user = ReservasController.fillInputs(User.Identity.Name);
+        }
+        <input value="@User.Identity.Name" readonly />*@
 
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
-                    <input asp-for="CedulaClienteNavigation.FechaNacimiento" class="form-control" asp-items="ViewBag.FechaNacimiento">
-                    <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
+        <form asp-action="Create" id="form" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" value="@User.FindFirst("FullName").Value" readonly>
+                        <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" value="@User.Identity.Name" readonly>
+                        <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.Correo" class="form-control" value="@User.FindFirst("Email").Value" readonly>
+                        <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" value="@User.FindFirst("Tel").Value" readonly>
+                        <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
+                        <input class="form-control" value="@User.FindFirst("Fecha").Value" readonly>
+                        <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-4">
+                <div class="col-sm-4">
 
                 <div class="form-group">
                     <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
                     <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
                         <option value="f">Femenino</option>
                         <option value="m">Masculino</option>
-                        <option value="o">Otro</option>0
+                        <option value="o">Otro</option>
                     </select>
                     <div class="form-group">
                         <label asp-for="Grupo" class="control-label"></label>
@@ -84,71 +94,41 @@
                     <div class="row">
                         <div id="AdultTicketsAge" class="form-group col-md-7">
 
-                        </div>
-
-                        <div id="AdultTicketsGen" class="form-group col-md-1">
-
-                        </div>
-                    </div>
-
-                    <label>Niños:</label>
-                    <br />
-                    <div class="form-group">
-                        <div class="row">
-                            <div id="ChildTicketsAge" class="form-group col-md-7">
-
                             </div>
 
-                            <div id="ChildTicketsGen" class="form-group col-md-1">
+                            <div id="AdultTicketsGen" class="form-group col-md-1">
 
                             </div>
                         </div>
 
+                        <label>Niños:</label>
+                        <br />
+                        <div class="form-group">
+                            <div class="row">
+                                <div id="ChildTicketsAge" class="form-group col-md-7">
 
+                                </div>
 
+                                <div id="ChildTicketsGen" class="form-group col-md-1">
 
-
-
-
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
-
                 </div>
-
-
-
-
-
-
-
-
-
-
             </div>
-
-
-
-
-
-
-        </div>
-        <div class="m-0 row justify-content-md-center">
-            <div class="form-group">
-                <label asp-for="PrecioTotal" class="h5"></label>
-                <label id="price" class="h5"></label>
-                <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+            <div class="m-0 row justify-content-md-center">
+                <div class="form-group">
+                    <label asp-for="PrecioTotal" class="h5"></label>
+                    <label id="price" class="h5"></label>
+                    <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-          
-
             <div class="m-0 row justify-content-md-center">
                 <p>Ingrese el comprobante de pago</p>
                 <br />
                 <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-
                 <hr />
-
                 <div class="form-group">
                     <hr />
                     <img id="output" width="300" height="300" src="@ViewBag.Image" />
@@ -173,266 +153,144 @@
             <div>
                 <p>@ViewBag.ErrorMessage</p>
             </div>
-    </form>
-</div>
-<!--<div class="m-0 row justify-content-md-center">
-    <form asp-action="Create" id="form" enctype="multipart/form-data">
-
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
-            <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" asp-items="ViewBag.NombreCompleto">
-            <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
-            <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.Cedula">
-            <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
-            <input asp-for="CedulaClienteNavigation.Correo" class="form-control" asp-items="ViewBag.Correo">
-            <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
-            <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" asp-items="ViewBag.Telefono">
-            <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
-            <input asp-for="CedulaClienteNavigation.FechaNacimiento" class="form-control" asp-items="ViewBag.FechaNacimiento">
-            <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
-            <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
-                <option value="f">Femenino</option>
-                <option value="m">Masculino</option>
-                <option value="o">Otro</option>
-            </select>
-
-        </div>
-        <div class="form-group">
-            <label asp-for="Grupo" class="control-label"></label>
-            <select id="selectGroup" name="groupAndTime" class="form-control"
-                    asp-items="@(new SelectList(ViewBag.GroupTimeList))">
-            </select>
-            <span asp-validation-for="Grupo" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EntradasGenerales" class="control-label"></label>
-            <input onchange="TicketsAdults()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
-            <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EntradasNinnos" class="control-label"></label>
-            <input onchange="TicketsChildrens()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
-            <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="PrecioTotal" class="control-label"></label>
-            <label id="price" class="control-label"></label>
-            <span asp-validation-for="PrecioTotal" class="text-danger"></span>
-        </div>
-
-        <div id="AdultTickets" class="form-group">
-
-        </div>
-
-
-        <div id="ChildTickets" class="form-group">
-
-        </div>
-
-        <div class="col-md-10">
-            <p>Ingrese el comprobante de pago</p>
-            <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" />
-            <img id="output" width="200" height="200" src="@ViewBag.Image" />
-            <script>
-                var loadFile = function (event) {
-                    var output = document.getElementById('output');
-                    output.src = URL.createObjectURL(event.target.files[0]);
-                    output.onload = function () {
-                        URL.revokeObjectURL(output.src) // free memory
-                    }
-                };
-            </script>
-        </div>-->
-@*<div id="acompanantesContainer">
-        @Html.EditorFor(model => model.Acompannantes)
-    </div>*@
-
-
-<!--<div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
-        </div>
-        <div>
-            <p>@ViewBag.ErrorMessage</p>
-        </div>
-    </form>
-
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>-->
-<!--<h1>Formulario de reserva</h1>
-<hr />
-<script type="text/javaScript" src="~/js/Acompannantes.js"></script>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create"  enctype="multipart/form-data">
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
-                <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" asp-items="ViewBag.NombreCompleto">
-                <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
-                <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.Cedula">
-                <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
-                <input asp-for="CedulaClienteNavigation.Correo" class="form-control" asp-items="ViewBag.Correo">
-                <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
-                <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" asp-items="ViewBag.Telefono">
-                <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
-                <input asp-for="CedulaClienteNavigation.FechaNacimiento" class="form-control" asp-items="ViewBag.FechaNacimiento">
-                <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
-                <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
-                    <option value="f">Femenino</option>
-                    <option value="m">Masculino</option>
-                    <option value="o">Otro</option>
-                </select>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="Grupo" class="control-label"></label>
-                <select id="selectGroup" name="groupAndTime" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.GroupTimeList))">
-                </select>
-                <span asp-validation-for="Grupo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EntradasGenerales" class="control-label"></label>
-                <input onchange="TicketsAdults()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
-                <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EntradasNinnos" class="control-label"></label>
-                <input onchange="TicketsChildrens()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
-                <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PrecioTotal" class="control-label"></label>
-                <label id="price" class="control-label"></label>
-                <span asp-validation-for="PrecioTotal" class="text-danger"></span>
-            </div>
-
-            <div id="AdultTickets" class="form-group">
-
-            </div>
-
-
-            <div id="ChildTickets" class="form-group">
-
-            </div>
-
-<<<<<<< HEAD
-            <div class="form-control-file">
-                <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                <img id="output" width="200" height="200" />
-                <script>
-                    var loadFile = function (event) {
-                        var output = document.getElementById('output');
-                        output.src = URL.createObjectURL(event.target.files[0]);
-                        output.onload = function () {
-                            URL.revokeObjectURL(output.src) // free memory
-                        }
-                    };
-                </script>
-                <span asp-validation-for="ComprobantePago" class="text-danger"></span>
-            </div>
-=======
-            <div class="col-md-10">
-                <p>Ingrese el comprobante de pago</p>
-                <input class="form-control" name="files" type="file" accept="mage/png, image/jpeg" />
-            </div>-->
-@*>>>>>>> d84e02fbba25426454acb123794f1f0656850444*@
-@*<div id="acompanantesContainer">
-        @Html.EditorFor(model => model.Acompannantes)
-    </div>*@
-
-
-<!--<div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-
         </form>
-    </div>
-</div>-->
 
+    }
+    else
+    {
+        <form asp-action="Create" id="form" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.NombreCompleto" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.NombreCompleto" class="form-control" asp-items="ViewBag.NombreCompleto">
+                        <span asp-validation-for="CedulaClienteNavigation.NombreCompleto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.CedulaCliente" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.CedulaCliente" class="form-control" asp-items="ViewBag.Cedula">
+                        <span asp-validation-for="CedulaClienteNavigation.CedulaCliente" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.Correo" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.Correo" class="form-control" asp-items="ViewBag.Correo">
+                        <span asp-validation-for="CedulaClienteNavigation.Correo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.Telefono" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.Telefono" class="form-control" asp-items="ViewBag.Telefono">
+                        <span asp-validation-for="CedulaClienteNavigation.Telefono" class="text-danger"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.FechaNacimiento" class="control-label"></label>
+                        <input asp-for="CedulaClienteNavigation.FechaNacimiento" class="form-control" asp-items="ViewBag.FechaNacimiento">
+                        <span asp-validation-for="CedulaClienteNavigation.FechaNacimiento" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+
+                    <div class="form-group">
+                        <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
+                        <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
+                            <option value="f">Femenino</option>
+                            <option value="m">Masculino</option>
+                            <option value="o">Otro</option>
+                        </select>
+                        <div class="form-group">
+                            <label asp-for="Grupo" class="control-label"></label>
+                            <select id="selectGroup" name="groupAndTime" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.GroupTimeList))">
+                            </select>
+                            <span asp-validation-for="Grupo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EntradasGenerales" class="control-label"></label>
+                        <input onchange="TicketsAdults()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
+                        <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EntradasNinnos" class="control-label"></label>
+                        <input onchange="TicketsChildrens()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
+                        <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label>Adultos:</label>
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div id="AdultTicketsAge" class="form-group col-md-7">
+
+                            </div>
+
+                            <div id="AdultTicketsGen" class="form-group col-md-1">
+
+                            </div>
+                        </div>
+
+                        <label>Niños:</label>
+                        <br />
+                        <div class="form-group">
+                            <div class="row">
+                                <div id="ChildTicketsAge" class="form-group col-md-7">
+
+                                </div>
+
+                                <div id="ChildTicketsGen" class="form-group col-md-1">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-0 row justify-content-md-center">
+                <div class="form-group">
+                    <label asp-for="PrecioTotal" class="h5"></label>
+                    <label id="price" class="h5"></label>
+                    <span asp-validation-for="PrecioTotal" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="m-0 row justify-content-md-center">
+                <p>Ingrese el comprobante de pago</p>
+                <br />
+                <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                <hr />
+                <div class="form-group">
+                    <hr />
+                    <img id="output" width="300" height="300" src="@ViewBag.Image" />
+                    <script>
+                        var loadFile = function (event) {
+                            var output = document.getElementById('output');
+                            output.src = URL.createObjectURL(event.target.files[0]);
+                            output.onload = function () {
+                                URL.revokeObjectURL(output.src) // free memory
+                            }
+                        };
+                    </script>
+                    <hr />
+                    <div class="form-group">
+                        <hr />
+                        <input type="submit" value="Crear" class="btn btn-dark" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <p>@ViewBag.ErrorMessage</p>
+            </div>
+        </form>
+    }
+</div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @Html.ValidationMessageFor(m => m.CedulaClienteNavigation.CedulaCliente)
     @Html.ValidationMessageFor(g => g.Grupo)
-
-    @*<script type="text/javascript">
-            $("#entradasGenerales").on('change', function () {
-                $.ajax({
-                    async: true,
-                    data: $('#form').serialize(),
-                    type: "POST",
-                    url: '/Reservas/AddAcompannante',
-                    success: function (partialView) {
-                        console.log("partialView: " +partialView);
-                        $('#acompanantesContainer').html(partialView)
-                    }
-
-                });
-
-            });
-
-            $("#entradasNinnos").on('change', function () {
-                $.ajax({
-                    async: true,
-                    data: $('#form').serialize(),
-                    type: "POST",
-                    url: '/Reservas/AddAcompannante',
-                    success: function (partialView) {
-                        console.log("partialView: " + partialView);
-                        $('#acompanantesContainer').html(partialView)
-                    }
-
-                });
-
-            });
-        </script>*@
-
 }
 
