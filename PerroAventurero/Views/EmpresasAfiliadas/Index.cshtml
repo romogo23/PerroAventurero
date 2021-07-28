@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="~/css/company.css" />
 }
 
-@{ ViewData["Title"] = "Index"; }
+@{ ViewData["Title"] = "Empresas"; }
 
 
 
@@ -27,13 +27,15 @@
             </div>
         </div>
     </div>
-    @using (Html.BeginForm())
-    {
-        <p>
-            Find by name: @Html.TextBox("SearchString")
-            <input type="submit" value="Search" />
-        </p>
-    }
+    <div class="container p-2">
+        @using (Html.BeginForm())
+        {
+            <p>
+                Buscar Evento: @Html.TextBox("SearchString")
+                <input type="submit" class="btn btn-dark" value="Buscar" />
+            </p>
+        }
+    </div>  
     <div class="row justify-content-center">
         @foreach (var item in Model)
         {

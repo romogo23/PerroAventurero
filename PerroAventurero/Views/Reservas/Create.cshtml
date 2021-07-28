@@ -9,20 +9,31 @@
 }
 
 
-<div class="form-group">            <label style="display: none" id="ticketKid">@ViewBag.EntradasNinnos</label>            <label style="display: none" id="ticket">@ViewBag.EntradasGenerales</label>        </div>
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
+}
 
-
-<<div class="m-0 row justify-content-md-center">
-    <h3 class="heading-6-copy">Nueva reserva</h3>
+<div class="form-group">
+    <label style="display: none" id="ticketKid">@ViewBag.EntradasNinnos</label>
+    <label style="display: none" id="ticket">@ViewBag.EntradasGenerales</label>
 </div>
+
+
+<div class="header-reserva">
+    <div class="container">
+        <h1 class="main-heading">Nueva Reserva</h1>
+        <div class="divider"></div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/js/Prueba.js"></script>
 <div class="container py-5">
     @if (User.Identity.IsAuthenticated)
     {
         @*{
-            UsuarioComun user = ReservasController.fillInputs(User.Identity.Name);
-        }
-        <input value="@User.Identity.Name" readonly />*@
+                UsuarioComun user = ReservasController.fillInputs(User.Identity.Name);
+            }
+            <input value="@User.Identity.Name" readonly />*@
 
         <form asp-action="Create" id="form" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -57,42 +68,42 @@
                 </div>
                 <div class="col-sm-4">
 
-                <div class="form-group">
-                    <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
-                    <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
-                        <option value="f">Femenino</option>
-                        <option value="m">Masculino</option>
-                        <option value="o">Otro</option>
-                    </select>
                     <div class="form-group">
-                        <label asp-for="Grupo" class="control-label"></label>
-                        <select id="selectGroup" name="groupAndTime" class="form-control"
-                                asp-items="@(new SelectList(ViewBag.GroupTimeList))">
+                        <label asp-for="CedulaClienteNavigation.Genero" class="control-label"></label>
+                        <select asp-for="CedulaClienteNavigation.Genero" class="form-control" asp-items="ViewBag.Genero">
+                            <option value="f">Femenino</option>
+                            <option value="m">Masculino</option>
+                            <option value="o">Otro</option>
                         </select>
-                        <span asp-validation-for="Grupo" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="Grupo" class="control-label"></label>
+                            <select id="selectGroup" name="groupAndTime" class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.GroupTimeList))">
+                            </select>
+                            <span asp-validation-for="Grupo" class="text-danger"></span>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="EntradasGenerales" class="control-label"></label>
+                        <input onchange="TicketsAdults()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
+                        <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EntradasNinnos" class="control-label"></label>
+                        <input onchange="TicketsChildrens()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
+                        <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
+                    </div>
+
+
                 </div>
-                <div class="form-group">
-                    <label asp-for="EntradasGenerales" class="control-label"></label>
-                    <input onchange="TicketsAdults()" id="entradasGenerales" asp-for="EntradasGenerales" class="form-control" />
-                    <span asp-validation-for="EntradasGenerales" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="EntradasNinnos" class="control-label"></label>
-                    <input onchange="TicketsChildrens()" id="entradasNinnos" asp-for="EntradasNinnos" class="form-control" />
-                    <span asp-validation-for="EntradasNinnos" class="text-danger"></span>
-                </div>
 
 
-            </div>
-
-
-            <div class="col-sm-4">
-                <label>Adultos:</label>
-                <br />
-                <div class="form-group">
-                    <div class="row">
-                        <div id="AdultTicketsAge" class="form-group col-md-7">
+                <div class="col-sm-4">
+                    <label>Adultos:</label>
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div id="AdultTicketsAge" class="form-group col-md-7">
 
                             </div>
 
@@ -117,41 +128,41 @@
                     </div>
                 </div>
             </div>
-            <div class="m-0 row justify-content-md-center">
-                <div class="form-group">
-                    <label asp-for="PrecioTotal" class="h5"></label>
-                    <label id="price" class="h5"></label>
-                    <span asp-validation-for="PrecioTotal" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="m-0 row justify-content-md-center">
-                <p>Ingrese el comprobante de pago</p>
-                <br />
-                <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                <hr />
-                <div class="form-group">
-                    <hr />
-                    <img id="output" width="300" height="300" src="@ViewBag.Image" />
-                    <script>
-                        var loadFile = function (event) {
-                            var output = document.getElementById('output');
-                            output.src = URL.createObjectURL(event.target.files[0]);
-                            output.onload = function () {
-                                URL.revokeObjectURL(output.src) // free memory
-                            }
-                        };
-                    </script>
-                    <hr />
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
                     <div class="form-group">
-                        <hr />
-                        <input type="submit" value="Crear" class="btn btn-dark" />
+                        <label asp-for="PrecioTotal" class="h5"></label>
+                        <label id="price" class="h5"></label>
+                        <span asp-validation-for="PrecioTotal" class="text-danger"></span>
                     </div>
                 </div>
-
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <p>Ingrese el comprobante de pago</p>
+                        <div class="pr-5">
+                            <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                        </div>
+                        <img id="output" width="300" height="300" src="@ViewBag.Image" />
+                        <script>
+                            var loadFile = function (event) {
+                                var output = document.getElementById('output');
+                                output.src = URL.createObjectURL(event.target.files[0]);
+                                output.onload = function () {
+                                    URL.revokeObjectURL(output.src) // free memory
+                                }
+                            };
+                        </script>
+                    </div>
+                </div>
             </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    <input type="submit" value="Reservar" class="btn-lg btn-dark" />
+                </div>
 
-            <div>
-                <p>@ViewBag.ErrorMessage</p>
+                <div>
+                    <p>@ViewBag.ErrorMessage</p>
+                </div>
             </div>
         </form>
 
@@ -247,41 +258,41 @@
                     </div>
                 </div>
             </div>
-            <div class="m-0 row justify-content-md-center">
-                <div class="form-group">
-                    <label asp-for="PrecioTotal" class="h5"></label>
-                    <label id="price" class="h5"></label>
-                    <span asp-validation-for="PrecioTotal" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="m-0 row justify-content-md-center">
-                <p>Ingrese el comprobante de pago</p>
-                <br />
-                <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                <hr />
-                <div class="form-group">
-                    <hr />
-                    <img id="output" width="300" height="300" src="@ViewBag.Image" />
-                    <script>
-                        var loadFile = function (event) {
-                            var output = document.getElementById('output');
-                            output.src = URL.createObjectURL(event.target.files[0]);
-                            output.onload = function () {
-                                URL.revokeObjectURL(output.src) // free memory
-                            }
-                        };
-                    </script>
-                    <hr />
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
                     <div class="form-group">
-                        <hr />
-                        <input type="submit" value="Crear" class="btn btn-dark" />
+                        <label asp-for="PrecioTotal" class="h5"></label>
+                        <label id="price" class="h5"></label>
+                        <span asp-validation-for="PrecioTotal" class="text-danger"></span>
                     </div>
                 </div>
-
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <p>Ingrese el comprobante de pago</p>
+                        <div class="pr-5">
+                            <input class="form-control" name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                        </div>
+                        <img id="output" width="300" height="300" src="@ViewBag.Image" />
+                        <script>
+                            var loadFile = function (event) {
+                                var output = document.getElementById('output');
+                                output.src = URL.createObjectURL(event.target.files[0]);
+                                output.onload = function () {
+                                    URL.revokeObjectURL(output.src) // free memory
+                                }
+                            };
+                        </script>
+                    </div>
+                </div>
             </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    <input type="submit" value="Reservar" class="btn-lg btn-dark" />
+                </div>
 
-            <div>
-                <p>@ViewBag.ErrorMessage</p>
+                <div>
+                    <p>@ViewBag.ErrorMessage</p>
+                </div>
             </div>
         </form>
     }

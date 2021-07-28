@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<PerroAventurero.Models.Evento>
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/indexUser.css" />
+    <link rel="stylesheet" href="~/css/company.css" />
 }
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Eventos";
 }
 
 @*<h1>Mantenimiento de eventos</h1>
@@ -37,13 +37,15 @@
             </div>
         </div>
     </div>
-    @using (Html.BeginForm())
-    {
-        <p>
-            Find by name: @Html.TextBox("SearchString")
-            <input type="submit" value="Search" />
-        </p>
-    }
+    <div class="container p-2">
+        @using (Html.BeginForm())
+        {
+            <p>
+                Buscar Evento: @Html.TextBox("SearchString")
+                <input type="submit" class="btn btn-dark" value="Buscar" />
+            </p>
+        }
+    </div>
     <div class="row justify-content-center">
         @foreach (var item in Model)
         {
@@ -52,15 +54,15 @@
                     <h4 class="name"><a class="nameLink" asp-action="Edit" asp-route-id="@item.CodigoEvento">@Html.DisplayFor(modelItem => item.NombreEvento)</a></h4>
                     @if (item.Imagen == null)
                     {
-                        <img src="~/images/3.png" width="211" height="180" alt="">
+                        <img class="imgLogo" src="~/images/3.png" width="211" height="180" alt="">
                     }
                     else
                     {
                         <img class="imgLogo" width="211" height="180" src="@Url.Action("getImage", "Eventoes", new { id = item.CodigoEvento })" />
                     }
                     <br />
-                    <p>Fecha: @Html.DisplayFor(modelItem => item.Fecha)</p>
-                    <p>Lugar: @Html.DisplayFor(modelItem => item.Lugar)</p>
+                    <p class="pEvent">Fecha: @Html.DisplayFor(modelItem => item.Fecha)</p>
+                    <p class="pEvent">Lugar: @Html.DisplayFor(modelItem => item.Lugar)</p>
 
                     @*<div class="row justify-content-center">
                             <div class="col-6 justify-content-center">
@@ -74,137 +76,6 @@
                             </div>
                         </div>*@
                 </div>
-            </div>
-        }
-    </div>
-</div>
-
-<div class="section-event container">
-    <div class="container">
-        <div class="row">
-            <div class="col-10">
-                <h1>Lista de eventos:</h1>
-            </div>
-            <div class="col-2 justify-content-right">
-                <a asp-action="Create"><h5>+Nuevo Evento</h5></a>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        @foreach (var item in Model)
-        {
-            <div class="col-4">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h5>@Html.DisplayFor(modelItem => item.NombreEvento)</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Lugar del evento:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.Lugar)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Dirección exacta del evento:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.Direccion)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Límite de aforo:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.CantidadAforo)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Cantidad de grupos:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.CantidadGrupos)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Comentarios:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.Comentarios)</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Fecha del evento:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.Fecha)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Hora inicio de entrada:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.HoraInicio)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Hora fin de entrada:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.HoraFinal)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Precio General:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.PrecioGeneral)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Precio Níños:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.PrecioNinno)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>Se envió anuncio:</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>@Html.DisplayFor(modelItem => item.EnvioAnuncios)</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="container">
-                            <a asp-controller="Eventoes" asp-action="Edit" asp-route-id="@item.CodigoEvento" class="button-reserva w-button">Modificar</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="container">
-                            <form asp-controller="Eventoes" asp-action="Delete" asp-route-id="@item.CodigoEvento" method="post">
-                                <input class="button-reserva w-button" type="submit" onclick="return confirm('¿Está seguro que desea eliminar la empresa:  @item.NombreEvento')" value="Eliminar" />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <br />
             </div>
         }
     </div>

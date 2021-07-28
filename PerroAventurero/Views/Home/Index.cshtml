@@ -8,7 +8,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <div class="header">
     <div class="w-container">
         <h1 class="main-heading">perro aventurero</h1>
@@ -59,7 +58,7 @@
                                     <a asp-controller="Reservas" asp-action="Create" asp-route-id="@item.CodigoEvento" class="button-reserva w-button">Reservar</a>
                                 </div>
                                 <div class="col-7">
-                                    <a asp-controller="ComprobantePagoReserva" asp-action="Index" asp-route-id="@item.CodigoEvento"  class="button-comprob w-button">Enviar Comprobante</a>
+                                    <a asp-controller="ComprobantePagoReserva" asp-action="Index" asp-route-id="@item.CodigoEvento" class="button-comprob w-button">Enviar Comprobante</a>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <a asp-controller="Afiliaciones" asp-action="Create" class="button-afiliacion w-button" >Afíliate</a>
+        <a asp-controller="Afiliaciones" asp-action="Create" class="button-afiliacion w-button">Afíliate</a>
     </div>
 </div>
 <div id="contact" class="section contact">

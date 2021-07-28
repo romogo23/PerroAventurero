@@ -4,7 +4,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark">Hello @User.Identity.Name!</a>
+        <a class="nav-link text-dark">Hola @User.FindFirst("FullName").Value!</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Cerrar Sesión</a>
