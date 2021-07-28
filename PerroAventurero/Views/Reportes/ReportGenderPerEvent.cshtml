@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="~/css/company.css" />
 }
 
-<div class="header">
+<div class="header-reporte">
     <div class="container">
         <h1 class="main-heading">Reportes</h1>
         <div class="divider"></div>
@@ -51,11 +51,11 @@
     </div>
 </form>
 
-<div class="container justify-content-center p-5">
+<div class="container justify-content-center px-5 pb-5">
 
     @*reporte de comparacion entre asistentes y reservaciones por evento *@
 
-    <h1 id="reportName">Comparación entre géneros de asistencia por evento</h1>
+    <h4 id="reportName">Comparación entre géneros de asistencia por evento</h4>
 
     <table class="table">
         <thead>
@@ -70,13 +70,13 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.NombreEvento)</td>
-                <td>@Html.DisplayFor(modelItem => item.Fecha_Evento)</td>
-                <td>@Html.DisplayFor(modelItem => item.generoPromedioM)</td>
-                <td>@Html.DisplayFor(modelItem => item.generoPromedioF)</td>
-                <td>@Html.DisplayFor(modelItem => item.generoPromedioO)</td>
-            </tr>
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.NombreEvento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Fecha_Evento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.generoPromedioM)</td>
+                    <td>@Html.DisplayFor(modelItem => item.generoPromedioF)</td>
+                    <td>@Html.DisplayFor(modelItem => item.generoPromedioO)</td>
+                </tr>
             }
         </tbody>
     </table>

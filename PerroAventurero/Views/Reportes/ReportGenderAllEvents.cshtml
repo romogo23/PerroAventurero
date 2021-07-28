@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="~/css/company.css" />
 }
 
-<div class="header">
+<div class="header-reporte">
     <div class="container">
         <h1 class="main-heading">Reportes</h1>
         <div class="divider"></div>
@@ -51,27 +51,27 @@
     </div>
 </form>
 
-<div class="container justify-content-center p-5">
+<div class="container justify-content-center px-5 pb-5">
 
     @*reporte de comparacion entre asistentes y reservaciones de todos los eventos *@
-        <h1 id="reportName">Comparación entre géneros de asistencia de todos los eventos</h1>
+    <h4 id="reportName">Comparación entre géneros de asistencia de todos los eventos</h4>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioM)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioF)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioO)</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td>@Html.DisplayFor(model => model.generoPromedioM)</td>
-                        <td>@Html.DisplayFor(model => model.generoPromedioF)</td>
-                        <td>@Html.DisplayFor(model => model.generoPromedioO)</td>
-                    </tr>
-            </tbody>
-        </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioM)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioF)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.generoPromedioO)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.generoPromedioM)</td>
+                <td>@Html.DisplayFor(model => model.generoPromedioF)</td>
+                <td>@Html.DisplayFor(model => model.generoPromedioO)</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 @section Scripts {

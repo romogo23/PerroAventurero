@@ -4,9 +4,22 @@
     ViewData["Title"] = "Edit";
 }
 
-<div class="m-0 row justify-content-md-center">
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
+}
+
+
+<div class="header-reporte">
+    <div class="container">
+        <h1 class="main-heading">Eventos</h1>
+        <div class="divider"></div>
+        <script type="text/javaScript" src="~/js/reportsdatetime.js"></script>
+    </div>
+</div>
+
+<div class="pt-2 row justify-content-md-center">
     <h4>Formulario de modificación de Evento:</h4>
-<br />
+    <br />
 </div>
 <div class="container py-5">
     <form asp-action="Edit" enctype="multipart/form-data" method="post">
@@ -106,7 +119,7 @@
                         <img id="output" width="200" height="200" src="@ViewBag.Image" />
                         <br />
                         <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)"/>
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
                         <span asp-validation-for="Imagen" class="text-danger"></span>
                         <br />
                         <br />
@@ -138,27 +151,27 @@
                 <input class="btn btn-dark" type="submit" onclick="return confirm('¿Está seguro que desea cancelar este evento:')" value="Cancelar Evento" />
             </form>
         </div>
-       <div class="col-2">
-           <form asp-controller="Reservas" asp-action="ReservasEventos" asp-route-id="CodigoEvento" method="post">
-               <input type="hidden" asp-for="CodigoEvento" />
-               <input class="btn btn-dark" type="submit" value="Ver reservaciones" />
-           </form>
-       </div>
+        <div class="col-2">
+            <form asp-controller="Reservas" asp-action="ReservasEventos" asp-route-id="CodigoEvento" method="post">
+                <input type="hidden" asp-for="CodigoEvento" />
+                <input class="btn btn-dark" type="submit" value="Ver reservaciones" />
+            </form>
+        </div>
         <div class="col-2">
             <form asp-action="SendReminders" asp-route-id="CodigoEvento" method="post">
                 <input type="hidden" asp-for="CodigoEvento" />
                 <input class="btn btn-dark" type="submit" value="Enviar recordatorios" />
             </form>
         </div>
-        
 
-        
+
+
     </div>
 </div>
 
 
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        @Html.ValidationMessageFor(m => m.HoraFinal)
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @Html.ValidationMessageFor(m => m.HoraFinal)
+}
