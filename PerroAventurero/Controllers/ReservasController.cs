@@ -141,7 +141,7 @@ namespace PerroAventurero.Models
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EntradasGenerales,EntradasNinnos,ComprobantePago,Acompannantes,CedulaClienteNavigation")] Reserva reserva, List<char> Gender, List<short> Age, IFormFile files, string groupAndTime)
+        public async Task<IActionResult> Create([Bind("EntradasGenerales,EntradasNinnos,ComprobantePago,CedulaClienteNavigation")] Reserva reserva, List<char> Gender, List<short> Age, IFormFile files, string groupAndTime)
         {
             Evento evento = new Evento();
             evento = (Evento)_context.Eventos.Where(eventos => eventos.CodigoEvento == code).FirstOrDefault();
@@ -208,14 +208,15 @@ namespace PerroAventurero.Models
                         _context.Add(reserva);
                         await _context.SaveChangesAsync();
 
-                        int code = _context.Reservas.Max(item => item.CodigoReserva);
+                        Reserva codeReserva = _context.Reservas.Where(re => re.CedulaCliente == reserva.CedulaCliente && re.CodigoEvento == code).FirstOrDefault();
                         for (int i = 0; i < Age.Count; i++)
                         {
                             Acompannante acompannante = new Acompannante();
                             acompannante.Codigo = i;
-                            acompannante.CodigoReserva = code;
+                            acompannante.CodigoReserva = codeReserva.CodigoReserva;
                             acompannante.Genero = Gender[i];
                             acompannante.Edad = Age[i];
+                            acompannante.CodigoReservaNavigation = codeReserva;
                             _context.Add(acompannante);
                         }
                         _context.SaveChanges();

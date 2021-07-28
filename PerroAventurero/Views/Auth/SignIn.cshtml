@@ -106,8 +106,11 @@
                             <div class="form-group">
                                 <label class="field-label-2-copy">Género</label>
                                 <br />
-                                <input name="Genero" type="text" class="form-control input" maxlength="320" placeholder="Género..." id="email" required="" />
-                                <span asp-validation-for="Cliente.Genero" class="text-danger"></span>
+                                <select asp-for="Cliente.Genero" class="form-control" asp-items="ViewBag.Genero">
+                                    <option value="f">Femenino</option>
+                                    <option value="m">Masculino</option>
+                                    <option value="o">Otro</option>
+                                </select>
                             </div>
                         </div>
                     </div>

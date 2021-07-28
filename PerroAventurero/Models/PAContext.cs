@@ -61,7 +61,7 @@ namespace PerroAventurero.Models
                     .IsFixedLength(true);
 
                 entity.HasOne(d => d.CodigoReservaNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Acompannantes)
                     .HasForeignKey(d => d.CodigoReserva)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ACOMPANN_RESERVA_T_RESERVA");

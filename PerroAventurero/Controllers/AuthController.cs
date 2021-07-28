@@ -161,6 +161,14 @@ namespace PerroAventurero.Controllers
 
         }
 
+        private int ValidateUser(String id)
+        {
+
+            int cliente = _context.UsuarioComuns.Where(c => c.CedulaCliente == id).Count();
+            return cliente;
+
+        }
+
         /*[HttpPost]
         public ActionResult Login(UsuarioAdministrador usuarioAdmin, string ReturnUrl)
         {
