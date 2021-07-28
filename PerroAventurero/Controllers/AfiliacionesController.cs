@@ -55,26 +55,36 @@ namespace PerroAventurero.Controllers
         {
 
             var afiliacion = await _context.Afiliacions.FindAsync(id);
-           
 
-            ////Enviar correo con el codigo de afiliación No está sirviendo, REVISAR
-            //SmtpClient client = new SmtpClient("smtp.gmail.com");
-            //client.Port = 587;
-            //client.EnableSsl = true;
-            //client.Timeout = 100000;
-            //client.EnableSsl = true;
-            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //client.UseDefaultCredentials = false;
-            //client.Credentials = new NetworkCredential("correo", "contraseña");
-            //MailMessage msg = new MailMessage();
-            ////msg.To.Add(Correo.ToString()); correo se recibía por parámetro, supuse que era el correo al que se envía el codigo como tal
-            //msg.To.Add("allan.najera@gmail.com");
-            //msg.From = new MailAddress("juanperez33op@gmail.com");
-            //msg.Subject = "Prueba de correo";
-            //msg.Body = "Estos es todo el texto que lleva el mensaje con las diferentes descripciones";
-            ////Attachment data = new Attachment(textBox3.Text);
-            ////msg.Attachments.Add(data);
-            //client.Send(msg);//Aquí está el problema
+            Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
+            DateTime date = new DateTime(afiliacion.Fecha.Value.Year + 1, afiliacion.Fecha.Value.Month, afiliacion.Fecha.Value.Day, afiliacion.Fecha.Value.Hour, afiliacion.Fecha.Value.Minute, afiliacion.Fecha.Value.Second);
+
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.To.Add(cliente.Correo.ToString());
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
+                msg.Body = "Su afiliación al club Aventuras con Descuentos ha sido ACEPTADA.\n\n" +
+                    "Su código de afiliación es: " + afiliacion.Codigo.ToString() + "\n"+
+                    "Su afiliación comienza el día: " + afiliacion.Fecha.ToString() + "\n" +
+                    "Su afiliación vence el día: " + date.ToString();
+                client.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+            
 
             //Con esto hace modifica la afiliación
             afiliacion.EsAceptada = true;
@@ -86,10 +96,39 @@ namespace PerroAventurero.Controllers
 
         public async Task<IActionResult> Reject(int id)
         {
-            //Enviar correo de que la solicitud de afiliación ha sido rechazada, aún no funciona
+
+            var afiliacion = await _context.Afiliacions.FindAsync(id);
+            Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
+
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.To.Add(cliente.Correo.ToString());
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
+                msg.Body = "Lo sentimos, su afiliación fue rechazada. \n" +
+                    "Encontramos algunos problemas con el comprobante de pago enviado.  \n" +
+                    "Agradecemos el apoyo. \n" +
+                    "Si desea realizar una nueva solicitud por favor vuelva a realizar el proceso de afiliación";
+                client.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+
 
             //El rechazar lo que hace es eliminar la afiliación
-            var afiliacion = await _context.Afiliacions.FindAsync(id);
+            
             _context.Afiliacions.Remove(afiliacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
