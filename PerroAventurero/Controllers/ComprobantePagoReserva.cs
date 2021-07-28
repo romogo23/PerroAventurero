@@ -16,7 +16,8 @@ namespace PerroAventurero.Controllers
 
         private readonly PAContext _context;
         private static int code;
-        private static Reserva cliente; 
+        private static Reserva cliente;
+        private static bool opc;
         public ComprobantePagoReserva(PAContext context)
         {
             _context = context;
@@ -24,6 +25,7 @@ namespace PerroAventurero.Controllers
 
         public IActionResult Index(int id)
         {
+            opc = true;
             if (id != 0)
             {
                 code = id;
@@ -64,47 +66,50 @@ namespace PerroAventurero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string CedulaCliente, IFormFile files)
         {
-            if (cliente != null)
+            if (opc != true)
             {
-
-                if (files != null)
+                if (cliente != null)
                 {
-                    if (files.Length > 0)
+
+                    if (files != null)
                     {
-                        //Getting FileName
-                        var fileName = Path.GetFileName(files.FileName);
-                        //Getting file Extension
-                        var fileExtension = Path.GetExtension(fileName);
-                        // concatenating  FileName + FileExtension
-                        var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
-
-                        using (var target = new MemoryStream())
+                        if (files.Length > 0)
                         {
-                            files.CopyTo(target);
+                            //Getting FileName
+                            var fileName = Path.GetFileName(files.FileName);
+                            //Getting file Extension
+                            var fileExtension = Path.GetExtension(fileName);
+                            // concatenating  FileName + FileExtension
+                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
 
-                            cliente.ComprobantePago = target.ToArray();
+                            using (var target = new MemoryStream())
+                            {
+                                files.CopyTo(target);
+
+                                cliente.ComprobantePago = target.ToArray();
+                            }
+
+                            // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
+
                         }
-
-                        // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
+                        _context.Update(cliente);
+                        await _context.SaveChangesAsync();
+                        return Redirect("~/Home/Index");
 
                     }
-                    _context.Update(cliente);
-                    await _context.SaveChangesAsync();
-                    return Redirect("~/Home/Index");
-
+                    else
+                    {
+                        ModelState.AddModelError("ComprobantePago", "Debe adjuntar el comprobante de pago");
+                        return View("ComprobantePago", cliente);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("ComprobantePago", "Debe adjuntar el comprobante de pago");
-                    return View("ComprobantePago", cliente);
-                }
-
             }
             else
             {
                 if (ValidateClient(CedulaCliente) != 0)
                 {
                     cliente = _context.Reservas.Where(re => re.CedulaCliente == CedulaCliente && re.CodigoEvento == code).FirstOrDefault();
+                    opc = false;
                     return View("ComprobantePago", cliente);
                 }
                 else
@@ -113,7 +118,7 @@ namespace PerroAventurero.Controllers
                     return View("ComprobantePago");
                 }
             }
-
+            return null;
         }
 
     }

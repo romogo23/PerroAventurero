@@ -48,7 +48,10 @@
                                 }
                                 <div class="event-info">
                                     <h3 class="heading-13">@Html.DisplayFor(modelItem => item.NombreEvento)</h3>
-                                    <p class="paragraph">@Html.DisplayFor(modelItem => item.Lugar)<br /><br />@Html.DisplayFor(modelItem => item.Direccion)<br /><br />@Html.DisplayFor(modelItem => item.Comentarios)</p>
+                                    <p class="paragraph">
+                                        Lugar: @Html.DisplayFor(modelItem => item.Lugar)<br /><br />Fecha: @Html.DisplayFor(modelItem => item.Fecha)<br /><br />
+                                        Precio General: @Html.DisplayFor(modelItem => item.PrecioGeneral)<br /><br />Precio Niños: @Html.DisplayFor(modelItem => item.PrecioNinno)
+                                    </p>
                                 </div>
                             </a>
                             <div class="row">

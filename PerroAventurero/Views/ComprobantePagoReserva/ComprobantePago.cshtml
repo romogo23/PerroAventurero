@@ -1,102 +1,105 @@
 ﻿@model PerroAventurero.Models.Reserva
 
-
-@{
-    ViewData["Title"] = "Create";
+@section Styles{
+    <link rel="stylesheet" href="~/css/company.css" />
 }
 
-<h1>Envio de comprobante de pago</h1>
-<hr />
+<div class="header">
+    <div class="container">
+        <h1 class="main-heading">Reserva</h1>
+        <div class="divider"></div>
+    </div>
+</div>
+
+<div class="container pt-5">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h4>Información del evento</h4>
+
+            <div id="eventoP">
 
 
-<div class="row">
-    <div class="col-md-4">
-        <label>Información del evento</label>
-
-        <div id="eventoP">
-
-
+            </div>
         </div>
-
-        <div>
-            <label>Información de la reserva</label>
-            <hr />
+        <div class="col-6">
+            <h4>Información de la reserva</h4>
+            <hr width=100% style="color:lightgray">
             <dl class="row">
-                <dt class="col-sm-2">
-                    Cédula
+                <dt class="col-sm-4">
+                    Cédula:
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.CedulaCliente)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.EntradasGenerales)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.EntradasGenerales)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.EntradasNinnos)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.EntradasNinnos)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.Grupo)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.Grupo)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.HoraEntrada)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.HoraEntrada)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.PrecioTotal)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.PrecioTotal)
                 </dd>
             </dl>
         </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <form asp-action="Edit" enctype="multipart/form-data" class="p-5">
 
-        <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-
-            </div>
+                </div>
 
 
-            <div class="form-control-file">
-                <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                <img id="output" width="200" height="200" />
-                <script>
-                    var loadFile = function (event) {
-                        var output = document.getElementById('output');
-                        output.src = URL.createObjectURL(event.target.files[0]);
-                        output.onload = function () {
-                            URL.revokeObjectURL(output.src) // free memory
-                        }
-                    };
-                </script>
+                <div class="form-control-file">
+                    <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
+                    <img id="output" width="200" height="200" />
+                    <script>
+                        var loadFile = function (event) {
+                            var output = document.getElementById('output');
+                            output.src = URL.createObjectURL(event.target.files[0]);
+                            output.onload = function () {
+                                URL.revokeObjectURL(output.src) // free memory
+                            }
+                        };
+                    </script>
+                </div>
                 <span asp-validation-for="ComprobantePago" class="text-danger"></span>
-            </div>
 
-            
+                <hr />
 
-            <hr />
+                <div class="form-group">
+                    <input type="submit" value="Enviar Comprobante" class="btn btn-primary" />
+                </div>
 
-            <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-            </div>
+            </form>
 
-        </form>
+        </div>
     </div>
 </div>
-
-
 
 
 @section Scripts {
