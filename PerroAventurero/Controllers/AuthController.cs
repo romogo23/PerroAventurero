@@ -267,37 +267,47 @@ namespace PerroAventurero.Controllers
                 
                if (ValidateUser(usuario.CedulaCliente) == 0) {
 
-                    if (ValidateClient(usuario.CedulaCliente) == 0)
+                    if (ValidateEmailClient(usuarioCliente.Correo) == 0)
                     {
-                        _context.Add(usuarioCliente);
+                        if (ValidateClient(usuario.CedulaCliente) == 0)
+                        {
+                            _context.Add(usuarioCliente);
+                            await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            _context.Update(usuarioCliente);
+                        }
+
+                        if (files != null)
+                        {
+                            if (files.Length > 0)
+                            {
+                                var fileName = Path.GetFileName(files.FileName);
+                                //Getting file Extension
+                                var fileExtension = Path.GetExtension(fileName);
+                                // concatenating  FileName + FileExtension
+                                var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
+                                using (var target = new MemoryStream())
+                                {
+                                    files.CopyTo(target);
+
+                                    usuario.Foto = target.ToArray();
+                                }
+
+                            }
+                        }
+                        _context.Add(usuario);
                         await _context.SaveChangesAsync();
                     }
-                    else
-                    {
-                        _context.Update(usuarioCliente);
+                    else {
+                        ModelState.AddModelError("Cliente.Correo", "Ya existe un usuario con el correo");
+                        return View(cu);
+                        
                     }
 
-                    if (files != null)
-                    {
-                        if (files.Length > 0)
-                        {
-                            var fileName = Path.GetFileName(files.FileName);
-                            //Getting file Extension
-                            var fileExtension = Path.GetExtension(fileName);
-                            // concatenating  FileName + FileExtension
-                            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
-
-                            using (var target = new MemoryStream())
-                            {
-                                files.CopyTo(target);
-
-                                usuario.Foto = target.ToArray();
-                            }
-
-                        }
-                    }
-                    _context.Add(usuario);
-                    await _context.SaveChangesAsync();
+                    
                 }
                 else
                 {
@@ -315,6 +325,14 @@ namespace PerroAventurero.Controllers
         {
             
             int cliente = _context.Clientes.Where(c => c.CedulaCliente == id).Count();
+            return cliente;
+
+        }
+
+        private int ValidateEmailClient(String email)
+        {
+
+            int cliente = _context.Clientes.Where(c => c.Correo == email).Count();
             return cliente;
 
         }
