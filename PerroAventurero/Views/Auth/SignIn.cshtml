@@ -106,7 +106,7 @@
                             <div class="form-group">
                                 <label class="field-label-2-copy">Género</label>
                                 <br />
-                                <select asp-for="Cliente.Genero" class="form-control" asp-items="ViewBag.Genero">
+                                <select name="Genero" class="form-control" asp-items="ViewBag.Genero">
                                     <option value="f">Femenino</option>
                                     <option value="m">Masculino</option>
                                     <option value="o">Otro</option>
@@ -151,7 +151,7 @@
                         <img id="output" width="200" height="200" src="@ViewBag.Image" />
                         <br />
                         <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)"/>
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
                         <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
                         <br />
                         <br />
@@ -171,6 +171,17 @@
             </div>
         </form>
     </div>
+
+    @if (ViewBag.r != null)
+    {
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript">
+                        $(document).ready(function () {
+                            alert("@ViewBag.r");
+                            window.location = "/Home/Index";
+                    });
+        </script>
+    }
 </div>
 
 <!--<div class="header-copy">

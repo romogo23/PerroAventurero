@@ -92,9 +92,11 @@ namespace PerroAventurero.Controllers
                             // ViewBag.Image = ViewImage(objfiles.ComprobantePago);
 
                         }
+                        ViewBag.r = "Comprobante de pago enviado exitosamente";
+
                         _context.Update(cliente);
                         await _context.SaveChangesAsync();
-                        return Redirect("~/Home/Index");
+                        return View("ComprobantePago", cliente);
 
                     }
                     else

@@ -289,7 +289,7 @@ namespace PerroAventurero.Models
 
                             }
                             else {
-                                ViewBag.r = "Reserva  de " + reserva.EntradasGenerales + " entradas generales y " + reserva.EntradasNinnos + " entradas de niños " + "al evento " + evento.NombreEvento + " ha sido exitosa.";
+                                ViewBag.r = "Reserva exitosa.";
 
                                 List<String> GroupTimeR = groupTime(code);
                                 ViewBag.GroupTimeList = GroupTimeR;

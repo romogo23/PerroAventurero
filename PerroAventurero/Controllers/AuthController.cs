@@ -88,7 +88,8 @@ namespace PerroAventurero.Controllers
                     _context.Update(userComun.UsuarioComun);
                     _context.SaveChanges();
                 }
-                return RedirectToAction("Login", "Auth");
+                ViewBag.r = "Su contrase" + '\u00F1' + "a se actualiz"+ '\u00f3' + " correctamente";
+                return View("ModifyPassword_4");
 
             }
             else
@@ -235,16 +236,16 @@ namespace PerroAventurero.Controllers
             try
             {
                 SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
+                client.Port = 25;
                 client.EnableSsl = true;
                 client.Timeout = 100000;
                 client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                client.Credentials = new NetworkCredential("lexi.cor28@gmail.com", "campoluna28");
                 MailMessage msg = new MailMessage();
                 msg.To.Add(Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.From = new MailAddress("lexi.cor28@gmail.com");
                 msg.Subject = subject;
                 msg.Body = message;
                 //Attachment data = new Attachment(textBox3.Text);
@@ -306,6 +307,9 @@ namespace PerroAventurero.Controllers
                         usuario.Contrasenna = Encriptar(conTempo);
                         _context.Add(usuario);
                         await _context.SaveChangesAsync();
+                        ViewBag.r = "Se ha registrado correctamente";
+                        return View(cu);
+
                     }
                     else {
                         ModelState.AddModelError("Cliente.Correo", "Ya existe un usuario con el correo");

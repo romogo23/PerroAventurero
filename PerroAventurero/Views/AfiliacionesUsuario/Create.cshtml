@@ -18,9 +18,9 @@
                 <span asp-validation-for="Codigo" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="CedulaCliente" class="control-label"></label>
-                <select asp-for="CedulaCliente" class="form-control" asp-items="ViewBag.CedulaCliente"></select>
-            </div>*@
+                    <label asp-for="CedulaCliente" class="control-label"></label>
+                    <select asp-for="CedulaCliente" class="form-control" asp-items="ViewBag.CedulaCliente"></select>
+                </div>*@
             <div class="form-group">
                 <label asp-for="Cedula" class="control-label"></label>
                 <select asp-for="Cedula" class="form-control" asp-items="ViewBag.Cedula"></select>
@@ -30,7 +30,7 @@
                 <input asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
-           
+
             <div class="col-md-10">
                 <p>Ingrese el comprobante de pago</p>
                 <input class="form-control" name="files" type="file" accept="mage/png, image/jpeg" />
@@ -40,6 +40,16 @@
             </div>
         </form>
     </div>
+    @if (ViewBag.r != null)
+    {
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript">
+                        $(document).ready(function () {
+                            alert('Su afiliaci\u00f3 n ha sido exitosa');
+                            window.location = "/Home/Index";
+                    });
+        </script>
+    }
 </div>
 
 <div>

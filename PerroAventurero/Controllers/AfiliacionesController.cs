@@ -138,9 +138,19 @@ namespace PerroAventurero.Controllers
         // GET: Afiliaciones/Create
         public IActionResult Create()
         {
-            ViewData["CedulaCliente"] = new SelectList(_context.UsuarioComuns, "CedulaCliente", "CedulaCliente");
-            ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
-            return View();
+            string CedulaCliente = null;
+            CedulaCliente = User.Identity.Name;
+            if (CedulaCliente != null)
+            {
+
+                ViewData["CedulaCliente"] = new SelectList(_context.UsuarioComuns, "CedulaCliente", "CedulaCliente");
+                ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
+                return View();
+            }
+            else {
+                return Redirect("/Auth/Login");
+            }
+
         }
 
         // POST: Afiliaciones/Create
@@ -193,6 +203,8 @@ namespace PerroAventurero.Controllers
 
                         _context.Add(afiliacionTemporal);
                         await _context.SaveChangesAsync();
+                        ViewBag.r = "s";
+
                     }
                 }
                 //Ver a donde lo mando, solo puse eso para que dejara de molestar
