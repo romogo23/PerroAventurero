@@ -176,6 +176,7 @@ namespace PerroAventurero.Models
                 ViewBag.EntradasNinnos = evento.PrecioNinno;
                 ViewBag.EntradasGenerales = evento.PrecioGeneral;
                 ViewBag.GroupTimeList = GroupTimeR;
+                ViewBag.r = "prueba";
                 ModelState.AddModelError("EntradasNinnos", "Debe ingresar correctamente las edades de los acompañantes, se considerará niño o niña a toda persona desde su concepción hasta los doce años de edad cumplidos");
                 return View(reserva);
             }

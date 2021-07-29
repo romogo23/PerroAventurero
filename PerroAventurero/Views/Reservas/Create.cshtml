@@ -284,6 +284,16 @@
                         </script>
                     </div>
                 </div>
+
+                @if (ViewBag.r != null)
+                {
+                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            alert("@ViewBag.r");
+                    });
+                    </script>
+                }
             </div>
             <div class="row justify-content-center">
                 <div class="form-group">
@@ -299,8 +309,16 @@
 </div>
 
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+
+
+
 
 
 }

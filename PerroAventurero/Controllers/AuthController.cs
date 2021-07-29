@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace PerroAventurero.Controllers
 {
@@ -279,6 +280,7 @@ namespace PerroAventurero.Controllers
                         else
                         {
                             _context.Update(usuarioCliente);
+                            await _context.SaveChangesAsync();
                         }
 
                         if (files != null)
@@ -336,8 +338,9 @@ namespace PerroAventurero.Controllers
         private int ValidateEmailClient(String email)
         {
 
-            int cliente = _context.Clientes.Where(c => c.Correo == email).Count();
-            return cliente;
+            Cliente cliente = _context.Clientes.AsNoTracking().Where(c => c.Correo == email).FirstOrDefault();
+            int user = _context.UsuarioComuns.Where(c => c.CedulaCliente == cliente.CedulaCliente).Count();
+            return user;
 
         }
 
