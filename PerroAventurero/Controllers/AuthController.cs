@@ -321,7 +321,7 @@ namespace PerroAventurero.Controllers
                     return View(cu);
                 }   
                 
-                return RedirectToAction("Index", "EmpresasAfiliadas");
+                return RedirectToAction("Index", "Home");
 
             }
             return View(cu);
@@ -451,6 +451,10 @@ namespace PerroAventurero.Controllers
                 new Claim("Contrasenna", userAdmin.Contrasenna)*/
                 new Claim(ClaimTypes.Name, userAdmin.Cedula),
                 new Claim("FullName", userAdmin.NombreCompleto),
+                 new Claim("FullName", userAdmin.NombreCompleto),
+                new Claim("Email", userAdmin.Correo),
+                new Claim("Tel", userAdmin.Telefono.ToString()),
+                new Claim("Fecha", userAdmin.FechaNacimiento.ToString()),
                 new Claim(ClaimTypes.Role, "Administrator"),
             };
             var principal = new ClaimsPrincipal();

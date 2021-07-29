@@ -32,7 +32,7 @@ namespace PerroAventurero.Models
 
         [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "La contraseña es requerida")]
-        [MaxLength(11, ErrorMessage = "Constraseña debe tener máximo 11 caracteres")]
+        [MaxLength(30, ErrorMessage = "Constraseña debe tener máximo 11 caracteres")]
         [MinLength(8, ErrorMessage = "Constraseña debe tener mínimo 8 caracteres")]
         public string Contrasenna { get; set; }
 
