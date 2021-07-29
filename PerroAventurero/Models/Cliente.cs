@@ -42,6 +42,7 @@ namespace PerroAventurero.Models
         [RegularExpression(@"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "El correo no corresponde a uno válido")]
         public string Correo { get; set; }
 
+        [Display(Name = "Desea recibir anuncios de los eventos")]
         public bool? RecepcionAnuncios { get; set; }
 
         public virtual ICollection<Reserva> Reservas { get; set; }

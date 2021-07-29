@@ -205,17 +205,17 @@ namespace PerroAventurero.Controllers
 
                         _context.Add(afiliacionTemporal);
                         await _context.SaveChangesAsync();
-                        ViewBag.r = "s";
 
                     }
-                    //Ver a donde lo mando, solo puse eso para que dejara de molestar
-                    return Redirect("~/Home/Index");
+                    ViewBag.r = "Se ha afiliado exitosamente";
+                    return View();
                 }
                 else
                 {
                     //Cuando no envia comprobante, ponerle mensajito de que tiene que ingresar comprobante y no dejarlo pasar.
                     //Ver a donde lo mando, solo puse eso para que dejara de molestar
-                    return Redirect("~/Home/Index");
+                    ModelState.AddModelError("ComprobantePago", "Debe ingresar un comprobante de pago");
+                    return View();
                 }
                 
             }
@@ -223,7 +223,8 @@ namespace PerroAventurero.Controllers
             {
                 //Ver a donde lo mando, solo puse eso para que dejara de molestar
                 //Ya tiene una afiliacion a su nombre
-                return Redirect("~/Home/Index");
+                ModelState.AddModelError("ComprobantePago", "Ya tiene una afiliación a su nombre");
+                return View();
             }
         }
 

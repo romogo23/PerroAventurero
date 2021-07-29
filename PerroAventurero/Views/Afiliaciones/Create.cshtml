@@ -1,5 +1,4 @@
-﻿
-@section Styles{
+﻿@section Styles{
     <link rel="stylesheet" href="~/css/indexUser.css" />
 }
 
@@ -109,6 +108,17 @@
                                         };
                                     </script>
                                 </div>
+                                <span asp-validation-for="ComprobantePago" class="text-danger"></span>
+                                @if (ViewBag.r != null)
+                                {
+                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            alert('@ViewBag.r');
+                                            window.location = "/Home/Index";
+                                        });
+                                    </script>
+                                }
                             </div>
                             <div class="col">
                                 <br />
