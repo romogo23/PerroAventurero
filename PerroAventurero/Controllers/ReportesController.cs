@@ -25,7 +25,7 @@ namespace PerroAventurero.Controllers
             _context = context;
         }
 
-
+        [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
             List<String> rp = reports();
@@ -33,6 +33,7 @@ namespace PerroAventurero.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult RenderMenu(string selectReport, DateTime start, DateTime final)
         {
             List<String> rp = reports();
