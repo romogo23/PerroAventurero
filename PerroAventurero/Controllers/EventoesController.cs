@@ -174,12 +174,6 @@ namespace PerroAventurero.Controllers
                             }
                         }
                     }
-                    else
-                    {
-                        //agregar imagen por defecto pero aun no se cual o como se va tratar
-                    }
-
-
                     //Enviar anuncios
                     string message = "Perro Aventurero tiene un nuevo evento llamado " + evento.NombreEvento.ToString() +
                         "\nSe realizará en " + evento.Lugar.ToString() +
