@@ -26,7 +26,7 @@ namespace PerroAventurero.Controllers
 
       
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         // GET: EmpresasAfiliadas
         public async Task<IActionResult> Index(string searchString)
         {
@@ -79,7 +79,9 @@ namespace PerroAventurero.Controllers
 
         }
 
+
         // GET: EmpresasAfiliadas/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -100,6 +102,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: EmpresasAfiliadas/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
@@ -161,6 +164,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: EmpresasAfiliadas/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -258,6 +262,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: EmpresasAfiliadas/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
