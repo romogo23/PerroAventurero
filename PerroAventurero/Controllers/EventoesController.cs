@@ -182,7 +182,7 @@ namespace PerroAventurero.Controllers
                         "\nEl precio de las entradas de niños es de: " + evento.PrecioNinno +
                         "\n\nIngrese a la página de perro aventurero para ver más información";
 
-                    sendAnnouncement("Nuevo evento Perro Aventurero", message);
+                    //sendAnnouncement("Nuevo evento Perro Aventurero", message);
 
                     _context.Add(evento);
                     await _context.SaveChangesAsync();
@@ -362,14 +362,14 @@ namespace PerroAventurero.Controllers
                     string message = "Perro Aventurero ha realizado cambios en el evento " + evento.NombreEvento + "\n" +
                         "Ingrese a la pagina de perro aventurero para ver más información";
 
-                    if (sendAnnouncement("Modificación evento Perro Aventurero", message) == 1)
-                    {
-                        //envió recordatorios
-                    }
-                    else
-                    {
-                        //No tenía a quien enviar recordatorios
-                    }
+                    //if (sendAnnouncement("Modificación evento Perro Aventurero", message) == 1)
+                    //{
+                    //    //envió recordatorios
+                    //}
+                    //else
+                    //{
+                    //    //No tenía a quien enviar recordatorios
+                    //}
                     
 
                     //return RedirectToAction(nameof(Index));
@@ -425,8 +425,8 @@ namespace PerroAventurero.Controllers
             _context.Eventos.Remove(evento);
             await _context.SaveChangesAsync();
 
-            string message = "Le comunicamos que el evento " + evento.NombreEvento + " de Perro Aventurero ha sido cancelado.\n¡Lo sentimos!";
-            sendAnnouncement("Cancelación evento Perro Aventurero",message);
+            //string message = "Le comunicamos que el evento " + evento.NombreEvento + " de Perro Aventurero ha sido cancelado.\n¡Lo sentimos!";
+            //sendAnnouncement("Cancelación evento Perro Aventurero",message);
 
             return RedirectToAction(nameof(Index));
         }
