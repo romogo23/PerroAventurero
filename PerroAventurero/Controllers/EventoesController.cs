@@ -147,6 +147,12 @@ namespace PerroAventurero.Controllers
 
             if (ModelState.IsValid)
             {
+                if (DateTime.Compare(DateTime.Now, evento.Fecha) > 0 || DateTime.Compare(DateTime.Now, evento.Fecha) == 0)
+                {
+                    ModelState.AddModelError("Fecha", "La fecha del evento debe ser porterior a la  fecha de hoy");
+                    return View(evento);
+                }
+
                 evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
                 evento.HoraFinal = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraFinal.Hour, evento.HoraFinal.Minute, evento.HoraFinal.Second);
 
@@ -300,6 +306,12 @@ namespace PerroAventurero.Controllers
 
             if (ModelState.IsValid)
             {
+                if (DateTime.Compare(DateTime.Now, evento.Fecha) > 0 || DateTime.Compare(DateTime.Now, evento.Fecha) == 0)
+                {
+                    ModelState.AddModelError("Fecha", "La fecha del evento debe ser porterior a la  fecha de hoy");
+                    return View(evento);
+                }
+
                 evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
                 evento.HoraFinal = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraFinal.Hour, evento.HoraFinal.Minute, evento.HoraFinal.Second);
 

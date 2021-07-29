@@ -120,7 +120,7 @@
                         <img id="output" width="200" height="200" src="@ViewBag.Image" />
                         <br />
                         <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)"/>
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
                         <br />
                         <br />
 
@@ -163,4 +163,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     @Html.ValidationMessageFor(m => m.HoraFinal)
+    @Html.ValidationMessageFor(m => m.Fecha)
 }
