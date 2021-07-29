@@ -60,31 +60,31 @@ namespace PerroAventurero.Controllers
             Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
             DateTime date = new DateTime(afiliacion.Fecha.Value.Year + 1, afiliacion.Fecha.Value.Month, afiliacion.Fecha.Value.Day, afiliacion.Fecha.Value.Hour, afiliacion.Fecha.Value.Minute, afiliacion.Fecha.Value.Second);
 
-            try
-            {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.To.Add(cliente.Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
-                msg.Body = "Su afiliación al club Aventuras con Descuentos ha sido ACEPTADA.\n\n" +
-                    "Su código de afiliación es: " + afiliacion.Codigo.ToString() + "\n"+
-                    "Su afiliación comienza el día: " + afiliacion.Fecha.ToString() + "\n" +
-                    "Su afiliación vence el día: " + date.ToString();
-                client.Send(msg);
-            }
-            catch (Exception ex)
-            {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
-            }
+            //try
+            //{
+            //    SmtpClient client = new SmtpClient("smtp.gmail.com");
+            //    client.Port = 587;
+            //    client.EnableSsl = true;
+            //    client.Timeout = 100000;
+            //    client.EnableSsl = true;
+            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //    client.UseDefaultCredentials = false;
+            //    client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+            //    MailMessage msg = new MailMessage();
+            //    msg.To.Add(cliente.Correo.ToString());
+            //    msg.From = new MailAddress("juanperez33op@gmail.com");
+            //    msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
+            //    msg.Body = "Su afiliación al club Aventuras con Descuentos ha sido ACEPTADA.\n\n" +
+            //        "Su código de afiliación es: " + afiliacion.Codigo.ToString() + "\n"+
+            //        "Su afiliación comienza el día: " + afiliacion.Fecha.ToString() + "\n" +
+            //        "Su afiliación vence el día: " + date.ToString();
+            //    client.Send(msg);
+            //}
+            //catch (Exception ex)
+            //{
+            //    // TODO: handle exception
+            //    throw new InvalidOperationException(ex.Message);
+            //}
             
 
             //Con esto hace modifica la afiliación
@@ -101,31 +101,31 @@ namespace PerroAventurero.Controllers
             var afiliacion = await _context.Afiliacions.FindAsync(id);
             Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
 
-            try
-            {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.To.Add(cliente.Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
-                msg.Body = "Lo sentimos, su afiliación fue rechazada. \n" +
-                    "Encontramos algunos problemas con el comprobante de pago enviado.  \n" +
-                    "Agradecemos el apoyo. \n" +
-                    "Si desea realizar una nueva solicitud por favor vuelva a realizar el proceso de afiliación";
-                client.Send(msg);
-            }
-            catch (Exception ex)
-            {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
-            }
+            //try
+            //{
+            //    SmtpClient client = new SmtpClient("smtp.gmail.com");
+            //    client.Port = 587;
+            //    client.EnableSsl = true;
+            //    client.Timeout = 100000;
+            //    client.EnableSsl = true;
+            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //    client.UseDefaultCredentials = false;
+            //    client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+            //    MailMessage msg = new MailMessage();
+            //    msg.To.Add(cliente.Correo.ToString());
+            //    msg.From = new MailAddress("juanperez33op@gmail.com");
+            //    msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
+            //    msg.Body = "Lo sentimos, su afiliación fue rechazada. \n" +
+            //        "Encontramos algunos problemas con el comprobante de pago enviado.  \n" +
+            //        "Agradecemos el apoyo. \n" +
+            //        "Si desea realizar una nueva solicitud por favor vuelva a realizar el proceso de afiliación";
+            //    client.Send(msg);
+            //}
+            //catch (Exception ex)
+            //{
+            //    // TODO: handle exception
+            //    throw new InvalidOperationException(ex.Message);
+            //}
 
 
             //El rechazar lo que hace es eliminar la afiliación
@@ -231,7 +231,7 @@ namespace PerroAventurero.Controllers
 
         private int generateCode()
         {
-            return new Random().Next(1000, 9999);
+            return new Random().Next(10000, 99999);
         }
 
 
