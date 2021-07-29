@@ -377,9 +377,26 @@ namespace PerroAventurero.Controllers
         // POST: Eventoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int codigoEvento)
         {
-            var evento = await _context.Eventos.FindAsync(id);
+            var evento = await _context.Eventos.FindAsync(codigoEvento);
+            Reserva reserva;
+            Acompannante acompannante;
+
+            while (_context.Reservas.Where(r => r.CodigoEvento == codigoEvento).FirstOrDefault() != null)
+            {
+                reserva = _context.Reservas.Where(r => r.CodigoEvento == codigoEvento).FirstOrDefault();
+                while (_context.Acompannantes.Where(a => a.CodigoReserva == reserva.CodigoReserva).FirstOrDefault() != null)
+                {
+                    acompannante = _context.Acompannantes.Where(a => a.CodigoReserva == reserva.CodigoReserva).FirstOrDefault();
+                    _context.Acompannantes.Remove(acompannante);
+                    await _context.SaveChangesAsync();
+                }
+
+                _context.Reservas.Remove(reserva);
+                await _context.SaveChangesAsync();
+            }
+
             _context.Eventos.Remove(evento);
             await _context.SaveChangesAsync();
 
