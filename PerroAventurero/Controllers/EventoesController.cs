@@ -145,7 +145,7 @@ namespace PerroAventurero.Controllers
                 evento.HoraInicio = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraInicio.Hour, evento.HoraInicio.Minute, evento.HoraInicio.Second);
                 evento.HoraFinal = new DateTime(evento.Fecha.Year, evento.Fecha.Month, evento.Fecha.Day, evento.HoraFinal.Hour, evento.HoraFinal.Minute, evento.HoraFinal.Second);
 
-                
+
                 if (DateTime.Compare(evento.HoraInicio,evento.HoraFinal) > 0 || DateTime.Compare(evento.HoraInicio, evento.HoraFinal) == 0)
                 {
                     //Validar que la fecha hora final sea posterior que hora inicio, ver que hago cuando es mayor
@@ -177,6 +177,18 @@ namespace PerroAventurero.Controllers
                     {
                         //agregar imagen por defecto pero aun no se cual o como se va tratar
                     }
+
+
+                    //Enviar anuncios
+                    string message = "Perro Aventurero tiene un nuevo evento llamado " + evento.NombreEvento.ToString() +
+                        "\nSe realizará en " + evento.Lugar.ToString() +
+                        "\nEl día " + evento.Fecha.ToString() +
+                        "\nEl precio de las entradas generales es de: " + evento.PrecioGeneral +
+                        "\nEl precio de las entradas de niños es de: " + evento.PrecioNinno +
+                        "\n\nIngrese a la página de perro aventurero para ver más información";
+
+                    sendAnnouncement("Nuevo evento Perro Aventurero", message);
+
                     _context.Add(evento);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -185,6 +197,54 @@ namespace PerroAventurero.Controllers
             }
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", evento.Cedula);
             return View(evento);
+        }
+
+        private void sendAnnouncement(string subject, string body)
+        {
+            Cliente cliente;
+            List<Reserva> listOfReservations = new List<Reserva>();
+
+            List<Cliente> listOfClients = new List<Cliente>();
+
+            if (_context.Clientes.Where(c => c.RecepcionAnuncios == true).FirstOrDefault() != null)
+            {
+                listOfClients = _context.Clientes.Where(c => c.RecepcionAnuncios == true).ToList();
+            }
+            else
+            {
+                //No hay a quien enviar anuncios, vaya pa la piiii, hay que mandarlo a otra parte para que no se caiga
+            }
+            
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = subject;
+
+                do
+                {
+                    msg.To.Clear();
+                    cliente = listOfClients.First();
+                    msg.Body = body;
+                    msg.To.Add(cliente.Correo.ToString());
+                    client.Send(msg);
+                    listOfClients.Remove(cliente);
+
+                } while (listOfClients.Count() >= 1);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
         }
 
         // GET: Eventoes/Edit/5
@@ -281,6 +341,12 @@ namespace PerroAventurero.Controllers
                             throw;
                         }
                     }
+
+                    string message = "Perro Aventurero ha realizado cambios en el evento " + evento.NombreEvento + "\n" +
+                        "Ingrese a la pagina de perro aventurero para ver más información";
+
+                    sendAnnouncement("Modificación evento Perro Aventurero", message);
+
                     return RedirectToAction(nameof(Index));
                 }
                
@@ -316,6 +382,10 @@ namespace PerroAventurero.Controllers
             var evento = await _context.Eventos.FindAsync(id);
             _context.Eventos.Remove(evento);
             await _context.SaveChangesAsync();
+
+            string message = "Le comunicamos que el evento " + evento.NombreEvento + " de Perro Aventurero ha sido cancelado.\n¡Lo sentimos!";
+            sendAnnouncement("Cancelación evento Perro Aventurero",message);
+
             return RedirectToAction(nameof(Index));
         }
 
