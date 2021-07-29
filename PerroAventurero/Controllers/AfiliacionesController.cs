@@ -25,6 +25,8 @@ namespace PerroAventurero.Controllers
             _context = context;
         }
 
+
+        [Authorize(Roles = "Administrator")]
         // GET: Afiliaciones
         public async Task<IActionResult> Index()
         {
@@ -32,6 +34,7 @@ namespace PerroAventurero.Controllers
             return View(await pAContext.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Afiliaciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -236,6 +239,7 @@ namespace PerroAventurero.Controllers
 
 
         // GET: Afiliaciones/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -290,6 +294,8 @@ namespace PerroAventurero.Controllers
             return View(afiliacion);
         }
 
+
+        [Authorize(Roles = "Administrator")]
         // GET: Afiliaciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
