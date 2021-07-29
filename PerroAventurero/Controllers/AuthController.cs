@@ -75,13 +75,14 @@ namespace PerroAventurero.Controllers
 
                 if (userAdmin != null)
                 {
-                    userAdmin.Contrasenna= NewPassword;
+                    userAdmin.Contrasenna = Encriptar(NewPassword);
                     userAdmin.CodigoTemporal = null;
                     _context.Update(userAdmin);
+                    _context.SaveChanges();
                 }
                 else if (userComun != null)
                 {
-                    userComun.UsuarioComun.Contrasenna = NewPassword;
+                    userComun.UsuarioComun.Contrasenna = Encriptar(NewPassword);
                     userComun.UsuarioComun.CodigoTemporal = null;
                     _context.Update(userComun.UsuarioComun);
                     _context.SaveChanges();
@@ -271,6 +272,7 @@ namespace PerroAventurero.Controllers
                     {
                         if (ValidateClient(usuario.CedulaCliente) == 0)
                         {
+                            
                             _context.Add(usuarioCliente);
                             await _context.SaveChangesAsync();
                         }
@@ -298,6 +300,8 @@ namespace PerroAventurero.Controllers
 
                             }
                         }
+                        string conTempo = usuario.Contrasenna;
+                        usuario.Contrasenna = Encriptar(conTempo);
                         _context.Add(usuario);
                         await _context.SaveChangesAsync();
                     }
@@ -407,8 +411,9 @@ namespace PerroAventurero.Controllers
 
         private UsuarioAdministrador GetMyADMINUser (String email, String password)
         {
+            string conTempo = Encriptar(password);
             UsuarioAdministrador usuarioAdmin = null;
-            usuarioAdmin = _context.UsuarioAdministradors.Where(u => u.Correo == email && u.Contrasenna == password).FirstOrDefault();
+            usuarioAdmin = _context.UsuarioAdministradors.Where(u => u.Correo == email && u.Contrasenna == conTempo).FirstOrDefault();
             return usuarioAdmin;
         }
         
@@ -419,7 +424,9 @@ namespace PerroAventurero.Controllers
             Cliente cliente = null;
             cliente = _context.Clientes.Where(u => u.Correo == email).FirstOrDefault();
             if (cliente != null) {
-                usuarioComun = _context.UsuarioComuns.Where(u => u.CedulaCliente.Equals(cliente.CedulaCliente) && u.Contrasenna == password).FirstOrDefault();
+                string conTempo = Encriptar(password);
+
+                usuarioComun = _context.UsuarioComuns.Where(u => u.CedulaCliente.Equals(cliente.CedulaCliente) && u.Contrasenna == conTempo).FirstOrDefault();
                 if (usuarioComun != null)
                 {
                     if (cliente.CedulaCliente.Equals(usuarioComun.CedulaCliente))
@@ -465,5 +472,18 @@ namespace PerroAventurero.Controllers
             principal.AddIdentity(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
             return principal;
         }
+
+
+
+
+        public static string Encriptar(string _cadenaAencriptar)
+        {
+            string result = string.Empty;
+            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(_cadenaAencriptar);
+            result = Convert.ToBase64String(encryted);
+            return result;
+        }
+
+
     }
 }

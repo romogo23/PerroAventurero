@@ -287,8 +287,8 @@ namespace PerroAventurero.Controllers
                 ListReport.Add(report);
 
             }
-            
-            return ListReport;
+            List<Reports> listReportOrder = ListReport.OrderByDescending(re => re.AttendanceEvent).ToList();
+            return listReportOrder;
         }
 
         private int attendanceTop(string id)
