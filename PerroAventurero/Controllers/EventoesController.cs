@@ -48,6 +48,7 @@ namespace PerroAventurero.Controllers
             else
             {
                 //No se tienen a quien mandar recordatorios, preguntar que se hace en estos casos, se tiene que terminar para que no de errores
+                return RedirectToAction(nameof(Index));//hay que cambiarlo
             }
             try
             {
@@ -210,7 +211,7 @@ namespace PerroAventurero.Controllers
             return View(evento);
         }
 
-        private void sendAnnouncement(string subject, string body)
+        private int sendAnnouncement(string subject, string body)
         {
             Cliente cliente;
             List<Reserva> listOfReservations = new List<Reserva>();
@@ -224,6 +225,7 @@ namespace PerroAventurero.Controllers
             else
             {
                 //No hay a quien enviar anuncios, vaya pa la piiii, hay que mandarlo a otra parte para que no se caiga
+                return 0;//hay que cambiarlo
             }
             
             try
@@ -256,6 +258,7 @@ namespace PerroAventurero.Controllers
                 // TODO: handle exception
                 throw new InvalidOperationException(ex.Message);
             }
+            return 1;
         }
 
         // GET: Eventoes/Edit/5
@@ -365,7 +368,15 @@ namespace PerroAventurero.Controllers
                     string message = "Perro Aventurero ha realizado cambios en el evento " + evento.NombreEvento + "\n" +
                         "Ingrese a la pagina de perro aventurero para ver más información";
 
-                    sendAnnouncement("Modificación evento Perro Aventurero", message);
+                    if (sendAnnouncement("Modificación evento Perro Aventurero", message) == 1)
+                    {
+                        //envió recordatorios
+                    }
+                    else
+                    {
+                        //No tenía a quien enviar recordatorios
+                    }
+                    
 
                     //return RedirectToAction(nameof(Index));
                 }
