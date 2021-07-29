@@ -41,7 +41,7 @@ namespace PerroAventurero.Models
         public decimal PrecioGeneral { get; set; }
 
         [Required(ErrorMessage = "El precio de las entradas de niños del evento es requerido")]
-        [Range(1, int.MaxValue, ErrorMessage = "El precio de las entradas de niños debe ser positivo")]
+        [Range(0, int.MaxValue, ErrorMessage = "El precio de las entradas de niños debe ser positivo")]
         public decimal PrecioNinno { get; set; }
 
         [Required(ErrorMessage = "La cantidad del aforo del evento es requerida")]
