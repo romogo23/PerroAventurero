@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +26,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index(string searchString)
         {
             var pAContext = _context.Eventos.Where(e => e.Fecha > DateTime.Now).Include(e => e.CedulaNavigation);
@@ -100,6 +102,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -127,6 +130,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula");
@@ -256,6 +260,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -381,6 +386,7 @@ namespace PerroAventurero.Controllers
         }
 
         // GET: Eventoes/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
