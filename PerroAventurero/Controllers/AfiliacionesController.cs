@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -136,6 +137,7 @@ namespace PerroAventurero.Controllers
 
 
         // GET: Afiliaciones/Create
+        [Authorize(Roles = "Normal")]
         public IActionResult Create()
         {
             string CedulaCliente = null;
@@ -206,9 +208,16 @@ namespace PerroAventurero.Controllers
                         ViewBag.r = "s";
 
                     }
+                    //Ver a donde lo mando, solo puse eso para que dejara de molestar
+                    return Redirect("~/Home/Index");
                 }
-                //Ver a donde lo mando, solo puse eso para que dejara de molestar
-                return Redirect("~/Home/Index");
+                else
+                {
+                    //Cuando no envia comprobante, ponerle mensajito de que tiene que ingresar comprobante y no dejarlo pasar.
+                    //Ver a donde lo mando, solo puse eso para que dejara de molestar
+                    return Redirect("~/Home/Index");
+                }
+                
             }
             else
             {
