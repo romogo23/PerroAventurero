@@ -146,27 +146,31 @@ namespace PerroAventurero.Controllers
             if (emailModify != null)
             {
                 
-                short codeMod = generateCode();
-                if (userAdmin != null)
-                {
-                    userAdmin.CodigoTemporal = codeMod;
-                    _context.Update(userAdmin);
-                }
-                else if(userComun != null  ) {
-                    userComun.UsuarioComun.CodigoTemporal = codeMod;
-                    _context.Update(userComun.UsuarioComun);
-                    _context.SaveChanges();
-                }
-                string message = "Su contraseña temporal es: " + codeMod;
-                string subject = "Cambio de contraseña Perro Aventurero";
-                SendCode(emailModify, message, subject);
-                return RedirectToAction("ModifyPassword_3", "Auth");
+                //short codeMod = generateCode();
+                //if (userAdmin != null)
+                //{
+                //    userAdmin.CodigoTemporal = codeMod;
+                //    _context.Update(userAdmin);
+                //}
+                //else if(userComun != null  ) {
+                //    userComun.UsuarioComun.CodigoTemporal = codeMod;
+                //    _context.Update(userComun.UsuarioComun);
+                //    _context.SaveChanges();
+                //}
+                //string message = "Su contraseña temporal es: " + codeMod;
+                //string subject = "Cambio de contraseña Perro Aventurero";
+                //SendCode(emailModify, message, subject);
+                ViewBag.r = "Esta funcionalidad no se encuentra operando de momento";
+                return View("ModifyPassword_2");
+                //return RedirectToAction("ModifyPassword_3", "Auth");
             }
             else
             {
                 return View("Login");
             }
         }
+
+     
 
         private short generateCode()
         {
@@ -202,6 +206,7 @@ namespace PerroAventurero.Controllers
             }
            
         }
+
 
 
 
@@ -325,7 +330,6 @@ namespace PerroAventurero.Controllers
                     return View(cu);
                 }   
                 
-                return RedirectToAction("Index", "Home");
 
             }
             return View(cu);

@@ -144,7 +144,7 @@ namespace PerroAventurero.Controllers
                 await _context.SaveChangesAsync();
                 Boolean saved = EmpresasAfiliadaExists(empresasAfiliada.CodigoEmpresa);
                 if (saved == true) {
-                    ViewBag.r = "Empresa creada con exitosamente";
+                    ViewBag.r = "Empresa creada exitosamente";
                 }
                 else
                 {
@@ -234,7 +234,7 @@ namespace PerroAventurero.Controllers
                     Boolean right = EmpresasAfiliadaExists(empresasAfiliada.CodigoEmpresa);
                     if (right == true)
                     {
-                        ViewBag.r = "Empresa modificada con exitosamente";
+                        ViewBag.r = "Empresa modificada exitosamente";
                     }
                     else {
                         ViewBag.r = "Error, no se pudo moficar la empresa";
