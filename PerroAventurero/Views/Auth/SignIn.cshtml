@@ -86,12 +86,12 @@
                         <label>Cédula:</label>
                         <br />
                         <input name="CedulaCliente" type="number" class="form-control input" maxlength="320" placeholder="Cédula..." id="email" required="" />
-                        <span asp-validation-for="UsuarioComun.CedulaCliente" class="text-danger"></span>
+                        <span asp-validation-for="UsuarioComun.CedulaCliente" style="color: white"></span>
                     </div>
                     <div class="form-group">
                         <label class="field-label-2-copy">Nombre Completo</label>
                         <input name="NombreCompleto" type="text" class="form-control input" maxlength="320" placeholder="Nombre..." id="email" required="" />
-                        <span asp-validation-for="Cliente.NombreCompleto" class="text-danger"></span>
+                        <span asp-validation-for="Cliente.NombreCompleto" style="color: white"></span>
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -99,7 +99,7 @@
                                 <label class="field-label-2-copy">FechaNacimiento</label>
                                 <br />
                                 <input name="FechaNacimiento" type="date" class="form-control input" maxlength="320" placeholder="Fecha..." id="email" required="" />
-                                <span asp-validation-for="Cliente.FechaNacimiento" class="text-danger"></span>
+                                <span asp-validation-for="Cliente.FechaNacimiento" style="color: white"></span>
                             </div>
                         </div>
                         <div class="col-6">
@@ -118,7 +118,7 @@
                         <label class="field-label-2-copy">Telefono</label>
                         <br />
                         <input name="Telefono" type="number" class="form-control input" maxlength="320" placeholder="Teléfono..." id="email" required="" />
-                        <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
+                        <span asp-validation-for="Cliente.Telefono" style="color: white"></span>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -132,13 +132,13 @@
                         <label class="field-label-2-copy">Correo</label>
                         <br />
                         <input name="Correo" type="email" class="form-control input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
-                        <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
+                        <span asp-validation-for="Cliente.Correo" style="color: white"></span>
                     </div>
                     <div class="form-group">
                         <label class="field-label-2-copy">Contraseña</label>
                         <br />
                         <input name="Contrasenna" type="password" class="form-control input" minlength="8" maxlength="11" placeholder="Contraseña..." id="email" required="" />
-                        <span asp-validation-for="UsuarioComun.Contrasenna" class="text-danger"></span>
+                        <span asp-validation-for="UsuarioComun.Contrasenna" style="color: white"></span>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Registrarse" class="button-4-copy button" />
@@ -152,7 +152,7 @@
                         <br />
                         <br />
                         <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" />
-                        <span asp-validation-for="UsuarioComun.Foto" class="text-danger"></span>
+                        <span asp-validation-for="UsuarioComun.Foto" style="color: white"></span>
                         <br />
                         <br />
 

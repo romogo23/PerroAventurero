@@ -40,13 +40,13 @@
                     <h3>Inicio de sesión:</h3>
                 </div>
                 <form id="email-form" name="email-form" data-name="Email Form" class="justify-content-start" asp-action="Login">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" style="color: white"></div>
                     <label for="name" class="field-label-2-copy">Ingrese su correo electrónico:</label>
                     <input asp-for="Correo" type="email" class="form-control input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
-                    <span asp-validation-for="Correo" class="text-danger"></span>
+                    <span asp-validation-for="Correo" style="color: white"></span>
                     <label for="name" class="field-label-2-copy">Ingrese su contraseña:</label>
                     <input asp-for="Contrasenna" type="password" class="form-control input" maxlength="30" placeholder="Contraseña..." id="pass" required="" />
-                    <span asp-validation-for="Contrasenna" class="text-danger"></span>
+                    <span asp-validation-for="Contrasenna" style="color: white"></span>
                     <style type="text/css">
                         A:link {
                             COLOR: white;

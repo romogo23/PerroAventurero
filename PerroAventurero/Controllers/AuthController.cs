@@ -343,11 +343,18 @@ namespace PerroAventurero.Controllers
         {
 
             Cliente cliente = _context.Clientes.AsNoTracking().Where(c => c.Correo == email).FirstOrDefault();
-            if (cliente != null) { 
-                int user = _context.UsuarioComuns.Where(c => c.CedulaCliente == cliente.CedulaCliente).Count();
-                return user;
+            if (cliente != null)
+            {
+                int userC = _context.UsuarioComuns.Where(c => c.CedulaCliente == cliente.CedulaCliente).Count();
+                return userC;
 
             }
+            
+            int user = _context.UsuarioAdministradors.Where(c => c.Correo == email).Count();
+            if (user >= 1) {
+                return user;
+            }
+            
             return 0;
         }
 

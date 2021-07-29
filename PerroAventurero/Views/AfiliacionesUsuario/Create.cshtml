@@ -39,17 +39,39 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-    @if (ViewBag.r != null)
+            @if (ViewBag.r != null)
     {
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-                        $(document).ready(function () {
-                            alert('Su afiliaci\u00f3 n ha sido exitosa');
-                            window.location = "/Home/Index";
-                    });
-        </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert('Su afiliaci' + '\u00f3' + 'n ha sido exitosa');
+            window.location = "/Home/Index";
+        });
+    </script>
     }
+
+    @if (ViewBag.exis != null)
+    {
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert('Le informamos que ya cuenta con una afiliaci'+ '\u00f3' +'n');
+            window.location = "/Home/Index";
+        });
+    </script>
+    }
+    @if (ViewBag.inises != null)
+    {
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert('Para afiliarse debe de contar con un usuario por favor inicie sesi' + '\u00f3' +'n');
+            window.location = "/Auth/Login";
+        });
+    </script>
+    }
+    </div>
+
 </div>
 
 <div>
