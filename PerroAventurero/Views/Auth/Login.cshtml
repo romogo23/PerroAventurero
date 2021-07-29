@@ -47,6 +47,27 @@
                     <label for="name" class="field-label-2-copy">Ingrese su contraseña:</label>
                     <input asp-for="Contrasenna" type="password" class="form-control input" maxlength="30" placeholder="Contraseña..." id="pass" required="" />
                     <span asp-validation-for="Contrasenna" class="text-danger"></span>
+                    <style type="text/css">
+                        A:link {
+                            COLOR: white;
+                          
+                        }
+
+                        A:visited {
+                            COLOR: white;
+                            
+                        }
+
+                        A:active {
+                            COLOR: white;
+                           
+                        }
+
+                        A:hover {
+                            COLOR: white;
+                           
+                        }
+                    </style>
                     <a asp-controller="Auth" asp-action="ModifyPassword" class="link-6-copy">¿Olvidó su contraseña?</a>
                     <a asp-controller="Auth" asp-action="SignIn" class="link-6-copy">¿No tienes una cuenta?<br />Registrate</a>
                     <input type="submit" value="Iniciar sesión" data-wait="Please wait..." class="button-4-copy button" />

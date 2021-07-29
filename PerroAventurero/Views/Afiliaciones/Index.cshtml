@@ -40,10 +40,10 @@
                         </a>
                         <div class="row">
                             <div class="col-7">
-                                <a asp-action="Accept" asp-route-id="@item.Codigo" class="btn btn-dark">Aceptar</a>
+                                <a nohref asp-action="Accept" asp-route-id="@item.Codigo" class="btn btn-dark" onClick="alert('Afiliación aceptada')">Aceptar</a>
                             </div>
                             <div class="col-4">
-                                <a asp-action="Reject" asp-route-id="@item.Codigo" class="btn btn-dark">Rechazar</a>
+                                <a nohref  asp-action="Reject" asp-route-id="@item.Codigo" class="btn btn-dark" onClick="alert('Afiliación rechazada')">Rechazar</a>
                             </div>
                         </div>
                     </div>

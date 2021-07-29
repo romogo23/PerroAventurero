@@ -142,8 +142,19 @@ namespace PerroAventurero.Controllers
                 //empresasAfiliada.Cedula = session;
                 _context.Add(empresasAfiliada);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Boolean saved = EmpresasAfiliadaExists(empresasAfiliada.CodigoEmpresa);
+                if (saved == true) {
+                    ViewBag.r = "Empresa creada con exitosamente";
+                }
+                else
+                {
+
+                    ViewBag.r = "Error, no se pudo crear la empresa";
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
+
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", empresasAfiliada.Cedula);
             //ViewData["Categoria"] = new SelectList(_context.EmpresasAfiliadas, "Categoria", "Categoria", empresasAfiliada.Categoria);
             return View(empresasAfiliada);
@@ -220,19 +231,27 @@ namespace PerroAventurero.Controllers
                     }
                     _context.Update(empresasAfiliada);
                     await _context.SaveChangesAsync();
+                    Boolean right = EmpresasAfiliadaExists(empresasAfiliada.CodigoEmpresa);
+                    if (right == true)
+                    {
+                        ViewBag.r = "Empresa modificada con exitosamente";
+                    }
+                    else {
+                        ViewBag.r = "Error, no se pudo moficar la empresa";
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EmpresasAfiliadaExists(empresasAfiliada.CodigoEmpresa))
                     {
-                        return NotFound();
+                        ViewBag.r = "Error, no se pudo moficar la empresa";
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
             ViewData["Cedula"] = new SelectList(_context.UsuarioAdministradors, "Cedula", "Cedula", empresasAfiliada.Cedula);
             return View(empresasAfiliada);

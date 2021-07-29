@@ -140,6 +140,17 @@
 
                     <div class="form-group">
                         <input type="submit" value="Guardar evento" class="btn btn-dark" />
+                        @if (ViewBag.r != null)
+                        {
+                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                            <script type="text/javascript">
+                        $(document).ready(function () {
+                            alert("@ViewBag.r");
+                            window.location = "/Eventoes/Index";
+                    });
+                            </script>
+                        }
+
                     </div>
                 </div>
             </div>

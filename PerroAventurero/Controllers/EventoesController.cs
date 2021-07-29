@@ -191,7 +191,18 @@ namespace PerroAventurero.Controllers
 
                     _context.Add(evento);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+
+                    Boolean right = EventoExists(evento.CodigoEvento);
+                    if (right == true)
+                    {
+                        ViewBag.r = "Evento creado exitosamente";
+                    }
+                    else
+                    {
+                        ViewBag.r = "Error, no se pudo crear el evento";
+
+                    }
+                    //return RedirectToAction(nameof(Index));
 
                 }
             }
@@ -329,12 +340,21 @@ namespace PerroAventurero.Controllers
                     {
                         _context.Update(evento);
                         await _context.SaveChangesAsync();
+                        Boolean right = EventoExists(evento.CodigoEvento);
+                        if (right == true)
+                        {
+                            ViewBag.r = "Evento modificado exitosamente";
+                        }
+                        else
+                        {
+                            ViewBag.r = "Error, no se pudo modificar el evento";
+                        }
                     }
                     catch (DbUpdateConcurrencyException)
                     {
                         if (!EventoExists(evento.CodigoEvento))
                         {
-                            return NotFound();
+                            ViewBag.r = "Error, no se pudo modificar el evento";
                         }
                         else
                         {
@@ -347,7 +367,7 @@ namespace PerroAventurero.Controllers
 
                     sendAnnouncement("Modificación evento Perro Aventurero", message);
 
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
                 }
                
             }

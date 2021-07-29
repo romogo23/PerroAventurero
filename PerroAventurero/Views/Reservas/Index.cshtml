@@ -44,10 +44,12 @@
                         </a>
                         <div class="row">
                             <div class="col-7">
-                                <a asp-action="Accept" asp-route-id="@item.CodigoReserva" class="btn btn-dark">Aceptar</a>
+                                <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                                
+                                <a nohref asp-action="Accept" asp-route-id="@item.CodigoReserva" class="btn btn-dark" onClick="alert('Reserva aceptada')">Aceptar</a>
                             </div>
                             <div class="col-4">
-                                <a asp-action="Reject" asp-route-id="@item.CodigoReserva" class="btn btn-dark">Rechazar</a>
+                                <a nohref asp-action="Reject" asp-route-id="@item.CodigoReserva" class="btn btn-dark" onClick="alert('Reserva rechazada')">Rechazar</a>
                             </div>
                         </div>
                     </div>

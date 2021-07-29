@@ -72,13 +72,24 @@
                         <img id="output" width="200" height="200" src="@ViewBag.Image" />
                         <br />
                         <br />
-                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" required/>
+                        <input name="files" type="file" accept="image/png, image/jpeg" onchange="loadFile(event)" required />
                         <span asp-validation-for="Logo" class="text-danger"></span>
                         <br />
                         <br />
 
 
                         <input type="submit" class="btn btn-dark" value="Guardar">
+
+                        @if (ViewBag.r != null)
+                        {
+                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                            <script type="text/javascript">
+                        $(document).ready(function () {
+                            alert("@ViewBag.r");
+                            window.location = "/EmpresasAfiliadas/Index";
+                    });
+                            </script>
+                        }
                         <script>
                             var loadFile = function (event) {
                                 var output = document.getElementById('output');
