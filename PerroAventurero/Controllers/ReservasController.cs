@@ -215,7 +215,6 @@ namespace PerroAventurero.Models
                 ViewBag.EntradasNinnos = evento.PrecioNinno;
                 ViewBag.EntradasGenerales = evento.PrecioGeneral;
                 ViewBag.GroupTimeList = GroupTimeR;
-                ViewBag.r = "prueba";
                 ModelState.AddModelError("EntradasNinnos", "Debe ingresar correctamente las edades de los acompañantes, se considerará niño o niña a toda persona desde su concepción hasta los doce años de edad cumplidos");
                 return View(reserva);
             }
@@ -276,7 +275,31 @@ namespace PerroAventurero.Models
                         }
                         _context.SaveChanges();
 
-                        return Redirect("~/Home/Index");
+                        if (ValidateClient(reserva.CedulaCliente) != 0)
+                        {
+                            if (reserva.ComprobantePago == null)
+                            {
+                                ViewBag.r = "Reserva exitosa. Recuerde enviar el comprobante de pago dentro de 20 minutos";
+
+                                List<String> GroupTimeR = groupTime(code);
+                                ViewBag.GroupTimeList = GroupTimeR;
+                                ViewBag.EntradasNinnos = evento.PrecioNinno;
+                                ViewBag.EntradasGenerales = evento.PrecioGeneral;
+                                return View(reserva);
+
+                            }
+                            else {
+                                ViewBag.r = "Reserva  de " + reserva.EntradasGenerales + " entradas generales y " + reserva.EntradasNinnos + " entradas de niños " + "al evento " + evento.NombreEvento + " ha sido exitosa.";
+
+                                List<String> GroupTimeR = groupTime(code);
+                                ViewBag.GroupTimeList = GroupTimeR;
+                                ViewBag.EntradasNinnos = evento.PrecioNinno;
+                                ViewBag.EntradasGenerales = evento.PrecioGeneral;
+                                return View(reserva);
+                            }
+                        }
+
+                        
                     }
                 else
                 {
@@ -311,7 +334,6 @@ namespace PerroAventurero.Models
             ViewBag.GroupTimeList = GroupTime;
             return View(reserva);
         }
-
 
         private Boolean validateAge(List<short> age, short? kids, short adult) {
             int k = 0;
