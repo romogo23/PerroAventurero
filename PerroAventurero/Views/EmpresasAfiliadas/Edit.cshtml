@@ -100,24 +100,40 @@
                 </div>
                 <div class="form-group">
                     <label>Categoría de empresa:</label>
-                    <select asp-for="Categoria" class="form-control">
+                    <!--<select asp-for="Categoria" class="form-control">-->
                         @*hacer que lo agarre de la bd*@
                         @*@if (ViewBag.Category == "2")
-                            {
-                                <option value="1">Servicio</option>
-                                <option value="2" selected>Producto</option>
-                                }
-                            else
-                            {
+            {
+                <option value="1">Servicio</option>
+                <option value="2" selected>Producto</option>
+                }
+            else
+            {
 
-                                <option value="1" selected>Servicio</option>
-                                <option value="2">Producto</option>
+                <option value="1" selected>Servicio</option>
+                <option value="2">Producto</option>
 
-                            }*@
+            }*@
 
-                        <option value="1">Servicio</option>
+                        <!--<option value="1">Servicio</option>
                         <option value="2" selected>Producto</option>
-                    </select>
+                    </select>-->
+
+                    @if (Model.Categoria == "2")
+                    {
+                        <select asp-for="Categoria" class="form-control">
+                            <option value="1">Servicio</option>
+                            <option value="2" selected>Producto</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select asp-for="Categoria" class="form-control">
+                            <option value="1" selected>Servicio</option>
+                            <option value="2">Producto</option>
+                        </select>
+                    }
+
                     @*<select asp-for="Categoria" class="form-control" asp-items="ViewBag.Categoria"></select>*@
                     <span asp-validation-for="Categoria" class="text-danger"></span>
                 </div>
@@ -139,8 +155,8 @@
 
                 <div class="form-group">
                     <label>Nombre de contacto:</label>
-                    <input class="form-control" />
-                    @*<span asp-validation-for="Telefono" class="text-danger"></span>*@
+                    <input asp-for="NombreContacto" class="form-control" />
+                    <span asp-validation-for="NombreContacto" class="text-danger"></span>
                 </div>
 
             </div>
