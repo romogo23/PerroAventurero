@@ -70,26 +70,41 @@ namespace PerroAventurero.Models
         public async Task<IActionResult> Accept(int id)
         {
             var reserva = await _context.Reservas.FindAsync(id);
-            //Enviar correo con el detalle de la reserva. No está sirviendo, REVISAR
-            //SmtpClient client = new SmtpClient("smtp.gmail.com");
-            //client.Port = 587;
-            //client.EnableSsl = true;
-            //client.Timeout = 100000;
-            //client.EnableSsl = true;
-            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //client.UseDefaultCredentials = false;
-            //client.Credentials = new NetworkCredential("correo", "contraseña");
-            //MailMessage msg = new MailMessage();
-            ////msg.To.Add(Correo.ToString()); correo se recibía por parámetro, supuse que era el correo al que se envía el codigo como tal
-            //msg.To.Add("allan.najera@gmail.com");
-            //msg.From = new MailAddress("juanperez33op@gmail.com");
-            //msg.Subject = "Prueba de correo";
-            //msg.Body = "Estos es todo el texto que lleva el mensaje con las diferentes descripciones";
-            ////Attachment data = new Attachment(textBox3.Text);
-            ////msg.Attachments.Add(data);
-            //client.Send(msg);//Aquí está el problema
+            Cliente cliente = await _context.Clientes.FindAsync(reserva.CedulaCliente);
+            Evento evento = await _context.Eventos.FindAsync(reserva.CodigoEvento);
 
-            //Con esto hace modifica la afiliación
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.To.Add(cliente.Correo.ToString());
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Estado de reservación a evento de Perro Aventurero";
+                msg.Body = "Se ha realizado una reservación con los siguientes datos.\n\n" +
+                     "Nombre de la persona: " + cliente.NombreCompleto.ToString() + "\n" +
+                     "Cédula: " + cliente.CedulaCliente.ToString() + "\n" +
+                     "Lugar del evento: " + evento.Lugar.ToString() + "\n" +
+                     "Cantidad entradas generales: " + reserva.EntradasGenerales.ToString() + "\n" +
+                     "Cantidad entradas niños: " + reserva.EntradasNinnos.ToString() + "\n" +
+                     "Precio total: " + reserva.PrecioTotal.ToString() + "\n" +
+                     "Grupo : " + reserva.Grupo.ToString() + "\n" +
+                     "Hora de entrada : " + reserva.HoraEntrada.ToString() + "\n" +
+                      "Gracias por realizar la reservación";
+                client.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+
             reserva.EsAceptada = true;
             _context.Update(reserva);
             await _context.SaveChangesAsync();
@@ -99,8 +114,32 @@ namespace PerroAventurero.Models
 
         public async Task<IActionResult> Reject(int id)
         {
-            //Enviar correo de que la solicitud de reserva ha sido rechazada, aún no funciona
-            var reserva = await _context.Reservas.FindAsync(id);
+           var reserva = await _context.Reservas.FindAsync(id);
+            Cliente cliente = await _context.Clientes.FindAsync(reserva.CedulaCliente);
+
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587;
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+                MailMessage msg = new MailMessage();
+                msg.To.Add(cliente.Correo.ToString());
+                msg.From = new MailAddress("juanperez33op@gmail.com");
+                msg.Subject = "Estado de reservación a evento de Perro Aventurero";
+                msg.Body = "Su reservación ha sido rechazada";
+                client.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                // TODO: handle exception
+                throw new InvalidOperationException(ex.Message);
+            }
+
             Acompannante acompannate;
             while (_context.Acompannantes.Where(a => a.CodigoReserva == reserva.CodigoReserva).FirstOrDefault() != null)
             {
