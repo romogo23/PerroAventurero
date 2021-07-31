@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Net;
-using System.Net.Mail;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
-
+using MailKit;
+using MimeKit;
+using MailKit.Net.Smtp;
 namespace PerroAventurero.Controllers
 {
     public class AuthController : Controller
@@ -145,24 +146,25 @@ namespace PerroAventurero.Controllers
         {
             if (emailModify != null)
             {
-                
-                //short codeMod = generateCode();
-                //if (userAdmin != null)
-                //{
-                //    userAdmin.CodigoTemporal = codeMod;
-                //    _context.Update(userAdmin);
-                //}
-                //else if(userComun != null  ) {
-                //    userComun.UsuarioComun.CodigoTemporal = codeMod;
-                //    _context.Update(userComun.UsuarioComun);
-                //    _context.SaveChanges();
-                //}
-                //string message = "Su contraseña temporal es: " + codeMod;
-                //string subject = "Cambio de contraseña Perro Aventurero";
-                //SendCode(emailModify, message, subject);
-                ViewBag.r = "Esta funcionalidad no se encuentra operando de momento";
-                return View("ModifyPassword_2");
-                //return RedirectToAction("ModifyPassword_3", "Auth");
+
+                short codeMod = generateCode();
+                if (userAdmin != null)
+                {
+                    userAdmin.CodigoTemporal = codeMod;
+                    _context.Update(userAdmin);
+                }
+                else if (userComun != null)
+                {
+                    userComun.UsuarioComun.CodigoTemporal = codeMod;
+                    _context.Update(userComun.UsuarioComun);
+                    _context.SaveChanges();
+                }
+                string message = "Su contraseña temporal es: " + codeMod;
+                string subject = "Cambio de contraseña Perro Aventurero";
+                SendMessage(subject, message, emailModify);
+                //ViewBag.r = "Esta funcionalidad no se encuentra operando de momento";
+                //return View("ModifyPassword_2");
+                return RedirectToAction("ModifyPassword_3", "Auth");
             }
             else
             {
@@ -235,35 +237,48 @@ namespace PerroAventurero.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult SendCode(string Correo, string message, string subject)
+        public void SendMessage(string subject, string messageBody, string emailClient)
         {
+            MimeMessage message = new MimeMessage();
+
+            message.From.Add(new MailboxAddress("Perro Aventurero", "alexa.cor281996@gmail.com"));
+            message.To.Add(MailboxAddress.Parse("lexi.cor28@gmail.com"));
+            message.Subject = subject;
+
+            message.Body = new TextPart("plain")
+            {
+                Text = messageBody,
+            };
+
+            SmtpClient client = new SmtpClient();
+
+
+            string email = "alexa.cor281996@gmail.com";
+            string password = "campoluna28";
+
             try
             {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = false;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.To.Add(Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = subject;
-                msg.Body = message;
-                //Attachment data = new Attachment(textBox3.Text);
-                //msg.Attachments.Add(data);
-                client.Send(msg);
-                return RedirectToAction("ModifyPassword_3", "Auth");
+
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
+                client.Send(message);
+
             }
             catch (Exception ex)
             {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
+
+
+            }
+            finally
+            {
+
+                client.Disconnect(true);
+                client.Dispose();
             }
         }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente, IFormFile files)

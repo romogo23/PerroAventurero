@@ -48,6 +48,11 @@ namespace PerroAventurero.Controllers
                 }
             }
 
+            if (DateTime.Compare(final, DateTime.Now) > 0)
+            {
+                final = DateTime.Now;
+            }
+
             if (selectReport == "Comparación entre asistencia y reservaciones por evento")
             {
                 if (start == default(DateTime) || final == default(DateTime))
