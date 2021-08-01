@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PerroAventurero.Models;
+using MailKit;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace PerroAventurero.Controllers
 {
@@ -63,35 +65,14 @@ namespace PerroAventurero.Controllers
             Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
             DateTime date = new DateTime(afiliacion.Fecha.Value.Year + 1, afiliacion.Fecha.Value.Month, afiliacion.Fecha.Value.Day, afiliacion.Fecha.Value.Hour, afiliacion.Fecha.Value.Minute, afiliacion.Fecha.Value.Second);
 
-            //try
-            //{
-            //    SmtpClient client = new SmtpClient("smtp.gmail.com");
-            //    client.Port = 587;
-            //    client.EnableSsl = true;
-            //    client.Timeout = 100000;
-            //    client.EnableSsl = true;
-            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //    client.UseDefaultCredentials = false;
-            //    client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-            //    MailMessage msg = new MailMessage();
-            //    msg.To.Add(cliente.Correo.ToString());
-            //    msg.From = new MailAddress("juanperez33op@gmail.com");
-            //    msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
-            //    msg.Body = "Su afiliación al club Aventuras con Descuentos ha sido ACEPTADA.\n\n" +
-            //        "Su código de afiliación es: " + afiliacion.Codigo.ToString() + "\n"+
-            //        "Su afiliación comienza el día: " + afiliacion.Fecha.ToString() + "\n" +
-            //        "Su afiliación vence el día: " + date.ToString();
-            //    client.Send(msg);
-            //}
-            //catch (Exception ex)
-            //{
-            //    // TODO: handle exception
-            //    throw new InvalidOperationException(ex.Message);
-            //}
-            
+            string body = "Su afiliación al club Aventuras con Descuentos ha sido ACEPTADA.\n\n" +
+                               "Su código de afiliación es: " + afiliacion.Codigo.ToString() + "\n"+
+                               "Su afiliación comienza el día: " + afiliacion.Fecha.ToString() + "\n" +
+                               "Su afiliación vence el día: " + date.ToString();
 
-            //Con esto hace modifica la afiliación
-            afiliacion.EsAceptada = true;
+            sendStatus(body, cliente);
+
+             afiliacion.EsAceptada = true;
             _context.Update(afiliacion);
             await _context.SaveChangesAsync();
 
@@ -104,40 +85,52 @@ namespace PerroAventurero.Controllers
             var afiliacion = await _context.Afiliacions.FindAsync(id);
             Cliente cliente = await _context.Clientes.FindAsync(afiliacion.CedulaCliente);
 
-            //try
-            //{
-            //    SmtpClient client = new SmtpClient("smtp.gmail.com");
-            //    client.Port = 587;
-            //    client.EnableSsl = true;
-            //    client.Timeout = 100000;
-            //    client.EnableSsl = true;
-            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //    client.UseDefaultCredentials = false;
-            //    client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-            //    MailMessage msg = new MailMessage();
-            //    msg.To.Add(cliente.Correo.ToString());
-            //    msg.From = new MailAddress("juanperez33op@gmail.com");
-            //    msg.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
-            //    msg.Body = "Lo sentimos, su afiliación fue rechazada. \n" +
-            //        "Encontramos algunos problemas con el comprobante de pago enviado.  \n" +
-            //        "Agradecemos el apoyo. \n" +
-            //        "Si desea realizar una nueva solicitud por favor vuelva a realizar el proceso de afiliación";
-            //    client.Send(msg);
-            //}
-            //catch (Exception ex)
-            //{
-            //    // TODO: handle exception
-            //    throw new InvalidOperationException(ex.Message);
-            //}
+            String body = "Lo sentimos, su afiliación fue rechazada. \n" +
+                               "Encontramos algunos problemas con el comprobante de pago enviado.  \n" +
+                               "Agradecemos el apoyo. \n" +
+                               "Si desea realizar una nueva solicitud por favor vuelva a realizar el proceso de afiliación";
 
+            sendStatus(body, cliente);
 
-            //El rechazar lo que hace es eliminar la afiliación
-            
             _context.Afiliacions.Remove(afiliacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+
+        private void sendStatus(string body, Cliente cliente) {
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            SmtpClient client = new SmtpClient();
+            string email = "perroaventurero.info@gmail.com";
+            string password = "paonline08";
+
+            message.To.Add(MailboxAddress.Parse(cliente.Correo.ToString()));
+            message.Subject = "Estado de afiliacion a club Aventuras con Descuentos";
+            message.Body = new TextPart("plain")
+            {
+                Text = body,
+            };
+
+            try
+            {
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+                client.Disconnect(true);
+                client.Dispose();
+            }
+
+        }
 
         // GET: Afiliaciones/Create
         [Authorize(Roles = "Normal")]

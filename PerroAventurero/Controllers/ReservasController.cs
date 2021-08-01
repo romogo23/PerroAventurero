@@ -5,13 +5,15 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MailKit;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace PerroAventurero.Models
 {
@@ -76,36 +78,48 @@ namespace PerroAventurero.Models
             Cliente cliente = await _context.Clientes.FindAsync(reserva.CedulaCliente);
             Evento evento = await _context.Eventos.FindAsync(reserva.CodigoEvento);
 
-            try
-            {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.To.Add(cliente.Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Estado de reservación a evento de Perro Aventurero";
-                msg.Body = "Se ha realizado una reservación con los siguientes datos.\n\n" +
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            SmtpClient client = new SmtpClient();
+            string email = "perroaventurero.info@gmail.com";
+            string password = "paonline08";
+
+            message.To.Add(MailboxAddress.Parse(cliente.Correo.ToString()));
+            message.Subject = "Estado de reservación a evento de Perro Aventurero";
+            string body = "Se ha realizado una reservación con los siguientes datos.\n\n" +
                      "Nombre de la persona: " + cliente.NombreCompleto.ToString() + "\n" +
                      "Cédula: " + cliente.CedulaCliente.ToString() + "\n" +
+                     "Nombre del evento: " + evento.NombreEvento.ToString() + "\n" +
                      "Lugar del evento: " + evento.Lugar.ToString() + "\n" +
+                     "Fecha: " + evento.Fecha.ToString("D") + "\n" +
+                     "Hora de entrada : " + reserva.HoraEntrada.ToString("h: mm tt") + "\n" +
+                     "Grupo : " + reserva.Grupo.ToString() + "\n" +
                      "Cantidad entradas generales: " + reserva.EntradasGenerales.ToString() + "\n" +
                      "Cantidad entradas niños: " + reserva.EntradasNinnos.ToString() + "\n" +
-                     "Precio total: " + reserva.PrecioTotal.ToString() + "\n" +
-                     "Grupo : " + reserva.Grupo.ToString() + "\n" +
-                     "Hora de entrada : " + reserva.HoraEntrada.ToString() + "\n" +
-                      "Gracias por realizar la reservación";
-                client.Send(msg);
+                     "Precio total: " + Math.Truncate(reserva.PrecioTotal) + "\n" +
+                     "Gracias por realizar la reservación";
+
+            message.Body = new TextPart("plain")
+            {
+                Text = body,
+            };
+
+            try
+            {
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
+                client.Send(message);
             }
             catch (Exception ex)
             {
                 // TODO: handle exception
                 throw new InvalidOperationException(ex.Message);
+            }
+            finally
+            {
+
+                client.Disconnect(true);
+                client.Dispose();
             }
 
             reserva.EsAceptada = true;
@@ -117,30 +131,40 @@ namespace PerroAventurero.Models
 
         public async Task<IActionResult> Reject(int id)
         {
-           var reserva = await _context.Reservas.FindAsync(id);
+            var reserva = await _context.Reservas.FindAsync(id);
             Cliente cliente = await _context.Clientes.FindAsync(reserva.CedulaCliente);
+            Evento evento = await _context.Eventos.FindAsync(reserva.CodigoEvento);
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            SmtpClient client = new SmtpClient();
+            string email = "perroaventurero.info@gmail.com";
+            string password = "paonline08";
+
+            message.To.Add(MailboxAddress.Parse(cliente.Correo.ToString()));
+            message.Subject = "Estado de reservación a evento de Perro Aventurero";
+
+            message.Body = new TextPart("plain")
+            {
+                Text = "Su reserva al evento: "+evento.NombreEvento.ToString() + " ha sido rechazada",
+            };
 
             try
             {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.To.Add(cliente.Correo.ToString());
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Estado de reservación a evento de Perro Aventurero";
-                msg.Body = "Su reservación ha sido rechazada";
-                client.Send(msg);
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
+                client.Send(message);
             }
             catch (Exception ex)
             {
                 // TODO: handle exception
                 throw new InvalidOperationException(ex.Message);
+            }
+            finally
+            {
+
+                client.Disconnect(true);
+                client.Dispose();
             }
 
             Acompannante acompannate;
@@ -154,6 +178,7 @@ namespace PerroAventurero.Models
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
 
         // GET: Reservas/Create

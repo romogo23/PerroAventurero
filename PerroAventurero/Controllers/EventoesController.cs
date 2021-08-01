@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PerroAventurero.Models;
+using MailKit;
+using MimeKit;
+using MailKit.Net.Smtp;
+
 
 namespace PerroAventurero.Controllers
 {
@@ -52,28 +55,33 @@ namespace PerroAventurero.Controllers
                 //No se tienen a quien mandar recordatorios, preguntar que se hace en estos casos, se tiene que terminar para que no de errores
                 return RedirectToAction(nameof(Index));//hay que cambiarlo
             }
+
+
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            SmtpClient client = new SmtpClient();
+            string email = "perroaventurero.info@gmail.com";
+            string password = "paonline08";
+
+            message.Subject = "Recordatorio de evento Perro Aventurero";
+
+         
+
+            
             try
             {
 
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = "Recordatorio de evento Perro Aventurero";
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
 
                 do
                 {
-                    msg.To.Clear();
+                    message.To.Clear();
                     currentReservation = listOfReservations.First();
                     cliente = _context.Clientes.Where(c => c.CedulaCliente == currentReservation.CedulaCliente).FirstOrDefault();
 
-                    msg.Body = "Perro aventurero le recuerda que el día " + evento.Fecha.ToString() + " se llevará a cabo el evento " + evento.NombreEvento +
+                    string body = "Perro aventurero le recuerda que el día " + evento.Fecha.ToString() + " se llevará a cabo el evento " + evento.NombreEvento +
                         " el cual tomará lugar en " + evento.Lugar + ". Poseemos una reservación con los siguientes datos: \n" +
                         "\nNombre de la persona: " + cliente.NombreCompleto + "\n" +
                         "Cédula: " + cliente.CedulaCliente + "\n" +
@@ -82,22 +90,86 @@ namespace PerroAventurero.Controllers
                         "Grupo : " + currentReservation.Grupo.ToString() + "\n" +
                         "Hora de entrada : " + currentReservation.HoraEntrada.ToString();
 
-                    msg.To.Add(cliente.Correo.ToString());
-                    //Attachment data = new Attachment(textBox3.Text);
-                    //msg.Attachments.Add(data);
-                    client.Send(msg);//Aquí está el problema
+                    message.To.Add(MailboxAddress.Parse(cliente.Correo.ToString()));
+                    //el mensaje que se env[ia
+                    message.Body = new TextPart("plain")
+                    {
+                        Text = body,
+                    };
 
+
+                    client.Send(message);
                     listOfReservations.Remove(currentReservation);
 
                 } while (listOfReservations.Count() >= 1);
+
+
+               
+
             }
             catch (Exception ex)
             {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
+
+
             }
-            
-            
+            finally
+            {
+
+                client.Disconnect(true);
+                client.Dispose();
+            }
+
+
+            //try
+            //{
+
+            //    SmtpClient client = new SmtpClient("smtp.gmail.com");
+            //    client.Port = 587;
+            //    client.EnableSsl = true;
+            //    client.Timeout = 100000;
+            //    client.EnableSsl = true;
+            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //    client.UseDefaultCredentials = false;
+            //    client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
+            //    MailMessage msg = new MailMessage();
+            //    msg.From = new MailAddress("juanperez33op@gmail.com");
+            //    msg.Subject = "Recordatorio de evento Perro Aventurero";
+
+            //    do
+            //    {
+            //        msg.To.Clear();
+            //        currentReservation = listOfReservations.First();
+            //        cliente = _context.Clientes.Where(c => c.CedulaCliente == currentReservation.CedulaCliente).FirstOrDefault();
+
+            //        msg.Body = "Perro aventurero le recuerda que el día " + evento.Fecha.ToString() + " se llevará a cabo el evento " + evento.NombreEvento +
+            //            " el cual tomará lugar en " + evento.Lugar + ". Poseemos una reservación con los siguientes datos: \n" +
+            //            "\nNombre de la persona: " + cliente.NombreCompleto + "\n" +
+            //            "Cédula: " + cliente.CedulaCliente + "\n" +
+            //            "Cantidad entradas generales: " + currentReservation.EntradasGenerales.ToString() + "\n" +
+            //            "Cantidad entradas niños: " + currentReservation.EntradasNinnos.ToString() + "\n" +
+            //            "Grupo : " + currentReservation.Grupo.ToString() + "\n" +
+            //            "Hora de entrada : " + currentReservation.HoraEntrada.ToString();
+
+            //        msg.To.Add(cliente.Correo.ToString());
+            //        //Attachment data = new Attachment(textBox3.Text);
+            //        //msg.Attachments.Add(data);
+            //        client.Send(msg);//Aquí está el problema
+
+            //        listOfReservations.Remove(currentReservation);
+
+            //    } while (listOfReservations.Count() >= 1);
+            //}
+            //catch (Exception ex)
+            //{
+            //    // TODO: handle exception
+            //    throw new InvalidOperationException(ex.Message);
+            //}
+
+
+
+
+
+
             return RedirectToAction(nameof(Index));//hay que cambiarlo
         }
 
@@ -192,7 +264,15 @@ namespace PerroAventurero.Controllers
                         "\nEl precio de las entradas de niños es de: " + evento.PrecioNinno +
                         "\n\nIngrese a la página de perro aventurero para ver más información";
 
-                    //sendAnnouncement("Nuevo evento Perro Aventurero", message);
+
+                    if (sendAnnouncement("Nuevo evento Perro Aventurero", message) == 1)
+                    {
+                        //envió recordatorios
+                    }
+                    else
+                    {
+                        //No tenía a quien enviar recordatorios
+                    }
 
                     _context.Add(evento);
                     await _context.SaveChangesAsync();
@@ -228,39 +308,47 @@ namespace PerroAventurero.Controllers
             }
             else
             {
-                //No hay a quien enviar anuncios, vaya pa la piiii, hay que mandarlo a otra parte para que no se caiga
-                return 0;//hay que cambiarlo
+                return 0;
             }
-            
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            message.Subject = subject;
+            message.Body = new TextPart("plain")
+            {
+                Text = body,
+            };
+            SmtpClient client = new SmtpClient();
+            string email = " perroaventurero.info@gmail.com";
+            string password = "paonline08";
+
             try
             {
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
-                client.Port = 587;
-                client.EnableSsl = true;
-                client.Timeout = 100000;
-                client.EnableSsl = true;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("juanperez33op@gmail.com", "Juanitoperez33");
-                MailMessage msg = new MailMessage();
-                msg.From = new MailAddress("juanperez33op@gmail.com");
-                msg.Subject = subject;
 
+
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate(email, password);
                 do
                 {
-                    msg.To.Clear();
+                    message.To.Clear();
                     cliente = listOfClients.First();
-                    msg.Body = body;
-                    msg.To.Add(cliente.Correo.ToString());
-                    client.Send(msg);
+                    message.To.Add(MailboxAddress.Parse(cliente.Correo.ToString()));
+                    client.Send(message);
                     listOfClients.Remove(cliente);
 
                 } while (listOfClients.Count() >= 1);
+
             }
             catch (Exception ex)
             {
                 // TODO: handle exception
                 throw new InvalidOperationException(ex.Message);
+
+            }
+            finally
+            {
+                client.Disconnect(true);
+                client.Dispose();
             }
             return 1;
         }
@@ -379,15 +467,15 @@ namespace PerroAventurero.Controllers
                     string message = "Perro Aventurero ha realizado cambios en el evento " + evento.NombreEvento + "\n" +
                         "Ingrese a la pagina de perro aventurero para ver más información";
 
-                    //if (sendAnnouncement("Modificación evento Perro Aventurero", message) == 1)
-                    //{
-                    //    //envió recordatorios
-                    //}
-                    //else
-                    //{
-                    //    //No tenía a quien enviar recordatorios
-                    //}
-                    
+                    if (sendAnnouncement("Modificación evento Perro Aventurero", message) == 1)
+                    {
+                        //envió recordatorios
+                    }
+                    else
+                    {
+                        //No tenía a quien enviar recordatorios
+                    }
+
 
                     //return RedirectToAction(nameof(Index));
                 }
@@ -443,8 +531,15 @@ namespace PerroAventurero.Controllers
             _context.Eventos.Remove(evento);
             await _context.SaveChangesAsync();
 
-            //string message = "Le comunicamos que el evento " + evento.NombreEvento + " de Perro Aventurero ha sido cancelado.\n¡Lo sentimos!";
-            //sendAnnouncement("Cancelación evento Perro Aventurero",message);
+            string message = "Le comunicamos que el evento " + evento.NombreEvento + " de Perro Aventurero ha sido cancelado.\n¡Lo sentimos!";
+            if (sendAnnouncement("Cancelación evento Perro Aventurero", message) == 1)
+            {
+                //envió recordatorios
+            }
+            else
+            {
+                //No tenía a quien enviar recordatorios
+            }
 
             return RedirectToAction(nameof(Index));
         }
