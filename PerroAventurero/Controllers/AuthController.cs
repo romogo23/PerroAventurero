@@ -283,28 +283,35 @@ namespace PerroAventurero.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyCodeRegister(int code)
         {
-            if (code < 0) {
-
-                if (ValidateClient(Client_Comun_User.Cliente.CedulaCliente) == 0)
+            if (code > 0) {
+                if (Client_Comun_User.UsuarioComun.CodigoTemporal == code)
                 {
 
-                    _context.Add(Client_Comun_User.Cliente);
+                    if (ValidateClient(Client_Comun_User.Cliente.CedulaCliente) == 0)
+                    {
+
+                        _context.Add(Client_Comun_User.Cliente);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _context.Update(Client_Comun_User.Cliente);
+                        await _context.SaveChangesAsync();
+                    }
+                    Client_Comun_User.UsuarioComun.CodigoTemporal = 0;
+                    string conTempo = Client_Comun_User.UsuarioComun.Contrasenna;
+                    Client_Comun_User.UsuarioComun.Contrasenna = Encriptar(conTempo);
+                    _context.Add(Client_Comun_User.UsuarioComun);
                     await _context.SaveChangesAsync();
+                    ViewBag.r = "Se ha registrado correctamente";
+                    return View("RegistroValidacion");
                 }
-                else
-                {
-                    _context.Update(Client_Comun_User.Cliente);
-                    await _context.SaveChangesAsync();
+                else {
+                    ViewBag.r = "El código es incorrecto";
+                    return View("RegistroValidacion");
                 }
-                Client_Comun_User.UsuarioComun.CodigoTemporal = 0;
-                string conTempo = Client_Comun_User.UsuarioComun.Contrasenna;
-                Client_Comun_User.UsuarioComun.Contrasenna = Encriptar(conTempo);
-                _context.Add(Client_Comun_User.UsuarioComun);
-                await _context.SaveChangesAsync();
-                ViewBag.r = "Se ha registrado correctamente";
-                return View("RegistroValidacion");
             } else {
-                ViewBag.r = "Se ha registrado correctamente";
+                ViewBag.r = "Debe ingresar un código";
                 return View("RegistroValidacion");
             }
            

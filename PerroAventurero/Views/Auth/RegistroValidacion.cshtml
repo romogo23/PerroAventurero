@@ -53,23 +53,23 @@
         </div>
         @if (ViewBag.r != null)
         {
-            <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-            @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
-            <script type="text/javascript">
-                alertify.notify('sample', 'success', 5, function () { console.log('dismissed'); });
-                            //swal({
-                            //    title: "Le informamos que",
-                            //    text: "Su reserva ha sido exitosa",
-                            //    type: "success"
-                            //}).then(okay => {
-                            //    if (okay) {
-                            //        window.location = "/Home/Index";
-                            //    }
-                            //});
+          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+          <script type="text/javascript">
 
-                            //swal("Good job!", "You clicked the button!", "success");
-                            //window.location = "/Home/Index";
-            </script>
+
+              swal({
+                  title: "@ViewBag.r",
+                  text: "",
+                  icon: "success",
+                  buttons: false,
+                  timer: 4000,
+              }).then(() => {
+                  window.location = "/Home/Index";
+              })
+
+            //swal("Good job!", "@ViewBag.r", "success");
+            //window.location = "/Home/Index";
+          </script>
         }
     </div>
 </div>
