@@ -7,14 +7,9 @@ namespace PerroAventurero.Models
 {
     public class Cliente_UsuarioComun
     {
-        public Cliente_UsuarioComun(UsuarioComun usuarioComun, Cliente cliente)
-        {
-            UsuarioComun = usuarioComun;
-            Cliente = cliente;
-        }
+        
+        public virtual Cliente Cliente{ get; set; }
 
-        public Cliente Cliente { get; set; }
-
-        public UsuarioComun UsuarioComun { get; set; }
+        public virtual UsuarioComun UsuarioComun { get; set; }
     }
 }

@@ -77,36 +77,32 @@
     </div>
 
     <div class="container py-5">
-        @*<form asp-action="SignIn" class="form-copy" id="email-form" name="email-form" data-name="Email Form">*@
         <form asp-action="SignIn" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label>Cédula:</label>
-                        <br />
-                        <input name="CedulaCliente" type="number" class="form-control input" maxlength="320" placeholder="Cédula..." id="email" required="" />
-                        <span asp-validation-for="UsuarioComun.CedulaCliente" style="color: white"></span>
+                        <label asp-for="Cliente.CedulaCliente" class="control-label"></label>
+                        <input asp-for="Cliente.CedulaCliente" class="form-control" asp-items="ViewBag.Cliente.CedulaCliente">
+                        <span asp-validation-for="Cliente.CedulaCliente" style="color: white"></span>
                     </div>
                     <div class="form-group">
-                        <label class="field-label-2-copy">Nombre Completo</label>
-                        <input name="NombreCompleto" type="text" class="form-control input" maxlength="320" placeholder="Nombre..." id="email" required="" />
+                        <label asp-for="Cliente.NombreCompleto" class="control-label"></label>
+                        <input asp-for="Cliente.NombreCompleto" class="form-control" asp-items="ViewBag.Cliente.NombreCompleto">
                         <span asp-validation-for="Cliente.NombreCompleto" style="color: white"></span>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="field-label-2-copy">FechaNacimiento</label>
-                                <br />
-                                <input name="FechaNacimiento" type="date" class="form-control input" maxlength="320" placeholder="Fecha..." id="email" required="" />
+                                <label asp-for="Cliente.FechaNacimiento" class="control-label"></label>
+                                <input asp-for="Cliente.FechaNacimiento" class="form-control" asp-items="ViewBag.Cliente.FechaNacimiento">
                                 <span asp-validation-for="Cliente.FechaNacimiento" style="color: white"></span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="field-label-2-copy">Género</label>
-                                <br />
-                                <select name="Genero" class="form-control" asp-items="ViewBag.Genero">
+                                <label asp-for="Cliente.Genero" class="control-label"></label>
+                                <select asp-for="Cliente.Genero" class="form-control">
                                     <option value="f">Femenino</option>
                                     <option value="m">Masculino</option>
                                     <option value="o">Otro</option>
@@ -115,29 +111,25 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="field-label-2-copy">Telefono</label>
-                        <br />
-                        <input name="Telefono" type="number" class="form-control input" maxlength="320" placeholder="Teléfono..." id="email" required="" />
+                        <label asp-for="Cliente.Telefono" class="control-label"></label>
+                        <input asp-for="Cliente.Telefono" class="form-control" asp-items="ViewBag.Cliente.FechaNacimiento">
                         <span asp-validation-for="Cliente.Telefono" style="color: white"></span>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="field-label-2-copy">Descripcion</label>
-                        <br />
-                        <textarea name="Descripcion" class="form-control input" placeholder="Descripción..." rows="3" cols="10"></textarea>
-                        <span asp-validation-for="UsuarioComun.Descripcion" class="text-danger"></span>
+                        <label asp-for="UsuarioComun.Descripcion" class="control-label"></label>
+                        <input asp-for="UsuarioComun.Descripcion" class="form-control" asp-items="ViewBag.UsuarioComun.Descripcion">
+                        <span asp-validation-for="UsuarioComun.Descripcion" style="color: white"></span>
                     </div>
                     <div class="form-group">
-                        <label class="field-label-2-copy">Correo</label>
-                        <br />
-                        <input name="Correo" type="email" class="form-control input" maxlength="320" placeholder="Correo electrónico..." id="email" required="" />
+                        <label asp-for="Cliente.Correo" class="control-label"></label>
+                        <input asp-for="Cliente.Correo" class="form-control" asp-items="ViewBag.Cliente.Correo">
                         <span asp-validation-for="Cliente.Correo" style="color: white"></span>
                     </div>
                     <div class="form-group">
-                        <label class="field-label-2-copy">Contraseña</label>
-                        <br />
-                        <input name="Contrasenna" type="password" class="form-control input" minlength="8" maxlength="11" placeholder="Contraseña..." id="email" required="" />
+                        <label asp-for="UsuarioComun.Contrasenna" class="control-label"></label>
+                        <input asp-for="UsuarioComun.Contrasenna" type="password" class="form-control" asp-items="ViewBag.UsuarioComun.Contrasenna">
                         <span asp-validation-for="UsuarioComun.Contrasenna" style="color: white"></span>
                     </div>
                     <div class="form-group">
@@ -156,32 +148,14 @@
                         <br />
                         <br />
 
-                        <script>
-                            var loadFile = function (event) {
-                                var output = document.getElementById('output');
-                                output.src = URL.createObjectURL(event.target.files[0]);
-                                output.onload = function () {
-                                    URL.revokeObjectURL(output.src) // free memory
-                                }
-                            };
-                        </script>
-
+                        
                     </div>
                 </div>
             </div>
         </form>
     </div>
 
-    @if (ViewBag.r != null)
-    {
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-                        $(document).ready(function () {
-                            alert("@ViewBag.r");
-                            window.location = "/Home/Index";
-                    });
-        </script>
-    }
+
 </div>
 
 <!--<div class="header-copy">
@@ -274,7 +248,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-   
+
 
 
 }

@@ -1,0 +1,86 @@
+﻿@model PerroAventurero.Models.Cliente_UsuarioComun
+@section Styles{
+    <link rel="stylesheet" href="~/css/loginUser.css" />
+}
+
+@{
+    ViewData["Title"] = "ModifyPasswordRegister";
+}
+
+@*<h1>Modify Password</h1>
+
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Validar Correo
+        </button>
+    </p>*@
+<div class="header-copy">
+    <div class="container-5 container">
+        <div class="form-block-4 row justify-content-center">
+            <div class="col-md-4">
+                <div>
+                    <h3 class="heading-6-copy">Verificación de correo:</h3>
+                </div>
+
+                @*<div class="container">
+                <div class="collapse in" id="collapseExample">*@
+
+                <form asp-action="VerifyCodeRegister">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Ingrese el código enviado a su correo:</label>
+                        <input type="number" name="code" class="form-control" />
+                        <span class="text-danger"></span>
+                        <span asp-validation-for="UsuarioComun.CodigoTemporal" style="color: white"></span>
+                    </div>
+                    <div class="form-group">
+                        @*data-toggle="collapse" data-target="#collapseExample1, #collapseExample" aria-expanded="false" aria-controls="collapseExample1, collapseExample"*@
+                        <input type="submit" value="Validar Código" class="button-4-copy button" />
+                    </div>
+                </form>
+            </div>
+            @*<div class="col-md-4 collapse" id="collapseExample1">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Codigo</label>
+                    <input class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Ingresar" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1" />
+                </div>
+            </div>*@
+        </div>
+        @if (ViewBag.r != null)
+        {
+            <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+            @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+            <script type="text/javascript">
+                alertify.notify('sample', 'success', 5, function () { console.log('dismissed'); });
+                            //swal({
+                            //    title: "Le informamos que",
+                            //    text: "Su reserva ha sido exitosa",
+                            //    type: "success"
+                            //}).then(okay => {
+                            //    if (okay) {
+                            //        window.location = "/Home/Index";
+                            //    }
+                            //});
+
+                            //swal("Good job!", "You clicked the button!", "success");
+                            //window.location = "/Home/Index";
+            </script>
+        }
+    </div>
+</div>
+
+
+
+<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=60b2d6790e0fd877b12bc115" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="js/webflow.js" type="text/javascript"></script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+
+

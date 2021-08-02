@@ -23,6 +23,8 @@ namespace PerroAventurero.Controllers
 
         private static string emailModify;
 
+        private static Cliente_UsuarioComun Client_Comun_User = new Cliente_UsuarioComun();
+
         private static Cliente_UsuarioComun userComun;
 
         private static UsuarioAdministrador userAdmin;
@@ -162,8 +164,6 @@ namespace PerroAventurero.Controllers
                 string message = "Su contraseña temporal es: " + codeMod;
                 string subject = "Cambio de contraseña Perro Aventurero";
                 SendMessage(subject, message, emailModify);
-                //ViewBag.r = "Esta funcionalidad no se encuentra operando de momento";
-                //return View("ModifyPassword_2");
                 return RedirectToAction("ModifyPassword_3", "Auth");
             }
             else
@@ -172,8 +172,9 @@ namespace PerroAventurero.Controllers
             }
         }
 
-     
 
+
+      
         private short generateCode()
         {
             return (short)new Random().Next(1000, 9999);
@@ -229,7 +230,9 @@ namespace PerroAventurero.Controllers
                 usuarioC = _context.UsuarioComuns.Where(u => u.CedulaCliente.Equals(cliente.CedulaCliente)).FirstOrDefault();
                 if (usuarioC != null)
                 {
-                    c_U = new Cliente_UsuarioComun(usuarioC, cliente);
+                    c_U = new Cliente_UsuarioComun();
+                    c_U.UsuarioComun = usuarioC;
+                    c_U.Cliente = cliente;
                 }
             }
             return c_U;
@@ -241,8 +244,8 @@ namespace PerroAventurero.Controllers
         {
             MimeMessage message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("Perro Aventurero", "alexa.cor281996@gmail.com"));
-            message.To.Add(MailboxAddress.Parse("lexi.cor28@gmail.com"));
+            message.From.Add(new MailboxAddress("Perro Aventurero", "perroaventurero.info@gmail.com"));
+            message.To.Add(MailboxAddress.Parse(emailClient));
             message.Subject = subject;
 
             message.Body = new TextPart("plain")
@@ -253,8 +256,8 @@ namespace PerroAventurero.Controllers
             SmtpClient client = new SmtpClient();
 
 
-            string email = "alexa.cor281996@gmail.com";
-            string password = "campoluna28";
+            string email = "perroaventurero.info@gmail.com";
+            string password = "paonline08";
 
             try
             {
@@ -277,32 +280,53 @@ namespace PerroAventurero.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> VerifyCodeRegister(int code)
+        {
+            if (code < 0) {
 
+                if (ValidateClient(Client_Comun_User.Cliente.CedulaCliente) == 0)
+                {
+
+                    _context.Add(Client_Comun_User.Cliente);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    _context.Update(Client_Comun_User.Cliente);
+                    await _context.SaveChangesAsync();
+                }
+                Client_Comun_User.UsuarioComun.CodigoTemporal = 0;
+                string conTempo = Client_Comun_User.UsuarioComun.Contrasenna;
+                Client_Comun_User.UsuarioComun.Contrasenna = Encriptar(conTempo);
+                _context.Add(Client_Comun_User.UsuarioComun);
+                await _context.SaveChangesAsync();
+                ViewBag.r = "Se ha registrado correctamente";
+                return View("RegistroValidacion");
+            } else {
+                ViewBag.r = "Se ha registrado correctamente";
+                return View("RegistroValidacion");
+            }
+           
+        }
 
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([Bind("CedulaCliente, Foto, Descripcion, Contrasenna")] UsuarioComun usuario, [Bind("CedulaCliente, NombreCompleto, FechaNacimiento, Genero, Telefono, Correo")] Cliente usuarioCliente, IFormFile files)
+        public async Task<IActionResult> SignIn([Bind("UsuarioComun", "Cliente")] Cliente_UsuarioComun usuario, IFormFile files)
         {
-            Cliente_UsuarioComun cu = new Cliente_UsuarioComun(usuario, usuarioCliente);
+            
 
-            if (ModelState.IsValid)
+            if (!TryValidateModel(usuario, nameof(Cliente_UsuarioComun)))
             {
-                
-               if (ValidateUser(usuario.CedulaCliente) == 0) {
+                usuario.UsuarioComun.CedulaCliente = usuario.Cliente.CedulaCliente;
 
-                    if (ValidateEmailClient(usuarioCliente.Correo) == 0)
+
+               if (ValidateUser(usuario.Cliente.CedulaCliente) == 0) {
+
+                    if (ValidateEmailClient(usuario.Cliente.Correo) == 0)
                     {
-                        if (ValidateClient(usuario.CedulaCliente) == 0)
-                        {
-                            
-                            _context.Add(usuarioCliente);
-                            await _context.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            _context.Update(usuarioCliente);
-                            await _context.SaveChangesAsync();
-                        }
+                        //save the client in the local atribute
+                        Client_Comun_User.Cliente = usuario.Cliente;
 
                         if (files != null)
                         {
@@ -318,22 +342,23 @@ namespace PerroAventurero.Controllers
                                 {
                                     files.CopyTo(target);
 
-                                    usuario.Foto = target.ToArray();
+                                    usuario.UsuarioComun.Foto = target.ToArray();
                                 }
 
                             }
                         }
-                        string conTempo = usuario.Contrasenna;
-                        usuario.Contrasenna = Encriptar(conTempo);
-                        _context.Add(usuario);
-                        await _context.SaveChangesAsync();
-                        ViewBag.r = "Se ha registrado correctamente";
-                        return View(cu);
+
+                        usuario.UsuarioComun.CodigoTemporal = generateCode();
+                        string message = "Hola "+ usuario.Cliente.NombreCompleto + " su código de verificación para la cuenta perro aventurero es: " + usuario.UsuarioComun.CodigoTemporal;
+                        string subject = "Código de verificación Perro Aventurero";
+                        SendMessage(subject, message, usuario.Cliente.Correo);
+                        Client_Comun_User.UsuarioComun = usuario.UsuarioComun;
+                        return View("RegistroValidacion");
 
                     }
                     else {
                         ModelState.AddModelError("Cliente.Correo", "Ya existe un usuario con el correo");
-                        return View(cu);
+                        return View(usuario);
                         
                     }
 
@@ -341,13 +366,13 @@ namespace PerroAventurero.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("UsuarioComun.CedulaCliente", "Ya existe un usuario con la cédula ingresada");
-                    return View(cu);
+                    ModelState.AddModelError("Cliente.CedulaCliente", "Ya existe un usuario con la cédula ingresada");
+                    return View(usuario);
                 }   
                 
 
             }
-            return View(cu);
+            return View(usuario);
         }
 
         private int ValidateClient(String id)
@@ -357,6 +382,8 @@ namespace PerroAventurero.Controllers
             return cliente;
 
         }
+
+        
 
         private int ValidateEmailClient(String email)
         {
@@ -467,8 +494,9 @@ namespace PerroAventurero.Controllers
                 {
                     if (cliente.CedulaCliente.Equals(usuarioComun.CedulaCliente))
                     {
-                        ret = new Cliente_UsuarioComun(usuarioComun, cliente);
-
+                        ret = new Cliente_UsuarioComun();
+                        ret.Cliente = cliente;
+                        ret.UsuarioComun = usuarioComun;
                         return ret;
                     }
                 }
